@@ -74,8 +74,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'akbarlaz',
+        password: 'password'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
@@ -108,15 +108,31 @@ export default {
     handleLogin() {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          
+          let username = this.loginForm.username
+          let password = this.loginForm.password
+          console.log(username)
+          
+          this.$store.dispatch('login', {username, password})
+          .then(() => this.$router.push('/'))
+          .catch(err => console.log(err))
+
+          /* this.$store.dispatch('login', this.loginForm)
+          .then(() => this.$router.push('/'))
+          .catch((err) => {
+            console.log(err)
+            this.loading = false
+          }) */
+          
+          /* this.loading = true
           this.$store.dispatch('user/login', this.loginForm).then(() => {
             this.$router.push({ path: this.redirect || '/' })
             this.loading = false
           }).catch(() => {
             this.loading = false
-          })
+          }) */
         } else {
-          console.log('error submit!!')
+          console.log('Errror boskuu')
           return false
         }
       })

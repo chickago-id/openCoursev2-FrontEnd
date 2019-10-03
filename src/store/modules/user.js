@@ -5,7 +5,8 @@ import { resetRouter } from '@/router'
 const state = {
   token: getToken(),
   name: '',
-  avatar: ''
+  avatar: '',
+  user : {},
 }
 
 const mutations = {
@@ -17,18 +18,26 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
-  }
+  },
+  logout(state){
+    state.status = ''
+        state.token = ''
+        state.role = ''
+  },
+
 }
 
 const actions = {
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
+    console.log(username)
+    // console.log(token)
     return new Promise((resolve, reject) => {
       login({ username: username.trim(), password: password }).then(response => {
-        const { data } = response
-        commit('SET_TOKEN', data.token)
-        setToken(data.token)
+        console.log(response.access_token)
+        commit('SET_TOKEN', response.access_token)
+        setToken(response.access_token)
         resolve()
       }).catch(error => {
         reject(error)
@@ -36,22 +45,46 @@ const actions = {
     })
   },
 
+  // user login
+  /* login({ commit }, user) {
+    return new Promise((resolve, reject) => {
+      login({ data: user }).then(response => {
+        console.log(reject)
+        const token = response.data.access_token
+        let user = response.data.roles[0]
+        let atur = response.data.roles[0]
+        setToken(response.data.token)
+        localStorage.setItem('token', token)
+        localStorage.setItem('role', response.data.roles[0])
+        // Add the following line:
+        axios.defaults.headers.common['Authorization'] = token
+        commit('auth_success', {
+          token: token,
+          user: user,
+          role: atur
+        })
+        resolve(response)
+      }).catch(error => {
+        reject(error)
+      })
+    })
+  }, */
+
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
-        const { data } = response
+        response
 
-        if (!data) {
+        if (!response) {
           reject('Verification failed, please Login again.')
         }
 
-        const { name, avatar } = data
-
-        commit('SET_NAME', name)
+        commit('SET_NAME', response.username)
         commit('SET_AVATAR', avatar)
         resolve(data)
       }).catch(error => {
+        console.log(error)
         reject(error)
       })
     })

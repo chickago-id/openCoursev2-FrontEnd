@@ -59,7 +59,7 @@ service.interceptors.response.use(
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          store.dispatch('aresetToken').then(() => {
+          store.dispatch('resetToken').then(() => {
             location.reload()
           })
         })
@@ -69,7 +69,7 @@ service.interceptors.response.use(
       return res
     }
   },
-  /* error => {
+   error => {
     console.log('err' + error) // for debug
     Message({
       message: error.message,
@@ -77,7 +77,7 @@ service.interceptors.response.use(
       duration: 5 * 1000
     })
     return Promise.reject(error)
-  } */
+  } 
 )
 
 export default service

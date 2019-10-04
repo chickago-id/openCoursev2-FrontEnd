@@ -8,17 +8,27 @@ export function login(data) {
   })
 }
 
+/* export function login(username, password) {
+  return request({
+    url: 'http://localhost:8081/login',
+    method: 'post',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ username, password })
+  })
+} */
+
 export function getInfo(token) {
   return request({
-    url: 'http://localhost:8081/profile',
+    url: 'http://localhost:8081/profil',
     method: 'get',
     params: { token }
   })
 }
 
-export function logout() {
+/* export function logout() {
   return request({
     url: 'http://localhost:8081/logout',
     method: 'post'
   })
 }
+ */

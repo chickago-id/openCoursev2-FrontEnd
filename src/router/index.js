@@ -56,6 +56,54 @@ export const constantRoutes = [
   },
 
   {
+    path: '/masterdata',
+    component: Layout,
+    redirect: '/nested/menu1',
+    name: 'Nested',
+    meta: {
+      title: 'Master Data',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'masterbatch',
+        component: () => import('@/views/masterdata/masterbatch/index'),
+        meta: { title: 'Master Batch' }
+      },
+      {
+        path: 'masterkelas',
+        component: () => import('@/views/masterdata/masterkelas/index'),
+        meta: { title: 'Master Kelas' }
+      },
+      {
+        path: 'level',
+        component: () => import('@/views/masterdata/level/index'),
+        meta: { title: 'Master Level Akses' }
+      },
+      {
+        path: 'materi',
+        component: () => import('@/views/masterdata/materi/index'),
+        meta: { title: 'Master Materi' }
+      },
+      {
+        path: 'nilaihuruf',
+        component: () => import('@/views/masterdata/nilaihuruf/index'),
+        meta: { title: 'Master Nilai Huruf' }
+      },
+      {
+        path: 'menu1',
+        component: () => import('@/views/masterdata/ruang/index'),
+        meta: { title: 'Master Ruang' }
+      },
+      {
+        path: 'tahunakademik',
+        component: () => import('@/views/masterdata/tahunakademik/index'),
+        meta: { title: 'Master Tahun Akademik' }
+      }
+    ]
+  },
+
+  {
     path: '/example',
     component: Layout,
     redirect: '/example/table',

@@ -21,8 +21,8 @@ const mutations = {
   },
   logout(state){
     state.status = ''
-        state.token = ''
-        state.role = ''
+    state.token = ''
+    state.role = ''
   },
 
 }
@@ -75,7 +75,7 @@ const actions = {
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
         response
-
+        console.log(response)
         if (!response) {
           reject('Verification failed, please Login again.')
         }
@@ -91,16 +91,30 @@ const actions = {
   },
 
   // user logout
-  logout({ commit, state }) {
+  /* logout({ commit }) {
+    //console.log(state.token)
     return new Promise((resolve, reject) => {
+      console.log(state)
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
+        console.log(state.token)
         removeToken()
         resetRouter()
         resolve()
       }).catch(error => {
         reject(error)
       })
+    })
+  }, */
+
+  logout({commit}){
+    console.log('logout')
+    return new Promise((resolve, reject) => {
+        commit('logout')
+        commit('SET_TOKEN', '')
+        removeToken()
+        //delete config.headers['Authorization']
+        resolve()
     })
   },
 

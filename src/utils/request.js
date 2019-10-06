@@ -18,7 +18,7 @@ service.interceptors.request.use(
       // let each request carry token
       // ['X-Token'] is a custom headers key
       // please modify it according to the actual situation
-      config.headers[['Authorize']] = getToken()
+      config.headers['Authorization'] = 'Bearer ' + getToken()
     }
     return config
   },
@@ -69,7 +69,7 @@ service.interceptors.response.use(
       return res
     }
   },
-   error => {
+    error => {
     console.log('err' + error) // for debug
     Message({
       message: error.message,
@@ -77,7 +77,7 @@ service.interceptors.response.use(
       duration: 5 * 1000
     })
     return Promise.reject(error)
-  } 
+  }  
 )
 
 export default service

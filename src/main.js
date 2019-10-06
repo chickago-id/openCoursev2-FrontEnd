@@ -11,6 +11,7 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
+import moment from 'moment'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -32,6 +33,12 @@ if (process.env.NODE_ENV === 'production') {
 Vue.use(ElementUI, { locale })
 
 Vue.config.productionTip = false
+
+Vue.filter('formatTime', function(value) {
+  if (value) {
+    return moment(String(value)).format('kk:mm')
+  }
+});
 
 new Vue({
   el: '#app',

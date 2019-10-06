@@ -43,11 +43,6 @@
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
-
     </el-form>
   </div>
 </template>
@@ -106,34 +101,18 @@ export default {
       })
     },
     handleLogin() {
+      this.loading=true
       this.$refs.loginForm.validate(valid => {
-        console.log(this.loginForm.username)
         if (valid) {
-          
           let username = this.loginForm.username
           let password = this.loginForm.password
-          console.log(username)
-          
           this.$store.dispatch('user/login', {username, password})
           .then(() => this.$router.push('/'))
           .catch(err => console.log(err))
-
-          /* this.$store.dispatch('login', this.loginForm)
-          .then(() => this.$router.push('/'))
-          .catch((err) => {
-            console.log(err)
-            this.loading = false
-          }) */
-          
-          /* this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          }) */
+          this.loading = false
         } else {
-          console.log('Errror boskuu')
+          this.loading = false
+          console.log('Anda gagal sign in')
           return false
         }
       })

@@ -81,6 +81,11 @@ export const constantRoutes = [
         meta: {title: 'Master Kategori Nilai'}
       },
       {
+        path: 'kategorinilaimateri',
+        component: () => import('@/views/masterdata/kategorinilaimateri/index'),
+        meta: { title: 'Master Kategori Nilai Materi' }
+      },
+      {
         path: 'level',
         component: () => import('@/views/masterdata/level/index'),
         meta: { title: 'Master Level Akses' }
@@ -105,6 +110,24 @@ export const constantRoutes = [
         component: () => import('@/views/masterdata/tahunakademik/index'),
         meta: { title: 'Master Tahun Akademik' }
       }
+    ]
+  },
+
+  {
+    path: '/akademik',
+    component: Layout,
+    redirect: '/akademik/menu1',
+    name: 'Akademik',
+    meta: {
+      title: 'Akademik',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'nilaisiswa',
+        component: () => import('@/views/akademik/nilaisiswa/index'),
+        meta: { title: 'Nilai Siswa' }
+      },
     ]
   },
 

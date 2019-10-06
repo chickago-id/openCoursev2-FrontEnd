@@ -58,8 +58,8 @@ export const constantRoutes = [
   {
     path: '/masterdata',
     component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
+    redirect: '/masterdata/menu1',
+    name: 'MasterData',
     meta: {
       title: 'Master Data',
       icon: 'nested'

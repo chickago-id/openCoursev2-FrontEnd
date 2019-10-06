@@ -76,6 +76,11 @@ export const constantRoutes = [
         meta: { title: 'Master Kelas' }
       },
       {
+        path: 'kategorinilai',
+        component: () => import('@/views/masterdata/kategorinilai/index'),
+        meta: {title: 'Master Kategori Nilai'}
+      },
+      {
         path: 'level',
         component: () => import('@/views/masterdata/level/index'),
         meta: { title: 'Master Level Akses' }

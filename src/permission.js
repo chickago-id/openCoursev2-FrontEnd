@@ -5,6 +5,8 @@ import NProgress from 'nprogress' // progress bar
 import 'nprogress/nprogress.css' // progress bar style
 import { getToken } from '@/utils/auth' // get token from cookie
 import getPageTitle from '@/utils/get-page-title'
+import { getInfo } from './api/user'
+import { mapGetters } from 'vuex'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -23,11 +25,13 @@ router.beforeEach(async(to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
+      
       next({ path: '/' })
       NProgress.done()
+      console.log(hasToken)
     } else {
-      const hasGetUserInfo = store
-      console.log('GAS TOKEN'+store)
+      const hasGetUserInfo = getInfo()
+      console.log(hasGetUserInfo)
       if (hasGetUserInfo) {
         next()
       } else {

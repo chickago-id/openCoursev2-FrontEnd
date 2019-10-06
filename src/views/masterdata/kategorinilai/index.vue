@@ -106,7 +106,7 @@ export default {
     },
     getData() {
       this.listLoading = true
-      axios.get('http://localhost:8081/kategori-nilai')
+      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai')
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -139,7 +139,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete('http://localhost:8081/kategori-nilai/'+id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -166,7 +166,7 @@ export default {
       }
       console.log(token)      
       if(this.form.id_kategori_nilai != '') {
-        axios.put(process.env.VUE_APP_BASE_API+'/kategori-nilai/'+this.form.id_kategori_nilai,
+        axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + this.form.id_kategori_nilai,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
@@ -174,7 +174,7 @@ export default {
             this.dialogFormVisible = false
           })
       } else { 
-        axios.post(process.env.VUE_APP_BASE_API+'/kategori-nilai', 
+        axios.post(process.env.VUE_APP_BASE_API + '/kategori-nilai', 
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

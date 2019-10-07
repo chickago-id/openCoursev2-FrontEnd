@@ -4,7 +4,7 @@
 
 <br>    
 <el-row type="flex" class="row-bg" justify="end">
-          <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+  <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
 </el-row>
 <br>    
     
@@ -51,7 +51,7 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="No" width="95">
         <template slot-scope="scope">
           {{ scope.$index+1 }}
         </template>
@@ -77,7 +77,7 @@
           <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </el-table>
+    </el-table> 
   </div>
 </template>
 
@@ -170,16 +170,26 @@ export default {
       })
     },
     getDataByIdMateri(id) {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/materi/' + id)
+      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/materi/' + id, {headers: auth})
       .then((response) => {
         this.listDataByIdMateri = response.data.data;
         this.listLoading = false
       })
     },
     getData() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi')
+      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi', {headers: auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -236,7 +246,6 @@ export default {
         'Authorization' : token,
         'Content-Type' : 'application/json'
       }
-      console.log(token)      
       if(this.form.id != '') {
         axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + this.form.id,
           this.form, { headers: auth })

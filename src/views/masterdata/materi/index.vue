@@ -20,21 +20,7 @@
           <el-input v-model="form.nama_materi" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
-      <el-form :model="form">
-        <el-form-item required label="Jumlah Pertemuan" :label-width="formLabelWidth">
-          <el-input type="number" v-model="form.jumlah_pertemuan" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <el-form :model="form">
-        <el-form-item :label-width="formLabelWidth" label="Jam Pilihan">
-        <el-time-picker placeholder="Jam Pilihan" v-model="form.jam_pilihan" style="width: 100%;"></el-time-picker>
-      </el-form-item>
-      </el-form>
-      <el-form :model="form">
-        <el-form-item required label="Biaya" :label-width="formLabelWidth">
-          <el-input type="number" v-model="form.biaya" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
+  
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
         <el-button type="primary" @click="addData">Confirm</el-button>
@@ -66,19 +52,9 @@
           {{ scope.row.nama_materi }}
         </template>
       </el-table-column>
-      <el-table-column label="Jumlah Pertemuan">
+      <el-table-column label="Tanggal Dibuat">
         <template slot-scope="scope">
-          {{ scope.row.jumlah_pertemuan }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Jam Pilihan">
-        <template slot-scope="scope">
-          {{ scope.row.jam_pilihan | formatTime }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Biaya">
-        <template slot-scope="scope">
-          Rp {{ scope.row.biaya }}
+          {{ scope.row.created_at }}
         </template>
       </el-table-column>
       <el-table-column label="Action">
@@ -115,9 +91,8 @@ export default {
         id: '',
         kode_materi: '',
         nama_materi: '',
-        jumlah_pertemuan: '',
-        jam_pilihan: '',
-        biaya: '',
+        created_at: '',
+        created_by: 1,
       },
       successAlertVisible: false,
       dialogFormVisible: false,
@@ -142,29 +117,31 @@ export default {
       });
     },
     getData() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
       this.listLoading = true
-      axios.get('http://localhost:8081/materi')
+      axios.get(process.env.VUE_APP_BASE_API + '/materi', {headers: auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     clearData() {
-      this.form.id= ''
-      this.form.kode_materi= ''
-      this.form.nama_materi= ''
-      this.form.jumlah_pertemuan= ''
-      this.form.jam_pilihan= ''
-      this.form.biaya= ''
+      this.form.id= '',
+      this.form.kode_materi= '',
+      this.form.nama_materi= '',
+      this.form.created_at= '',
+      this.form.created_by=1,
       this.dialogFormVisible = true
     },
     editData(scope){
-      this.form.id= scope.row.id
-      this.form.kode_materi= scope.row.kode_materi
-      this.form.nama_materi= scope.row.nama_materi
-      this.form.jumlah_pertemuan= scope.row.jumlah_pertemuan
-      this.form.jam_pilihan= scope.row.jam_pilihan
-      this.form.biaya= scope.row.biaya
+      this.form.id= scope.row.id;
+      this.form.kode_materi= scope.row.kode_materi;
+      this.form.nama_materi= scope.row.nama_materi;
+      this.form.created_at= scope.row.created_at;
       this.dialogFormVisible = true
     },
     deleteData(id, index){
@@ -179,7 +156,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete('http://localhost:8081/materi/'+id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/materi/' + id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -206,7 +183,7 @@ export default {
       }
       console.log(token)      
       if(this.form.id != '') {
-        axios.post(process.env.VUE_APP_BASE_API+'/materi/'+this.form.id,
+        axios.post(process.env.VUE_APP_BASE_API + '/materi/' + this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

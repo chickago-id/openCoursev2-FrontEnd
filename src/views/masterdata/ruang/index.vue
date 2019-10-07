@@ -15,10 +15,10 @@
         </el-form-item>
 
         <el-form-item required label="Kapasitas" :label-width="formLabelWidth">
-          <el-input type="number" maxlength="2" v-model="form.kapasitas" autocomplete="off"></el-input>
+          <el-input type="number"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" v-model="form.kapasitas" autocomplete="off"></el-input>
         </el-form-item>
         
-        <el-form-item required label="Keterangan" :label-width="formLabelWidth">
+        <el-form-item label="Keterangan" :label-width="formLabelWidth">
           <el-input type="text" v-model="form.keterangan" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>

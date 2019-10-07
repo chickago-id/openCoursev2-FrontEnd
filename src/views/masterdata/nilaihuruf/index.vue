@@ -53,7 +53,7 @@
           {{ scope.row.batas_bawah }}
         </template>
       </el-table-column>
-      
+
       <el-table-column label="Batas Bawah">
         <template slot-scope="scope">
           {{ scope.row.batas_atas }}
@@ -62,7 +62,7 @@
       
       <el-table-column label="Created Date">
         <template slot-scope="scope">
-          {{ scope.row.created_date }}
+          {{ scope.row.created_date | formatDate}}
         </template>
       </el-table-column>
       <el-table-column label="Action">

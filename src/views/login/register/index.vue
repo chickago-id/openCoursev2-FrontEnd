@@ -1,14 +1,17 @@
 <template>
-<el-col :span="5">
-    <el-card shadow="hover">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-    <el-tab-pane >    <span slot="label"><i style="color: white">Sign In </i></span>
+
+
+
+
+
+
+
 
       <div class="container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h1 style="text-align: center; color: white;">Sign In</h1>
+        <h1 style="text-align: center; color: white;">Sign Up</h1>
         <h5 style="text-align: center; color: white;">to continue to application</h5>
       </div>
 
@@ -26,7 +29,17 @@
           auto-complete="on"
         />
       </el-form-item>
-
+      <el-form-item
+    prop="email"
+    :rules="[
+      { required: true, message: 'Please input email address', trigger: 'blur' },
+      { type: 'email', message: 'Please input correct email address', trigger: ['blur', 'change'] }
+    ]"
+  ><span class="svg-container">
+          <svg-icon icon-class="user" />
+        </span>
+    <el-input id="nama" v-model="akun.nama_lengkap"  placeholder="Mail@example.com"></el-input>
+  </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
@@ -45,21 +58,27 @@
         <span class="show-pwd" @click="showPwd">
           <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
+      </el-form-item><el-form-item prop="password">
+        <span class="svg-container">
+          <svg-icon icon-class="password" />
+        </span>
+        <el-input
+          :key="passwordType"
+          ref="password"
+          v-model="loginForm.password"
+          :type="passwordType"
+          placeholder="Re-Password"
+          name="password"
+          tabindex="2"
+          auto-complete="on"
+          @keyup.enter.native="handleLogin"
+        />
       </el-form-item>
 
       <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
 
     </el-form>
   </div>
-    </el-tab-pane>
-    <el-tab-pane name="second"> <span slot="label"><i style="color: white">Sign Up </i></span>
-      <register/>
-    </el-tab-pane>
-  </el-tabs>
-      
-    </el-card>
-  </el-col>
-  
 </template>
 
 <script>
@@ -88,11 +107,20 @@ export default {
       }
     }
     return {
-      //  activeName: 'first',
+       activeName: 'first',
       loginForm: {
         username:'',
         password:''
       },
+        akun: {
+          domains: [{
+            key: 1,
+            value: ''
+          }],
+          email: ''
+        },
+      
+ 
       loginRules: {
         username: [{ required: true, trigger: 'blur'/* , validator: validateUsername */ }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
@@ -166,7 +194,7 @@ $cursor: #fff;
   	width:440px;
 	height:auto;
 	padding:20px;
-	background: #283443;
+	background:linear-gradient(rgb(255, 255, 255), #283443, #283443, #283443, #283443, #283443);
 	position: fixed;
 	top: 20%;
 	left: 50%;

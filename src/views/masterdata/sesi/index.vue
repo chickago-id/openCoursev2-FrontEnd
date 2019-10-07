@@ -8,18 +8,14 @@
 </el-row><br>
 
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Ruang" :visible.sync="dialogFormVisible">
+    <el-dialog title="Tambah Sesi" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item required label="Nama Ruang" :label-width="formLabelWidth">
-          <el-input type="text" v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item required label="Kapasitas" :label-width="formLabelWidth">
-          <el-input type="number" maxlength="2" v-model="form.kapasitas" autocomplete="off"></el-input>
+        <el-form-item required label="Jam Mulai" :label-width="formLabelWidth">
+          <el-input type="time" maxlength="2" v-model="form.jam_mulai" autocomplete="off"></el-input>
         </el-form-item>
         
-        <el-form-item required label="Keterangan" :label-width="formLabelWidth">
-          <el-input type="text" v-model="form.keterangan" autocomplete="off"></el-input>
+        <el-form-item required label="Jam Selesai" :label-width="formLabelWidth">
+          <el-input type="time" v-model="form.jam_selesai" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -43,24 +39,24 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Ruang">
+      <el-table-column label="Jam Mulai">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.jam_mulai }}
         </template>
       </el-table-column>
-      <el-table-column label="Kapasitas">
+      <el-table-column label="Jam Selesai">
         <template slot-scope="scope">
-          {{ scope.row.kapasitas }}
+          {{ scope.row.jam_selesai }}
         </template>
       </el-table-column>
-      <el-table-column label="Keterangan">
+      <el-table-column label="Setting">
         <template slot-scope="scope">
-          {{ scope.row.keterangan }}
+          {{ scope.row.setting }}
         </template>
       </el-table-column>
-      <el-table-column label="Created By">
+      <el-table-column label="Created At">
         <template slot-scope="scope">
-          {{ scope.row.created_by }}
+          {{ scope.row.created_at}}
         </template>
       </el-table-column>
       <el-table-column label="Created Date">
@@ -98,9 +94,9 @@ export default {
       listData: [],
       form: {
         id: '',
-        name: '',
-        kapasitas:'',
-        keterangan:'',
+        jam_mulai: '',
+        jam_selesai:'',
+        setting: 1,
         created_by: 1,
         updated_by: 1,
         created_at: '',
@@ -130,7 +126,7 @@ export default {
     },
     getData() {
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/ruang')
+      axios.get(process.env.VUE_APP_BASE_API + '/sesi')
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -138,9 +134,9 @@ export default {
     },
     clearData() {
       this.form.id = '',
-      this.form.name = '',
-      this.form.kapasitas='',
-      this.form.keterangan='',
+      this.form.jam_mulai = '',
+      this.form.jam_selesai='',
+      this.form.setting='',
       this.form.created_by = 1,
       this.form.updated_by = 1,
       this.form.created_at = '',
@@ -150,9 +146,9 @@ export default {
     editData(scope){
       this.dialogFormVisible = true 
       this.form.id = scope.row.id;
-      this.form.name = scope.row.name;
-      this.form.kapasitas = scope.row.kapasitas;
-      this.form.keterangan = scope.row.keterangan;
+      this.form.jam_mulai = scope.row.jam_mulai;
+      this.form.jam_selesai = scope.row.jam_selesai;
+      this.form.setting = scope.row.setting;
       this.form.updated_by = 1;//scope.row.updated_by;
     },
     deleteData(id, index){
@@ -167,7 +163,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/ruang/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/sesi/' + id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -194,7 +190,7 @@ export default {
       }
       console.log(token)      
       if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/ruang/' + this.form.id,
+        axios.put(process.env.VUE_APP_BASE_API + '/sesi/' + this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
@@ -202,7 +198,7 @@ export default {
             this.dialogFormVisible = false
           })
       } else { 
-        axios.post(process.env.VUE_APP_BASE_API + '/ruang', 
+        axios.post(process.env.VUE_APP_BASE_API + '/sesi', 
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

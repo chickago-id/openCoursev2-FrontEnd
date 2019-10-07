@@ -43,6 +43,11 @@ Vue.filter("formatYear", function(date) {
   return moment(date).format("YYYY");
 });
 
+//format tanggal dalam bentuk angka {supix-2019-10-08}
+Vue.filter("formatDate", function(date) {
+  return moment(date).format("DD-MM-YYYY kk:mm");
+});
+
 new Vue({
   el: "#app",
   router,

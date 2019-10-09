@@ -73,11 +73,23 @@ export const constantRoutes = [
       {
         path: 'nilaisiswa',
         component: () => import('@/views/akademik/nilaisiswa/index'),
-        meta: { title: 'Nilai Siswa' }
+        meta: { title: 'Nilai Siswa' },
+        children: [
+          {
+            path: 'list',
+            component: () => import('@/views/akademik/nilaisiswa/list/index'),
+            meta: {title: 'List Nilai Siswa'}
+          },
+          {
+            path: 'input',
+            component: () => import('@/views/akademik/nilaisiswa/input/index'),
+            meta: {title: 'Input Nilai Siswa'}
+          }
+        ]
       },
       {
         path: 'kategorinilaimateri',
-        component: () => import('@/views/masterdata/kategorinilaimateri/index'),
+        component: () => import('@/views/akademik/kategorinilaimateri/index'),
         meta: { title: 'Kategori Nilai Materi' }
       },
       {
@@ -219,7 +231,7 @@ export const constantRoutes = [
   },
 
   {
-    path: '/user',
+    path: '/manajemenuser',
     component: Layout,
     redirect: '/user/menu1',
     name: 'report',
@@ -235,7 +247,7 @@ export const constantRoutes = [
       },
       {
         path: 'level',
-        component: () => import('@/views/masterdata/level/index'),
+        component: () => import('@/views/manajemenuser/akseslevel/index'),
         meta: { title: 'Access Level' }
       }
     ]

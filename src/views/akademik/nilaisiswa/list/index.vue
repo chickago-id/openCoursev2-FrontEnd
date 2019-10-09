@@ -1,6 +1,6 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Parameter Kategori Penilaian" />
+    <el-alert :closable="false" title="List Nilai Siswa" />
 
 <br>    
 <el-row type="flex" class="row-bg" justify="end">
@@ -9,7 +9,7 @@
 <br>    
     
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Kategori Nilai" :visible.sync="dialogFormVisible">
+    <el-dialog title="Tambah List Nilai Siswa" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item required label="Nama Kategori" :label-width="formLabelWidth">
           <el-input v-model="form.nama_kategori" autocomplete="off"></el-input>
@@ -22,7 +22,7 @@
     </el-dialog>
     <!-- End of Form Tambah Data -->
 
-    <!-- Tabel List Data -->
+    <!-- List Data -->
     <el-table
       v-loading="listLoading"
       :data="listData"
@@ -36,14 +36,29 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Kategori">
+      <el-table-column label="Kode Kelas">
         <template slot-scope="scope">
-          {{ scope.row.nama_kategori }}
+          {{ scope.row.kelasPeserta.kelas.kode_kelas }}
         </template>
       </el-table-column>
-      <el-table-column label="Created Date">
+      <el-table-column label="Materi">
         <template slot-scope="scope">
-          {{ scope.row.created_date }}
+          {{ scope.row.kategoriNilaiMateri.materi.nama_materi }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Peserta">
+        <template slot-scope="scope">
+          {{ scope.row.kelasPeserta.user.nama_lengkap }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Nama Kategori">
+        <template slot-scope="scope">
+          {{ scope.row.kategoriNilaiMateri.kategori_nilai.nama_kategori }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Nilai">
+        <template slot-scope="scope">
+          {{ scope.row.nilai_input }}
         </template>
       </el-table-column>
       <el-table-column label="Action">
@@ -53,7 +68,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- End of Tabel List Data -->
+    <!-- End of List Data -->
   </div>
 </template>
 
@@ -72,14 +87,13 @@ export default {
   },
   data() {
     return {
-      user_id: '',
       listLoading: true,
       listData: [],
       form: {
         id_kategori_nilai: '',
         nama_kategori: '',
-        created_by: '',
-        updated_by: 1,
+        created_by: 1,//''
+        updated_by: 1,//'',
         created_date: '',
         updated_date: '',
       },
@@ -89,7 +103,6 @@ export default {
     }
   },
   created() {
-    this.getUserInfo()
     this.getData()
   },
   mounted() {
@@ -106,26 +119,14 @@ export default {
         duration: 2000
       });
     },
-    getUserInfo() {
-      if(localStorage.getItem('token') != null) {
-        const token = 'Bearer '+localStorage.getItem('token')
-        const auth = {
-          'Authorization' : token,
-          'Content-Type' : 'application/json'
-        }
-        this.auth = auth
-        axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
-        .then(response =>{
-          let userData = JSON.parse(response.data.data)
-          this.user_id = userData.user.id
-        })
-      } else {
-        this.roles = ''
-      }
-    },
     getData() {
+        const token = 'Bearer '+localStorage.getItem('token')
+          const auth = {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai', {headers: this.auth})
+      axios.get(process.env.VUE_APP_BASE_API + '/nilai-siswa', {headers: auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -134,17 +135,17 @@ export default {
     clearData() {
       this.form.id_kategori_nilai = '',
       this.form.nama_kategori = '',
-      this.form.created_by = '',
-      this.form.updated_by = '',
+      this.form.created_by = 1,
+      this.form.updated_by = 1,
       this.form.created_date = '',
       this.form.updated_date = '',
       this.dialogFormVisible = true
     },
     editData(scope){
       this.dialogFormVisible = true 
-      this.form.id_kategori_nilai = scope.row.id_kategori_nilai;
-      this.form.nama_kategori = scope.row.nama_kategori;
-      this.form.updated_by = this.user_id;//scope.row.updated_by;
+      this.form.id_kategori_nilai = scope.row.id_kategori_nilai
+      this.form.nama_kategori = scope.row.nama_kategori
+      this.form.updated_by = 1;//scope.row.updated_by;
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -152,8 +153,15 @@ export default {
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + id, { headers: this.auth })
+          const token = 'Bearer '+localStorage.getItem('token')
+          const auth = {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+          console.log(id)
+          axios.delete(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + id, { headers: auth })
           .then((res) =>{
+          console.log(res)
           this.listData.splice(index, 1)
           }, (error) => {
             console.log(error)
@@ -171,24 +179,26 @@ export default {
       this.getData()
     }, 
     addData(){
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
+      console.log(token)      
       if(this.form.id_kategori_nilai != '') {
-        this.form.updated_by = this.user_id
-        axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + this.form.id_kategori_nilai,
-          this.form, { headers: this.auth })
+        axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id_kategori_nilai,
+          this.form, { headers: auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
       } else { 
-        this.form.created_by = this.user_id
-        this.form.updated_by = this.user_id
-        axios.post(process.env.VUE_APP_BASE_API + '/kategori-nilai', 
-          this.form, { headers: this.auth })
+        axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
+          this.form, { headers: auth })
           .then((data) => {
             this.getData()
             this.addNotif()
-            console.log(data)
             this.dialogFormVisible = false
           });
       }

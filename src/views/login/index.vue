@@ -1,47 +1,47 @@
-
 <template>
-  <div class="container">
-    <el-row :gutter="10">
+  <el-card class="container" style="background: #ddd">
+    <el-row>
       <el-col :xs="0" :sm="2" :md="4" :lg="3" :xl="1">
-        <div class="grid-content bg-purple">&nbsp;</div>
+        <div class="">&nbsp;</div>
       </el-col>
       <el-col :xs="12" :sm="10" :md="8" :lg="9" :xl="11">
-        <div class="grid-content bg-purple-light">
+        <div class="grid-content bg-purple-light asd" style="background: white; height: 650px; padding: 20px;">
           <el-tabs :tab-position="tabPosition" style="height: 200px;">
             <el-tab-pane>
-              <span slot="label" style="color: white"><i class="el-icon-login"></i> Sign In</span>
+              <span slot="label"><i class="el-icon-login"></i> Sign in instead</span>
               <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="form" auto-complete="on"
-                label-position="left">
+                label-position="left" style="">
 
-                <div class="title-container">
-                  <h3 class="title">Sign In</h3>
+                <div style="text-align: center">
+                  <h1>logo</h1>
+                  <h3>Sign In</h3>
+                  <p>to continue to Application</p>
                 </div>
                 <el-form-item prop="username">
-                  <span class="svg-container">
-                    <svg-icon icon-class="user" />
-                  </span>
-                  <el-input ref="username" v-model="loginForm.username" placeholder="Username" name="username"
-                    type="text" tabindex="1" auto-complete="on" />
+                  <label class="inputkeren">
+                    <input type="text" placeholder=" " ref="username" v-model="loginForm.username" name="username"
+                      tabindex="1" auto-complete="on">
+                    <span>Username</span>
+                  </label>
                 </el-form-item>
                 <el-form-item prop="password">
-                  <span class="svg-container">
-                    <svg-icon icon-class="password" />
-                  </span>
-                  <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
-                    placeholder="Password" name="password" tabindex="2" auto-complete="on"
-                    @keyup.enter.native="handleLogin" />
-                  <span class="show-pwd" @click="showPwd">
-                    <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-                  </span>
+                  <label class="inputkeren">
+                    <input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
+                      placeholder=" " name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin">
+                    <span>Password</span>
+                    <span class="show-pwd" @click="showPwd">
+                      <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+                    </span>
+                  </label>
                 </el-form-item>
-                <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
-                  @click.native.prevent="handleLogin">Login</el-button>
+                <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px; float:right;"
+                  @click.native.prevent="handleLogin">Sign In</el-button>
                 <div class="tips">
                 </div>
               </el-form>
             </el-tab-pane>
             <el-tab-pane>
-              <span slot="label" style="color: white"><i class="el-icon-out"></i> Sign Up</span>
+              <span slot="label"><i class="el-icon-out"></i> Create Account</span>
               <register />
             </el-tab-pane>
           </el-tabs>
@@ -51,10 +51,11 @@
       <el-col :xs="12" :sm="10" :md="8" :lg="9" :xl="11">
         <div class="grid-content bg-purple">
           <div class="block">
-            <el-carousel height="690px" width="300p">
+            <el-carousel height="650px" width="300p">
               <el-carousel-item v-for="item in 4" :key="item">
-                <p>Corousal slider img</p>
-                <h3 class="small">{{ item }}</h3>
+
+                <p style="text-align: center; veritical-align: bottom;">Corousal slider img</p>
+                <h3 class="small" style="text-align: center; margin-bottom:30px;">{{ item }}</h3>
               </el-carousel-item>
             </el-carousel>
           </div>
@@ -65,8 +66,8 @@
       </el-col>
     </el-row>
 
-  </div>
-<!-- KAI -->
+  </el-card>
+  <!-- Kai -->
 </template>
 
 <script>
@@ -115,7 +116,7 @@
         loading: false,
         passwordType: 'password',
         redirect: undefined,
-tabPosition: 'top'
+        tabPosition: 'top'
 
       }
     },
@@ -225,54 +226,9 @@ tabPosition: 'top'
   }
 
 </script>
-<style lang="scss">
-  /* 修复input 背景不协调 和光标变色 */
-  /* Detail see https://github.com/PanJiaChen/vue-element-admin/pull/927 */
-  $bg:#283443;
-  $light_gray:#fff;
-  $cursor: #fff;
 
-  @supports (-webkit-mask: none) and (not (cater-color: $cursor)) {
-    .container .el-input input {
-      color: $cursor;
-    }
-  }
-
-  /* reset element-ui css */
-  .container {
-    .el-input {
-      display: inline-block;
-      height: 35px;
-      width: 55%;
-
-      input {
-        background: transparent;
-        border: 0px;
-        -webkit-appearance: none;
-        border-radius: 0px;
-        padding: 12px 5px 12px 15px;
-        color: $light_gray;
-        height: 47px;
-        caret-color: $cursor;
-
-        &:-webkit-autofill {
-          box-shadow: 0 0 0px 1000px $bg inset !important;
-          -webkit-text-fill-color: $cursor !important;
-        }
-      }
-    }
-
-    .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
-}
-  }
-
-</style>
 <style lang="scss" scoped>
-  $bg:#2d3a4b;
+  $bg:#fbfdff;
   $dark_gray:#889aa4;
   $light_gray:#eee;
 
@@ -286,7 +242,7 @@ tabPosition: 'top'
       position: relative;
       width: 520px;
       max-width: 100%;
-      padding: 50px 35px 0;
+      padding: 2px 0px 0;
       margin: 0 auto;
       overflow: hidden;
     }
@@ -326,7 +282,7 @@ tabPosition: 'top'
     .show-pwd {
       position: absolute;
       right: 10px;
-      top: 7px;
+      top: 25px;
       font-size: 16px;
       color: $dark_gray;
       cursor: pointer;
@@ -354,9 +310,217 @@ tabPosition: 'top'
     border-radius: 4px;
   }
 
-  .grid-content {
+  .grid-contents {
     border-radius: 4px;
     min-height: 36px;
+  }
+
+  .asd {
+    // padding: 25px;
+  }
+
+</style>
+
+
+
+
+<style>
+  input[type="password"]::-ms-reveal {
+    display: none;
+  }
+
+  .inputkeren {
+    --pure-material-safari-helper1: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    position: relative;
+    display: block;
+    padding-top: 6px;
+    font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
+    font-size: 16px;
+    line-height: 1.0;
+    overflow: hidden;
+  }
+
+  /* Input, Textarea */
+  .inputkeren>input,
+  .inputkeren>textarea {
+    box-sizing: border-box;
+    margin: 0;
+    border: solid 1px red;
+    /* Safari */
+    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    border-top-color: transparent;
+    border-radius: 4px;
+    padding: 15px 13px 15px;
+    width: 100%;
+    height: inherit;
+    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
+    background-color: transparent;
+    box-shadow: none;
+    /* Firefox */
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+    caret-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    transition: border 0.2s, box-shadow 0.2s;
+  }
+
+  /* Span */
+  .inputkeren>input+span,
+  .inputkeren>textarea+span {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    width: 100%;
+    max-height: 100%;
+    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    font-size: 75%;
+    line-height: 15px;
+    cursor: text;
+    transition: color 0.2s, font-size 0.2s, line-height 0.2s;
+  }
+
+  /* Corners */
+  .inputkeren>input+span::before,
+  .inputkeren>input+span::after,
+  .inputkeren>textarea+span::before,
+  .inputkeren>textarea+span::after {
+    content: "";
+    display: block;
+    box-sizing: border-box;
+    margin-top: 6px;
+    border-top: solid 1px;
+    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+    min-width: 10px;
+    height: 8px;
+    pointer-events: none;
+    box-shadow: inset 0 1px transparent;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .inputkeren>input+span::before,
+  .inputkeren>textarea+span::before {
+    margin-right: 4px;
+    border-left: solid 1px transparent;
+    border-radius: 4px 0;
+  }
+
+  .inputkeren>input+span::after,
+  .inputkeren>textarea+span::after {
+    flex-grow: 1;
+    margin-left: 4px;
+    border-right: solid 1px transparent;
+    border-radius: 0 4px;
+  }
+
+  /* Hover */
+  .inputkeren:hover>input,
+  .inputkeren:hover>textarea {
+    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
+    border-top-color: transparent;
+  }
+
+  .inputkeren:hover>input+span::before,
+  .inputkeren:hover>textarea+span::before,
+  .inputkeren:hover>input+span::after,
+  .inputkeren:hover>textarea+span::after {
+    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
+  }
+
+  .inputkeren:hover>input:not(:focus):placeholder-shown,
+  .inputkeren:hover>textarea:not(:focus):placeholder-shown {
+    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
+  }
+
+  /* Placeholder-shown */
+  .inputkeren>input:not(:focus):placeholder-shown,
+  .inputkeren>textarea:not(:focus):placeholder-shown {
+    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
+  }
+
+  .inputkeren>input:not(:focus):placeholder-shown+span,
+  .inputkeren>textarea:not(:focus):placeholder-shown+span {
+    font-size: inherit;
+    line-height: 68px;
+  }
+
+  .inputkeren>input:not(:focus):placeholder-shown+span::before,
+  .inputkeren>textarea:not(:focus):placeholder-shown+span::before,
+  .inputkeren>input:not(:focus):placeholder-shown+span::after,
+  .inputkeren>textarea:not(:focus):placeholder-shown+span::after {
+    border-top-color: transparent;
+  }
+
+  /* Focus */
+  .inputkeren>input:focus,
+  .inputkeren>textarea:focus {
+    border-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+    border-top-color: transparent;
+    box-shadow: inset 1px 0 var(--pure-material-safari-helper1), inset -1px 0 var(--pure-material-safari-helper1), inset 0 -1px var(--pure-material-safari-helper1);
+    outline: none;
+  }
+
+  .inputkeren>input:focus+span,
+  .inputkeren>textarea:focus+span {
+    color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
+  }
+
+  .inputkeren>input:focus+span::before,
+  .inputkeren>input:focus+span::after,
+  .inputkeren>textarea:focus+span::before,
+  .inputkeren>textarea:focus+span::after {
+    border-top-color: var(--pure-material-safari-helper1) !important;
+    box-shadow: inset 0 1px var(--pure-material-safari-helper1);
+  }
+
+  /* Disabled */
+  .inputkeren>input:disabled,
+  .inputkeren>input:disabled+span,
+  .inputkeren>textarea:disabled,
+  .inputkeren>textarea:disabled+span {
+    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38) !important;
+    border-top-color: transparent !important;
+    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
+    pointer-events: none;
+  }
+
+  .inputkeren>input:disabled+span::before,
+  .inputkeren>input:disabled+span::after,
+  .inputkeren>textarea:disabled+span::before,
+  .inputkeren>textarea:disabled+span::after {
+    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38) !important;
+  }
+
+  .inputkeren>input:disabled:placeholder-shown,
+  .inputkeren>input:disabled:placeholder-shown+span,
+  .inputkeren>textarea:disabled:placeholder-shown,
+  .inputkeren>textarea:disabled:placeholder-shown+span {
+    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38) !important;
+  }
+
+  .inputkeren>input:disabled:placeholder-shown+span::before,
+  .inputkeren>input:disabled:placeholder-shown+span::after,
+  .inputkeren>textarea:disabled:placeholder-shown+span::before,
+  .inputkeren>textarea:disabled:placeholder-shown+span::after {
+    border-top-color: transparent !important;
+  }
+
+  /* Faster transition in Safari for less noticable fractional font-size issue */
+  @media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance:none) {
+
+      .inputkeren>input,
+      .inputkeren>input+span,
+      .inputkeren>textarea,
+      .inputkeren>textarea+span,
+      .inputkeren>input+span::before,
+      .inputkeren>input+span::after,
+      .inputkeren>textarea+span::before,
+      .inputkeren>textarea+span::after {
+        transition-duration: 0.1s;
+      }
+    }
   }
 
 </style>

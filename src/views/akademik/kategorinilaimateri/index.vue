@@ -1,6 +1,6 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Master Kategori Nilai Materi" />
+    <el-alert :closable="false" title="Bobot Kategori Penilaian" />
 
 <br>    
 <el-row type="flex" class="row-bg" justify="end">
@@ -106,6 +106,8 @@ export default {
   },
   data() {
     return {
+      auth: '',
+      id_user: '',
       listLoading: true,
       materiOption: [{'value': '', 'label': ''}],
       materiSelect: '',
@@ -125,6 +127,7 @@ export default {
     }
   },
   created() {
+    this.getUserInfo()
     this.getData()
   },
   mounted() {
@@ -143,8 +146,25 @@ export default {
         duration: 2000
       });
     },
+    getUserInfo() {
+        if(localStorage.getItem('token') != null) {
+          const token = 'Bearer '+localStorage.getItem('token')
+          const auth = {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+          this.auth = auth
+          axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
+          .then(response =>{
+            let userData = JSON.parse(response.data.data)
+            this.user_id = userData.user.id
+          })
+        }else{
+          this.roles = ''
+        }
+      },
     getMateri() {
-      axios.get(process.env.VUE_APP_BASE_API+'/materi')
+      axios.get(process.env.VUE_APP_BASE_API+'/materi', {headers: this.auth})
       .then((response) => {
         response.data.data.forEach(item => {
           this.materiOption.push (
@@ -157,7 +177,7 @@ export default {
       })
     },
     getKategori() {
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai')
+      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai', {headers: this.auth})
       .then((response) => {
         response.data.data.forEach(item => {
           this.kategoriOption.push (
@@ -170,26 +190,16 @@ export default {
       })
     },
     getDataByIdMateri(id) {
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/materi/' + id, {headers: auth})
+      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/materi/' + id, {headers: this.auth})
       .then((response) => {
         this.listDataByIdMateri = response.data.data;
         this.listLoading = false
       })
     },
     getData() {
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi', {headers: auth})
+      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi', {headers: this.auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -215,13 +225,7 @@ export default {
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + id, { headers: this.auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -241,26 +245,23 @@ export default {
       this.getData()
     }, 
     addData(){
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
       if(this.form.id != '') {
         axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + this.form.id,
-          this.form, { headers: auth })
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
+            this.sisaBobotNilai = 100
           })
       } else { 
         axios.post(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi', 
-          this.form, { headers: auth })
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
+            this.sisaBobotNilai = 100
           });
       }
     },

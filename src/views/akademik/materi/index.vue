@@ -1,27 +1,26 @@
-<!-- Author : supi.core@gmail.com | github.com/sup1core -->
-
 <template>
   <div style="padding:30px;">
+    <el-alert :closable="false" title="Materi" />
 
+<br>    
 <el-row type="flex" class="row-bg" justify="end">
           <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-</el-row><br>
-
+</el-row>
+<br>    
+    
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Ruang" :visible.sync="dialogFormVisible">
+    <el-dialog title="Tambah Materi" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item required label="Nama Ruang" :label-width="formLabelWidth">
-          <el-input type="text" v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-
-        <el-form-item required label="Kapasitas" :label-width="formLabelWidth">
-          <el-input type="number"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" v-model="form.kapasitas" autocomplete="off"></el-input>
-        </el-form-item>
-        
-        <el-form-item label="Keterangan" :label-width="formLabelWidth">
-          <el-input type="text" v-model="form.keterangan" autocomplete="off"></el-input>
+        <el-form-item required label="Kode Materi" :label-width="formLabelWidth">
+          <el-input v-model="form.kode_materi" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Nama Materi" :label-width="formLabelWidth">
+          <el-input v-model="form.nama_materi" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+  
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
         <el-button type="primary" @click="addData">Confirm</el-button>
@@ -29,7 +28,7 @@
     </el-dialog>
     <!-- End of Form Tambah Data -->
 
-    <!-- Tabel List Data -->
+    <!-- List Data Table -->
     <el-table
       v-loading="listLoading"
       :data="listData"
@@ -43,27 +42,17 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Ruang">
+      <el-table-column label="Kode Materi">
         <template slot-scope="scope">
-          {{ scope.row.name }}
+          {{ scope.row.kode_materi }}
         </template>
       </el-table-column>
-      <el-table-column label="Kapasitas">
+      <el-table-column label="Nama Materi">
         <template slot-scope="scope">
-          {{ scope.row.kapasitas }}
+          {{ scope.row.nama_materi }}
         </template>
       </el-table-column>
-      <el-table-column label="Keterangan">
-        <template slot-scope="scope">
-          {{ scope.row.keterangan }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Created By">
-        <template slot-scope="scope">
-          {{ scope.row.created_by }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Created Date">
+      <el-table-column label="Tanggal Dibuat">
         <template slot-scope="scope">
           {{ scope.row.created_at }}
         </template>
@@ -75,7 +64,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- End of Tabel List Data -->
+    <!-- End of List Data Table -->
+
   </div>
 </template>
 
@@ -94,21 +84,19 @@ export default {
   },
   data() {
     return {
+      list: null,
       listLoading: true,
       listData: [],
       form: {
         id: '',
-        name: '',
-        kapasitas:'',
-        keterangan:'',
-        created_by: 1,
-        updated_by: 1,
+        kode_materi: '',
+        nama_materi: '',
         created_at: '',
-        updated_at: '',
+        created_by: 1,
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '150px'
     }
   },
   created() {
@@ -129,31 +117,32 @@ export default {
       });
     },
     getData() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/ruang')
+      axios.get(process.env.VUE_APP_BASE_API + '/materi', {headers: auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     clearData() {
-      this.form.id = '',
-      this.form.name = '',
-      this.form.kapasitas='',
-      this.form.keterangan='',
-      this.form.created_by = 1,
-      this.form.updated_by = 1,
-      this.form.created_at = '',
-      this.form.updated_at = '',
+      this.form.id= '',
+      this.form.kode_materi= '',
+      this.form.nama_materi= '',
+      this.form.created_at= '',
+      this.form.created_by=1,
       this.dialogFormVisible = true
     },
     editData(scope){
-      this.dialogFormVisible = true 
-      this.form.id = scope.row.id;
-      this.form.name = scope.row.name;
-      this.form.kapasitas = scope.row.kapasitas;
-      this.form.keterangan = scope.row.keterangan;
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.id= scope.row.id;
+      this.form.kode_materi= scope.row.kode_materi;
+      this.form.nama_materi= scope.row.nama_materi;
+      this.form.created_at= scope.row.created_at;
+      this.dialogFormVisible = true
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -167,7 +156,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/ruang/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/materi/' + id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -194,7 +183,7 @@ export default {
       }
       console.log(token)      
       if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/ruang/' + this.form.id,
+        axios.post(process.env.VUE_APP_BASE_API + '/materi/' + this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
@@ -202,7 +191,7 @@ export default {
             this.dialogFormVisible = false
           })
       } else { 
-        axios.post(process.env.VUE_APP_BASE_API + '/ruang', 
+        axios.post(process.env.VUE_APP_BASE_API+'/materi', 
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

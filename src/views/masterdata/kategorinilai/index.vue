@@ -1,6 +1,6 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Kategori Nilai" />
+    <el-alert :closable="false" title="Parameter Kategori Penilaian" />
 
 <br>    
 <el-row type="flex" class="row-bg" justify="end">
@@ -72,12 +72,13 @@ export default {
   },
   data() {
     return {
+      user_id: '',
       listLoading: true,
       listData: [],
       form: {
         id_kategori_nilai: '',
         nama_kategori: '',
-        created_by: 1,
+        created_by: '',
         updated_by: 1,
         created_date: '',
         updated_date: '',
@@ -88,6 +89,7 @@ export default {
     }
   },
   created() {
+    this.getUserInfo()
     this.getData()
   },
   mounted() {
@@ -104,9 +106,26 @@ export default {
         duration: 2000
       });
     },
+    getUserInfo() {
+      if(localStorage.getItem('token') != null) {
+        const token = 'Bearer '+localStorage.getItem('token')
+        const auth = {
+          'Authorization' : token,
+          'Content-Type' : 'application/json'
+        }
+        this.auth = auth
+        axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
+        .then(response =>{
+          let userData = JSON.parse(response.data.data)
+          this.user_id = userData.user.id
+        })
+      } else {
+        this.roles = ''
+      }
+    },
     getData() {
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai')
+      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai', {headers: this.auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -115,8 +134,8 @@ export default {
     clearData() {
       this.form.id_kategori_nilai = '',
       this.form.nama_kategori = '',
-      this.form.created_by = 1,
-      this.form.updated_by = 1,
+      this.form.created_by = '',
+      this.form.updated_by = '',
       this.form.created_date = '',
       this.form.updated_date = '',
       this.dialogFormVisible = true
@@ -125,7 +144,7 @@ export default {
       this.dialogFormVisible = true 
       this.form.id_kategori_nilai = scope.row.id_kategori_nilai;
       this.form.nama_kategori = scope.row.nama_kategori;
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.updated_by = this.user_id;//scope.row.updated_by;
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -133,15 +152,8 @@ export default {
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + id, { headers: this.auth })
           .then((res) =>{
-          console.log(res)
           this.listData.splice(index, 1)
           }, (error) => {
             console.log(error)
@@ -159,26 +171,24 @@ export default {
       this.getData()
     }, 
     addData(){
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
-      console.log(token)      
       if(this.form.id_kategori_nilai != '') {
+        this.form.updated_by = this.user_id
         axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai/' + this.form.id_kategori_nilai,
-          this.form, { headers: auth })
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
       } else { 
+        this.form.created_by = this.user_id
+        this.form.updated_by = this.user_id
         axios.post(process.env.VUE_APP_BASE_API + '/kategori-nilai', 
-          this.form, { headers: auth })
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()
+            console.log(data)
             this.dialogFormVisible = false
           });
       }

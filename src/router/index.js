@@ -54,7 +54,6 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/masterdata',
     component: Layout,
@@ -78,7 +77,7 @@ export const constantRoutes = [
       {
         path: 'kategorinilai',
         component: () => import('@/views/masterdata/kategorinilai/index'),
-        meta: {title: 'Master Kategori Nilai'}
+        meta: { title: 'Master Kategori Nilai' }
       },
       {
         path: 'kategorinilaimateri',
@@ -98,12 +97,56 @@ export const constantRoutes = [
       {
         path: 'nilaihuruf',
         component: () => import('@/views/masterdata/nilaihuruf/index'),
-        meta: { title: 'Master Nilai Huruf' }
+        meta: { title: 'Master Nilai Huruf', icon: 'nested' }
       },
+      /* {
+        path: 'nilaihuruf',
+        component: () => import('@/views/nested/menu1/index'), // Parent router-view
+        name: 'nilaihuruf',
+        meta: { title: 'Master Nilai Huruf', icon: 'nested' },
+        children: [
+          {
+            path: 'nilaihurufsubject',
+            component: () => import('@/views/masterdata/nilaihuruf/category/index'),
+            name: 'Nilaihurufcategory',
+            meta: { title: 'Huruf Category', icon: 'nested' }
+          },
+          {
+            path: 'nilaihuruf',
+            component: () => import('@/views/masterdata/nilaihuruf/index'),
+            name: 'nilaihuruf',
+            meta: { title: 'Nilai Huruf', icon: 'nested' }
+          }
+        /* {
+            path: 'nilaihuruf',
+            component: () => import('@/views/nested/menu1/menu1-2'),
+            name: 'Menu1-2',
+            meta: { title: 'Nilai Huruf' },
+            children: [
+              {
+                path: 'menu1-2-1',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+                name: 'Menu1-2-1',
+                meta: { title: 'Menu1-2-1' }
+              },
+              {
+                path: 'menu1-2-2',
+                component: () => import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+                name: 'Menu1-2-2',
+                meta: { title: 'Menu1-2-2' }
+              }]
+            }
+        ]
+      }, */
       {
-        path: 'menu1',
+        path: 'ruang',
         component: () => import('@/views/masterdata/ruang/index'),
         meta: { title: 'Master Ruang' }
+      },
+      {
+        path: 'sesi',
+        component: () => import('@/views/masterdata/sesi/index'),
+        meta: { title: 'Master Sesi' }
       },
       {
         path: 'tahunakademik',
@@ -127,7 +170,7 @@ export const constantRoutes = [
         path: 'nilaisiswa',
         component: () => import('@/views/akademik/nilaisiswa/index'),
         meta: { title: 'Nilai Siswa' }
-      },
+      }
     ]
   },
 

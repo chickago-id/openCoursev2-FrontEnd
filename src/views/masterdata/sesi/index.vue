@@ -2,21 +2,26 @@
 
 <template>
   <div style="padding:30px;">
-
-<el-row type="flex" class="row-bg" justify="end">
-          <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-</el-row><br>
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+    </el-row><br>
 
     <!-- Form Tambah Data -->
     <el-dialog title="Tambah Sesi" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item required label="Jam Mulai" :label-width="formLabelWidth">
-          <el-input type="time" maxlength="2" v-model="form.jam_mulai" autocomplete="off"></el-input>
+
+        <el-form-item :label-width="formLabelWidth" label="Jam Mulai">
+          <el-time-picker placeholder="Jam Mulai" v-model="form.jam_mulai" style="width: 100%;"></el-time-picker>
         </el-form-item>
         
-        <el-form-item required label="Jam Selesai" :label-width="formLabelWidth">
-          <el-input type="time" v-model="form.jam_selesai" autocomplete="off"></el-input>
+        <el-form-item :label-width="formLabelWidth" label="Jam Selesai">
+          <el-time-picker placeholder="Jam Selesai" v-model="form.jam_selesai" style="width: 100%;"></el-time-picker>
         </el-form-item>
+<!-- 
+        <el-form-item required label="" :label-width="formLabelWidth">
+          <el-time-picker placeholder="Jam Selesai" v-model="form.jam_selesai" style="width: 100%;"></el-time-picker>
+          <el-input type="time" v-model="form.jam_selesai" autocomplete="off"></el-input>
+        </el-form-item> -->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -56,14 +61,10 @@
       </el-table-column>
       <el-table-column label="Created At">
         <template slot-scope="scope">
-          {{ scope.row.created_at}}
+          {{ scope.row.created_at | formatDate}}
         </template>
       </el-table-column>
-      <el-table-column label="Created Date">
-        <template slot-scope="scope">
-          {{ scope.row.created_at }}
-        </template>
-      </el-table-column>
+      
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
@@ -96,7 +97,7 @@ export default {
         id: '',
         jam_mulai: '',
         jam_selesai:'',
-        setting: 1,
+        setting: '',
         created_by: 1,
         updated_by: 1,
         created_at: '',
@@ -125,8 +126,13 @@ export default {
       });
     },
     getData() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/sesi')
+      axios.get(process.env.VUE_APP_BASE_API + '/sesi', {headers: auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false

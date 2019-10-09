@@ -1,24 +1,18 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Nilai Huruf" />
+    <el-alert :closable="false" title="Manajemen Akses Level" />
 
 <br>    
 <el-row type="flex" class="row-bg" justify="end">
-          <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+  <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
 </el-row>
 <br>    
     
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Kategori Nilai" :visible.sync="dialogFormVisible">
+    <el-dialog title="Tambah Akses Level" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item required label="Nilai Huruf" :label-width="formLabelWidth">
-          <el-input type="text" maxlength="1" v-model="form.nilai_huruf" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item required label="Batas Bawah" :label-width="formLabelWidth">
-          <el-input type="number" maxlength="2" v-model="form.batas_bawah" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item required label="Batas Atas" :label-width="formLabelWidth">
-          <el-input type="number" maxlength="3" v-model="form.batas_atas" autocomplete="off"></el-input>
+        <el-form-item required label="Akses Level" :label-width="formLabelWidth">
+          <el-input v-model="form.access_level" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -28,7 +22,7 @@
     </el-dialog>
     <!-- End of Form Tambah Data -->
 
-    <!-- Tabel List Data -->
+    <!-- Tabel Data -->
     <el-table
       v-loading="listLoading"
       :data="listData"
@@ -37,32 +31,14 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="No" width="95">
         <template slot-scope="scope">
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Nilai Huruf">
+      <el-table-column label="Akses Level">
         <template slot-scope="scope">
-          {{ scope.row.nilai_huruf }}
-        </template>
-      </el-table-column>
-      
-      <el-table-column label="Batas Atas">
-        <template slot-scope="scope">
-          {{ scope.row.batas_bawah }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Batas Bawah">
-        <template slot-scope="scope">
-          {{ scope.row.batas_atas }}
-        </template>
-      </el-table-column>
-      
-      <el-table-column label="Created Date">
-        <template slot-scope="scope">
-          {{ scope.row.created_date | formatDate}}
+          {{ scope.row.access_level }}
         </template>
       </el-table-column>
       <el-table-column label="Action">
@@ -71,8 +47,9 @@
           <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </el-table>
-    <!-- End of Tabel List Data -->
+    </el-table> 
+    <!-- End of Tabel Data -->
+
   </div>
 </template>
 
@@ -81,34 +58,30 @@ import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
+  filters: {
+    
+  },
   computed: {
-    ...mapGetters([
-      'token',
-      'username',
-      'roles'
-    ]),
-
+    
   },
   data() {
     return {
+      id_user: '',
       listLoading: true,
-      listData: [],
+      materiSelect: '',
       form: {
         id: '',
-        nilai_huruf: '',
-        batas_bawah: '',
-        batas_atas: '',
-        created_by: 1,
-        updated_by: 1,
-        created_date: '',
-        updated_date: '',
+        access_level: '',
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '150px',
+      listData: [],
+      auth: ''
     }
   },
   created() {
+    this.getUserInfo()
     this.getData()
   },
   mounted() {
@@ -125,32 +98,40 @@ export default {
         duration: 2000
       });
     },
+    getUserInfo() {
+        if(localStorage.getItem('token') != null) {
+          const token = 'Bearer '+localStorage.getItem('token')
+          const auth = {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+          this.auth = auth
+          axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
+          .then(response =>{
+            let userData = JSON.parse(response.data.data)
+            this.user_id = userData.user.id
+          })
+        } else {
+          this.roles = ''
+        }
+    },
     getData() {
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/nilaihuruf')
+      axios.get(process.env.VUE_APP_BASE_API+'/access-level', {headers: this.auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     clearData() {
-      this.form.id='',
-      this.form.nilai_huruf = '',
-      this.form.batas_bawah = '',
-      this.form.batas_atas = '',
-      this.form.created_by = 1,
-      this.form.updated_by = 1,
-      this.form.created_date = '',
-      this.form.updated_date = '',
+      this.form.id = ''
+      this.form.access_level = ''
       this.dialogFormVisible = true
     },
     editData(scope){
       this.dialogFormVisible = true 
-      this.form.id=scope.row.id;
-      this.form.nilai_huruf = scope.row.nilai_huruf;
-      this.form.batas_bawah = scope.row.batas_bawah;
-      this.form.batas_atas = scope.row.batas_atas;
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.id = scope.row.id
+      this.form.access_level = scope.row.access_level
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -158,13 +139,7 @@ export default {
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/nilaihuruf/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/access-level/' + id, { headers: this.auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -179,28 +154,22 @@ export default {
           this.$message({
             type: 'info',
             message: 'Delete canceled'
-          });
+          });          
         });
       this.getData()
     }, 
     addData(){
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
-      console.log(token)      
       if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/nilaihuruf/' + this.form.id,
-          this.form, { headers: auth })
+        axios.put(process.env.VUE_APP_BASE_API + '/access-level/' + this.form.id,
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
       } else { 
-        axios.post(process.env.VUE_APP_BASE_API + '/nilaihuruf', 
-          this.form, { headers: auth })
+        axios.post(process.env.VUE_APP_BASE_API + '/access-level', 
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()

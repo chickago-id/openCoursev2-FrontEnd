@@ -1,47 +1,45 @@
-
 <template>
-  <div class="container">
+  <div class="contai">
     <div role="group">
 
       <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on"
         label-position="left">
 
-        <div class="title-container">
-          <h3 class="title">Sign Up</h3>
+        <div>
+          <h2>Create your Applications Account</h2>
+          <p>to continue to Application</p>
         </div>
 
         <el-form-item prop="username">
-          <span class="svg-container">
-            <svg-icon icon-class="user" />
-          </span>
-          <el-input id="username" ref="username" v-model="loginForm.username" placeholder="Username" name="username"
-            type="text" tabindex="1" auto-complete="on" />
+          <label class="inputkeren">
+            <input type="text" placeholder=" " ref="username" v-model="akun.username" name="username" tabindex="1"
+              auto-complete="on">
+            <span>Username</span>
+          </label>
         </el-form-item>
-        <el-form-item prop="email"><span class="svg-container">
-            <svg-icon icon-class="user" />
-          </span>
-          <el-input id="email" v-model="akun.email" type="email" placeholder="Mail@example.com"></el-input>
-
-        </el-form-item>
-        <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input id="password" :key="passwordType" ref="password" v-model="akun.password" :type="passwordType"
-            placeholder="Password" name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin" />
-          <span class="show-pwd" @click="showPwd">
-            <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
-          </span>
+        <el-form-item prop="email">
+          <label class="inputkeren">
+            <input placeholder=" " id="email" v-model="akun.email" type="email">
+            <span>Email</span>
+          </label>
         </el-form-item>
         <el-form-item prop="password">
-          <span class="svg-container">
-            <svg-icon icon-class="password" />
-          </span>
-          <el-input id="password2" :key="passwordType" ref="password" v-model="akun.password2" :type="passwordType"
-            placeholder="Re-Password" name="password1" tabindex="2" auto-complete="on"
-            @keyup.enter.native="handleLogin" />
+          <label class="inputkeren">
+            <input id="password1" :key="passwordType" ref="password" v-model="akun.password1" :type="passwordType"
+              placeholder=" " name="password1" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin">
+            <span>Password</span>
+            <span class="show-pwd" @click="showPwd">
+              <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
+            </span>
+          </label>
         </el-form-item>
-
+        <el-form-item prop="password">
+          <label class="inputkeren">
+            <input id="password2" :key="passwordType" ref="password" v-model="akun.password2" :type="passwordType"
+              placeholder=" " name="password2" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin">
+            <span>Password</span>
+          </label>
+        </el-form-item>
         <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;"
           @click.native.prevent="handleLogin">Sign Up</el-button>
 
@@ -52,7 +50,6 @@
 </template>
 
 <script>
-
   import axios from 'axios'
   import {
     validUsername
@@ -80,6 +77,7 @@
       }
       return {
         activeName: 'first',
+        password2: '',
         loginForm: {
           username: '',
           password: ''
@@ -89,7 +87,9 @@
             key: 1,
             value: ''
           }],
-          email: ''
+          email: '',
+          username: '',
+          password: ''
         },
 
 
@@ -138,7 +138,7 @@
             let username = this.loginForm.username
             let password = this.loginForm.password
             th
-is.$store.dispatch('user/login', {
+            is.$store.dispatch('user/login', {
                 username,
                 password
               })
@@ -190,6 +190,7 @@ is.$store.dispatch('user/login', {
   /* reset element-ui css */
   .container {
     padding: 8%;
+
     .el-input {
       display: inline-block;
       height: 35px;
@@ -213,10 +214,10 @@ is.$store.dispatch('user/login', {
     }
 
     .el-form-item {
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: rgba(0, 0, 0, 0.1);
-      border-radius: 5px;
-      color: #454545;
+      // border: 1px solid rgba(255, 255, 255, 0.1);
+      // background: rgba(0, 0, 0, 0.1);
+      // border-radius: 5px;
+      // color: #454545;
     }
   }
 
@@ -277,7 +278,7 @@ is.$store.dispatch('user/login', {
     .show-pwd {
       position: absolute;
       right: 10px;
-      top: 7px;
+      top: 25px;
       font-size: 16px;
       color: $dark_gray;
       cursor: pointer;

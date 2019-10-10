@@ -56,15 +56,20 @@
           {{ scope.row.kategoriNilaiMateri.kategori_nilai.nama_kategori }}
         </template>
       </el-table-column>
-      <el-table-column label="Nilai">
+      <el-table-column label="Nilai Hnput">
         <template slot-scope="scope">
           {{ scope.row.nilai_input }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Nilai Hitung">
+        <template slot-scope="scope">
+          {{ scope.row.nilai_hitung }}
         </template>
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
-          <el-button @click="deleteData(scope.row.id_kategori_nilai, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>

@@ -1,13 +1,39 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Input Nilai Siswa" />
+
+    <el-alert :closable="false" title="Penilaian Pengajar" />
     <br> 
     <el-form :model="form">
       <el-form-item label="Pilih Kelas" :label-width="formLabelWidth">
         <el-select @change="showPeserta($event)" v-model="id_kelas" placeholder="Select">
           <el-option
             v-for="item in kelasOption"
-            :key="item.key"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>   
+      </el-form-item>
+      <!-- <el-form-item label="Tahun Ajaran" :label-width="formLabelWidth"> -->
+        <el-select @change="showTahunAkademik($event)" v-model="id_tahun_ajaran" placeholder="Select">
+          <el-option
+            v-for="item in tahun_ajaranOption"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value">
+          </el-option>
+        </el-select>   
+      <!-- </el-form-item> -->
+    </el-form>    
+     <el-form :model="form">
+      
+    </el-form>    
+     <el-form :model="form">
+      <el-form-item label="Pilih Pengajar" :label-width="formLabelWidth">
+        <el-select @change="showPengajar($event)" v-model="id_user" placeholder="Select">
+          <el-option
+            v-for="item in userOption"
+            :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
@@ -33,7 +59,12 @@
           {{ scope.row.kelas.kode_kelas }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Peserta">
+      <el-table-column label="Tahun Ajaran">
+        <template slot-scope="scope">
+          {{ scope.row.tahun_akademik.tahun_mulai.tahun_selesai }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Pengajar">
         <template slot-scope="scope">
           {{ scope.row.user.nama_lengkap }}
         </template>
@@ -55,17 +86,17 @@
           <el-select @change="showKategoriNilaiMateri($event)" v-model="id_materi" placeholder="Select">
             <el-option
               v-for="item in materiOption"
-              :key="item.key"
+              :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>   
         </el-form-item>
         <el-form-item label="Pilih Kategori Nilai" :label-width="formLabelWidth">
-          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai_materi" placeholder="Select">
+          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai" placeholder="Select">
             <el-option
               v-for="item in kategoriNilaiMateriOption"
-              :key="item.key"
+              :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
@@ -87,7 +118,6 @@
       </span>
     </el-dialog>
 <!-- End of Form Input Data -->
-    
   </div>
 </template>
 
@@ -108,14 +138,13 @@ export default {
   },
   data() {
     return {
-      kelasOption: [{'key': '', 'value': '', 'label': ''}],
-      materiOption: [{'key': '','value': '', 'label': ''}],
-      kategoriNilaiMateriOption: [{'key': '','value': '', 'label': ''}],
+      kelasOption: [{'value': '', 'label': ''}],
+      materiOption: [{'value': '', 'label': ''}],
+      kategoriNilaiMateriOption: [{'value': '', 'label': ''}],
       user_id: '',
       id_kelas: '',
-      id_materi: '',
-      id_kategori_nilai: '',
-      id_kategori_nilai_materi: '',
+      id_tahun_akademik: '',
+      id_user: '',
       listLoading: false,
       listData: [],
       bobot_nilai: '',
@@ -159,7 +188,6 @@ export default {
         response.data.data.forEach(item => {
           this.kategoriNilaiMateriOption.push (
             {
-              key: item.id,
               value: item.id,
               label: item.kategori_nilai.nama_kategori
             }
@@ -221,20 +249,21 @@ export default {
       //this.form.id_kelas = item.id
       })
     },
-    getMateri() {
-      axios.get(process.env.VUE_APP_BASE_API+'/materi', {headers: this.auth})
+    getTahunAkademik() {
+      axios.get(process.env.VUE_APP_BASE_API+'/tahun_akademik', {headers: this.auth})
       .then((response) => {
         response.data.data.forEach(item => {
           this.materiOption.push (
             {
               value: item.id,
-              label: item.nama_materi
+              label: item.tanggal_muali
             }
           )
         })
         //this.id_materi = item.id
       })
     },
+    
     clearData() {
       this.form.id = ''
       this.form.id_kategori_nilai_materi = ''
@@ -285,11 +314,11 @@ export default {
       this.getData()
     }, 
     addData(){
-      //console.log(this.form)
-       if(this.form.id != '') {
+      if(this.form.id != '') {
         axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id,
           this.form, { headers: this.auth })
           .then((data) => {
+            this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
@@ -297,10 +326,11 @@ export default {
         axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
           this.form, { headers: this.auth })
           .then((data) => {
+            this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           });
-      } 
+      }
     },
     getPesertaByIdKelas(id) {
       this.listLoading = true
@@ -311,6 +341,7 @@ export default {
       ).then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
+        console.log(this.listData)
       })
     },
     showPeserta(event) {
@@ -320,20 +351,16 @@ export default {
         this.id_kelas = event
         this.getPesertaByIdKelas(event)
       }
-      console.log(this.id_kelas)
     },
-    showKategoriNilaiMateri(event) {
+    showTahunAkademik(event) {
       if (event == null) {
-        this.listKategoriNilai = []
+        this.listTahunAkademik = []
       } else {
-        this.id_materi = event
+        this.id_tahun_ajaran = event
         this.getKategoriNilaiByIdMateri(event)
       }
-      console.log(this.id_materi)
     },
     showBobotNilai(event) {
-      this.id_kategori_nilai = event
-      console.log(this.id_kategori_nilai)
       if (event == null) {
         this.listKategoriNilai = []
       } else {

@@ -8,10 +8,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "OFF.2019.10.10",
             "materi": {
                 "id": 1,
                 "nama_materi": "Pemrograman PHP"
@@ -29,10 +26,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "PWEB.2019.10.10",
             "materi": {
                 "id": 3,
                 "nama_materi": "Microsoft Word"
@@ -50,10 +44,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "OFF.2019.10.10",
             "materi": {
                 "id": 2,
                 "nama_materi": "Microsoft Excel"
@@ -71,10 +62,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "AP.2019.10.10",
             "materi": {
                 "id": 1,
                 "nama_materi": "Pemrograman PHP"
@@ -92,10 +80,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "DG.2019.10.10",
             "materi": {
                 "id": 1,
                 "nama_materi": "Pemrograman PHP"
@@ -113,10 +98,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "DG.2019.10.10",
             "materi": {
                 "id": 3,
                 "nama_materi": "Microsoft Word"
@@ -134,10 +116,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "OFF.2019.10.10",
             "materi": {
                 "id": 2,
                 "nama_materi": "Microsoft Excel"
@@ -155,10 +134,7 @@
         },
         "jadwal": {
             "id": 1,
-            "kelas": {
-                "id": 1,
-                "nama_kelas": "Office"
-            },
+            "kode_kelas": "OFF.2019.10.10",
             "materi": {
                 "id": 1,
                 "nama_materi": "Pemrograman PHP"

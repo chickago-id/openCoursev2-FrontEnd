@@ -106,7 +106,7 @@ export const constantRoutes = [
       },
       {
         path: "presensi",
-        component: () => import("@/views/nested/menu1/index"), // Parent router-view
+        component: () => import("@/views/akademik/presensi/index"), // Parent router-view
         name: "presensi",
         meta: { title: "Presensi" },
         children: [
@@ -225,14 +225,14 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: "institute",
-        //     component: () => import('@/views/masterdata/institute/index'),
-        meta: { title: "Institute Management" }
+        path: 'profilinstitusi',
+        component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
+        meta: { title: 'Institute Management' }
       },
       {
-        path: "company",
-        //  component: () => import('@/views/masterdata/company/index'),
-        meta: { title: "Company List" }
+        path: 'listinstitusi',
+        component: () => import('@/views/manajemeninstitusi/listinstitusi/index'),
+        meta: { title: 'Company List' }
       }
     ]
   },

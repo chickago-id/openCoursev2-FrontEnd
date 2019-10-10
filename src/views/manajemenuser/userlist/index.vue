@@ -1,27 +1,39 @@
-<!-- Author : supi.core@gmail.com | github.com/sup1core -->
-
 <template>
   <div style="padding:30px;">
-    <el-row type="flex" class="row-bg" justify="end">
-      <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-    </el-row><br>
+    <el-alert :closable="false" title="Manage User List" />
 
+<br>    
+<el-row type="flex" class="row-bg" justify="end">
+  <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+</el-row>
+<br>    
+    
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Sesi" :visible.sync="dialogFormVisible">
+    <el-dialog title="Tambah User" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-
-        <el-form-item :label-width="formLabelWidth" label="Jam Mulai">
-          <el-time-picker placeholder="Jam Mulai" v-model="form.jam_mulai" style="width: 100%;"></el-time-picker>
+        <el-form-item required label="Fullname" :label-width="formLabelWidth">
+          <el-input v-model="form.nama_lengkap" autocomplete="off"></el-input>
         </el-form-item>
-        
-        <el-form-item :label-width="formLabelWidth" label="Jam Selesai">
-          <el-time-picker placeholder="Jam Selesai" v-model="form.jam_selesai" style="width: 100%;"></el-time-picker>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item required label="username" :label-width="formLabelWidth">
+          <el-input v-model="form.username" autocomplete="off"></el-input>
         </el-form-item>
-<!-- 
-        <el-form-item required label="" :label-width="formLabelWidth">
-          <el-time-picker placeholder="Jam Selesai" v-model="form.jam_selesai" style="width: 100%;"></el-time-picker>
-          <el-input type="time" v-model="form.jam_selesai" autocomplete="off"></el-input>
-        </el-form-item> -->
+      </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Email" :label-width="formLabelWidth">
+          <el-input v-model="form.email" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item type="password" required label="Password" :label-width="formLabelWidth">
+          <el-input v-model="form.password" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item type="password" placeholder="Re-enter password" required label="Password" :label-width="formLabelWidth">
+          <el-input v-model="form.password2" autocomplete="off"></el-input>
+        </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
@@ -30,7 +42,7 @@
     </el-dialog>
     <!-- End of Form Tambah Data -->
 
-    <!-- Tabel List Data -->
+    <!-- Tabel Data -->
     <el-table
       v-loading="listLoading"
       :data="listData"
@@ -39,40 +51,40 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="No" width="95">
         <template slot-scope="scope">
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Jam Mulai">
+      <el-table-column label="Nama Lengkap">
         <template slot-scope="scope">
-          {{ scope.row.jam_mulai }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column label="Jam Selesai">
+      <el-table-column label="Username">
         <template slot-scope="scope">
-          {{ scope.row.jam_selesai }}
+          {{ scope.row.username }}
         </template>
       </el-table-column>
-      <el-table-column label="Setting">
+      <el-table-column label="Email">
         <template slot-scope="scope">
-          {{ scope.row.setting }}
+          {{ scope.row.email }}
         </template>
       </el-table-column>
-      <el-table-column label="Created At">
+      <el-table-column label="Level Akses">
         <template slot-scope="scope">
-          {{ scope.row.created_at | formatDate}}
+          {{ scope.row.role }}
         </template>
       </el-table-column>
-      
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
           <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
-    </el-table>
-    <!-- End of Tabel List Data -->
+    </el-table> 
+    <!-- End of Tabel Data -->
+
   </div>
 </template>
 
@@ -81,34 +93,31 @@ import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
+  filters: {
+    
+  },
   computed: {
-    ...mapGetters([
-      'token',
-      'username',
-      'roles'
-    ]),
-
+    
   },
   data() {
     return {
+      id_user: '',
+      role:'',
       listLoading: true,
-      listData: [],
+      materiSelect: '',
       form: {
         id: '',
-        jam_mulai: '',
-        jam_selesai:'',
-        setting: '',
-        created_by: 1,
-        updated_by: 1,
-        created_at: '',
-        updated_at: '',
+        access_level: '',
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '150px',
+      listData: [],
+      auth: ''
     }
   },
   created() {
+    this.getUserInfo()
     this.getData()
   },
   mounted() {
@@ -125,37 +134,40 @@ export default {
         duration: 2000
       });
     },
+    getUserInfo() {
+        if(localStorage.getItem('token') != null) {
+          const token = 'Bearer '+localStorage.getItem('token')
+          const auth = {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+          this.auth = auth
+          axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
+          .then(response =>{
+            let userData = JSON.parse(response.data.data)
+            this.user_id = userData.user.id
+          })
+        } else {
+          this.roles = ''
+        }
+    },
     getData() {
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/sesi', {headers: auth})
+      axios.get(process.env.VUE_APP_BASE_API+'/userlist', {headers: this.auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     clearData() {
-      this.form.id = '',
-      this.form.jam_mulai = '',
-      this.form.jam_selesai='',
-      this.form.setting='',
-      this.form.created_by = 1,
-      this.form.updated_by = 1,
-      this.form.created_at = '',
-      this.form.updated_at = '',
+      this.form.id = ''
+      this.form.access_level = ''
       this.dialogFormVisible = true
     },
     editData(scope){
       this.dialogFormVisible = true 
-      this.form.id = scope.row.id;
-      this.form.jam_mulai = scope.row.jam_mulai;
-      this.form.jam_selesai = scope.row.jam_selesai;
-      this.form.setting = scope.row.setting;
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.id = scope.row.id
+      this.form.access_level = scope.row.access_level
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -163,13 +175,7 @@ export default {
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/sesi/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/userlist/' + id, { headers: this.auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -189,30 +195,23 @@ export default {
       this.getData()
     }, 
     addData(){
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
-      
       if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/sesi/' + this.form.id,
-          this.form, { headers: auth })
+        axios.put(process.env.VUE_APP_BASE_API + '/userlist/' + this.form.id,
+          this.form, { headers: this.auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
-      } else {
-        axios.post(process.env.VUE_APP_BASE_API + '/sesi', 
-          this.form, { headers: auth })
+      } else { 
+        axios.post(process.env.VUE_APP_BASE_API + '/userlist', 
+          this.form, { headers: this.auth })
           .then((data) => {
-            console.log(this.form.jam_mulai);
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           });
-      } 
+      }
     },
   }
 }

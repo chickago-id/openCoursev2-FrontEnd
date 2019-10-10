@@ -31,7 +31,6 @@
       </el-table-column>
       <el-table-column label="Kode Kelas">
         <template slot-scope="scope">
-
           {{ scope.row.user.nama_lengkap }}
         </template>
       </el-table-column>

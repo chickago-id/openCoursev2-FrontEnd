@@ -1,6 +1,6 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="List Nilai Siswa" />
+    <el-alert :closable="false" title="Materi" />
 
 <br>    
 <el-row type="flex" class="row-bg" justify="end">
@@ -9,10 +9,30 @@
 <br>    
     
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah List Nilai Siswa" :visible.sync="dialogFormVisible">
+    <el-dialog title="Tambah Materi" :visible.sync="dialogFormVisible">
       <el-form :model="form">
-        <el-form-item required label="Nama Kategori" :label-width="formLabelWidth">
-          <el-input v-model="form.nama_kategori" autocomplete="off"></el-input>
+        <el-form-item required label="Kode Materi" :label-width="formLabelWidth">
+          <el-input v-model="form.kode_materi" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Nama Materi" :label-width="formLabelWidth">
+          <el-input v-model="form.nama_materi" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Jumlah Pertemuan" :label-width="formLabelWidth">
+          <el-input type="number" v-model="form.jumlah_pertemuan" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item :label-width="formLabelWidth" label="Jam Pilihan">
+        <el-time-picker placeholder="Jam Pilihan" v-model="form.jam_pilihan" style="width: 100%;"></el-time-picker>
+      </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Biaya" :label-width="formLabelWidth">
+          <el-input type="number" v-model="form.biaya" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -22,7 +42,7 @@
     </el-dialog>
     <!-- End of Form Tambah Data -->
 
-    <!-- List Data -->
+    <!-- List Data Table -->
     <el-table
       v-loading="listLoading"
       :data="listData"
@@ -36,34 +56,29 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Kode Kelas">
+      <el-table-column label="Kode Materi">
         <template slot-scope="scope">
-          {{ scope.row.kelasPeserta.kelas.kode_kelas }}
+          {{ scope.row.kode_materi }}
         </template>
       </el-table-column>
-      <el-table-column label="Materi">
+      <el-table-column label="Nama Materi">
         <template slot-scope="scope">
-          {{ scope.row.kategoriNilaiMateri.materi.nama_materi }}
+          {{ scope.row.nama_materi }}
         </template>
       </el-table-column>
-      <el-table-column label="Peserta">
+      <el-table-column label="Jumlah Pertemuan">
         <template slot-scope="scope">
-          {{ scope.row.kelasPeserta.user.nama_lengkap }}
+          {{ scope.row.jumlah_pertemuan }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Kategori">
+      <el-table-column label="Jam Pilihan">
         <template slot-scope="scope">
-          {{ scope.row.kategoriNilaiMateri.kategori_nilai.nama_kategori }}
+          {{ scope.row.jam_pilihan | formatTime }}
         </template>
       </el-table-column>
-      <el-table-column label="Nilai Hnput">
+      <el-table-column label="Biaya">
         <template slot-scope="scope">
-          {{ scope.row.nilai_input }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Nilai Hitung">
-        <template slot-scope="scope">
-          {{ scope.row.nilai_hitung }}
+          Rp {{ scope.row.biaya }}
         </template>
       </el-table-column>
       <el-table-column label="Action">
@@ -73,7 +88,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- End of List Data -->
+    <!-- End of List Data Table -->
+
   </div>
 </template>
 
@@ -92,19 +108,20 @@ export default {
   },
   data() {
     return {
+      list: null,
       listLoading: true,
       listData: [],
       form: {
-        id_kategori_nilai: '',
-        nama_kategori: '',
-        created_by: 1,//''
-        updated_by: 1,//'',
-        created_date: '',
-        updated_date: '',
+        id: '',
+        kode_materi: '',
+        nama_materi: '',
+        jumlah_pertemuan: '',
+        jam_pilihan: '',
+        biaya: '',
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '150px'
     }
   },
   created() {
@@ -125,32 +142,30 @@ export default {
       });
     },
     getData() {
-        const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/nilai-siswa', {headers: auth})
+      axios.get('http://localhost:8081/materi')
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     clearData() {
-      this.form.id_kategori_nilai = '',
-      this.form.nama_kategori = '',
-      this.form.created_by = 1,
-      this.form.updated_by = 1,
-      this.form.created_date = '',
-      this.form.updated_date = '',
+      this.form.id= ''
+      this.form.kode_materi= ''
+      this.form.nama_materi= ''
+      this.form.jumlah_pertemuan= ''
+      this.form.jam_pilihan= ''
+      this.form.biaya= ''
       this.dialogFormVisible = true
     },
     editData(scope){
-      this.dialogFormVisible = true 
-      this.form.id_kategori_nilai = scope.row.id_kategori_nilai
-      this.form.nama_kategori = scope.row.nama_kategori
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.id= scope.row.id
+      this.form.kode_materi= scope.row.kode_materi
+      this.form.nama_materi= scope.row.nama_materi
+      this.form.jumlah_pertemuan= scope.row.jumlah_pertemuan
+      this.form.jam_pilihan= scope.row.jam_pilihan
+      this.form.biaya= scope.row.biaya
+      this.dialogFormVisible = true
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -164,7 +179,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + id, { headers: auth })
+          axios.delete('http://localhost:8081/materi/'+id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -190,8 +205,8 @@ export default {
         'Content-Type' : 'application/json'
       }
       console.log(token)      
-      if(this.form.id_kategori_nilai != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id_kategori_nilai,
+      if(this.form.id != '') {
+        axios.post(process.env.VUE_APP_BASE_API+'/materi/'+this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
@@ -199,7 +214,7 @@ export default {
             this.dialogFormVisible = false
           })
       } else { 
-        axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
+        axios.post(process.env.VUE_APP_BASE_API+'/materi', 
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

@@ -30,12 +30,7 @@
               Notification
             </el-dropdown-item>
           </router-link>
-          <router-link to="/">
-            <el-dropdown-item>
-              Home
-            </el-dropdown-item>
-          </router-link>
-          <el-dropdown-item divided>
+          <el-dropdown-item class="logout" divided>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
@@ -159,6 +154,11 @@ export default {
     margin: auto;
     width: 150px;
 
+  }
+
+  .logout{
+    display: block;
+    background: #2053b9;
   }
 
   .right-menu {

@@ -19,13 +19,13 @@ export default {
   props: {
     collapse: {
       type: Boolean,
-      required: true
+      required: false
     }
   },
   data() {
     return {
       title: 'Vue Admin Template',
-      logo: 'https://wpimg.wallstcn.com/69a1c46c-eb1c-4b46-8bd4-e9e686ef5251.png'
+      logo: 'https://alfabankjogja.com/kursuskomputer/wp-content/uploads/2018/01/cropped-Alfabank-Yogyakarta-Pelatihan-dan-Kursus-new.png'
     }
   }
 }
@@ -55,7 +55,7 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 32px;
+      width: 128px;
       height: 32px;
       vertical-align: middle;
       margin-right: 12px;

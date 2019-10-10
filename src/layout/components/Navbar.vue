@@ -1,32 +1,56 @@
 <template>
-  <div class="navbar">
+  
+  <div>
+    <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
 
     <breadcrumb class="breadcrumb-container" />
-
-    <div class="right-menu">
+      
+      <!-- <span class="hamburger-container">
+        halo2
+      </span> -->
+    <div class="right-menu"> 
       <el-dropdown class="avatar-container" trigger="click">
-        <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'" class="user-avatar">
+        <div>
+          <div class="avatar-wrapper">
+          <avatar username="avatar" :src="avatar" :size="40" :rounded="false" class="user-avatar"></avatar>
+          <!-- <img :src="avatar+'?url'" class="user-avatar"> -->
           <i class="el-icon-caret-bottom" />
         </div>
+        </div>
+        
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
-          <router-link to="/">
+          <router-link to="/profile/index">
             <el-dropdown-item>
-              Home
+              Profil
             </el-dropdown-item>
           </router-link>
-          <a target="_blank" href="#">
-            <el-dropdown-item>Github</el-dropdown-item>
-          </a>
-          <a target="_blank" href="https://panjiachen.github.io/vue-element-admin-site/#/">
-            <el-dropdown-item>Docs</el-dropdown-item>
-          </a>
-          <el-dropdown-item divided>
+          <router-link to="#">
+            <el-dropdown-item>
+              Notification
+            </el-dropdown-item>
+          </router-link>
+          <el-dropdown-item class="logout" divided>
             <span style="display:block;" @click="logout">Log Out</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
+    </div>
+    <div class="right-menu">
+      <div class="kotak">
+        <div class="username">{{username}}</div>
+        <div class="roles">{{roles}}</div>
+      </div> 
+    </div>
+    
+  </div>
+    <div class="container">
+      <div class="run-text">
+        <marquee-text repeat="1" duration="2" class="run">
+              ini running text 
+      </marquee-text>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -35,17 +59,29 @@
 import { mapGetters } from 'vuex'
 import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
+import MarqueeText from 'vue-marquee-text-component'
+import Avatar from 'vue-avatar'
 
 export default {
+  name: 'Helloword',
   components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
+    MarqueeText,
+    'avatar': Avatar
   },
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'avatar',
+      'username',
+      'roles'
     ])
+  },
+  data(){
+    return{
+      url:'@/views/assets/logo/logo.png'
+    }
   },
   methods: {
     toggleSideBar() {
@@ -84,10 +120,51 @@ export default {
     float: left;
   }
 
+  .container{
+    width: 100%;
+    
+  }
+  .run-text{
+    box-sizing: inherit;
+      margin:auto;
+      left: 30px;
+    }
+  .username{
+    font-size: 24px;
+    text-align: right;
+  }
+  .roles{
+    font-size: 12px;
+    text-align: right;
+  }
+  .kotak{
+    box-sizing: border-box;
+    display: inline-block;
+    float: none;
+    margin-top: 3px;
+    margin-right: 5px;
+    line-height: 24px;
+  }
+  .run{
+    background: blue;
+    float: right;
+    position: relative;
+    z-index: 5 !important;
+    right: auto;
+    margin: auto;
+    width: 150px;
+
+  }
+
+  .logout{
+    display: block;
+    background: #2053b9;
+  }
+
   .right-menu {
     float: right;
     height: 100%;
-    line-height: 50px;
+    line-height: 0px;
 
     &:focus {
       outline: none;
@@ -120,8 +197,8 @@ export default {
 
         .user-avatar {
           cursor: pointer;
-          width: 40px;
-          height: 40px;
+          width: 30px;
+          height: 30px;
           border-radius: 10px;
         }
 

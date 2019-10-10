@@ -1,11 +1,12 @@
 <template>
-  <el-card class="container" style="background: #ddd">
-    <el-row>
-      <el-col :xs="0" :sm="2" :md="4" :lg="3" :xl="1">
+  <el-card class="container" style="background: #ccc">
+    <el-row >
+      <el-col :xs="0" :sm="1" :md="4" :lg="3" :xl="1">
         <div class="">&nbsp;</div>
       </el-col>
-      <el-col :xs="12" :sm="10" :md="8" :lg="9" :xl="11">
-        <div class="grid-content bg-purple-light asd" style="background: white; height: 650px; padding: 20px;">
+     
+      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="11" :span="24" >
+        <div class="grid-content bg-purple-light asd" style="background: #fff; height: 650px; padding: 60px;">
           <el-tabs :tab-position="tabPosition" style="height: 200px;">
             <el-tab-pane>
               <span slot="label"><i class="el-icon-login"></i> Sign in instead</span>
@@ -13,8 +14,8 @@
                 label-position="left" style="">
 
                 <div style="text-align: center">
-                  <h1>logo</h1>
-                  <h3>Sign In</h3>
+                  <i><img src="http://alfabanksemarang.com/downlot.php?file=LOGO1.png" alt="" style="width: 250px;"></i>
+                  <h2>Sign In</h2>
                   <p>to continue to Application</p>
                 </div>
                 <el-form-item prop="username">
@@ -34,8 +35,20 @@
                     </span>
                   </label>
                 </el-form-item>
-                <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px; float:right;"
-                  @click.native.prevent="handleLogin">Sign In</el-button>
+                <br>
+                <el-row >
+                  <el-col :span="13">
+                    <el-button :loading="loading" type="primary" style="background: ;border-radius: 30px; width: 100%;margin-bottom:30px;"
+                  @click.native.prevent="handleLogin">Sign In</el-button></el-col>
+                  <el-col :span="3" style="padding-top: 10px; text-align: center; color: #666666;  " >or</el-col>
+                  <el-col :span="8" style="">
+                    <el-container>
+                    <a href="#" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSvKQW20ZCh1MWqgO7jZvWCAvvVtXBqet-n6QCpm8A3ZtckpWil" alt="" style="height:40px;  float: left; " ></a>
+                    &nbsp; &nbsp;
+                  <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Facebook_circle_pictogram.svg/512px-Facebook_circle_pictogram.svg.png" alt=""  style="height: 42px;  float: right" ></a>
+                   </el-container>
+                  </el-col>
+                </el-row>
                 <div class="tips">
                 </div>
               </el-form>
@@ -48,20 +61,24 @@
 
         </div>
       </el-col>
-      <el-col :xs="12" :sm="10" :md="8" :lg="9" :xl="11">
+       <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="11" :span="24" offse="24" >
         <div class="grid-content bg-purple">
           <div class="block">
-            <el-carousel height="650px" width="300p">
+            <el-carousel height="650px" width="300px">
               <el-carousel-item v-for="item in 4" :key="item">
-
-                <p style="text-align: center; veritical-align: bottom;">Corousal slider img</p>
+                
+            
                 <h3 class="small" style="text-align: center; margin-bottom:30px;">{{ item }}</h3>
+                    <h3 class="small" style="text-align: center; bottom:30px;">Subject</h3>
+                
+                    <p style="text-align: left; bottom: 50px; left: 8%; position: absolute;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores debitis voluptas veritatis dolorum accusamus perferendis blanditiis molestiae deleniti quos, odit alias id omnis doloremque necessitatibus nemo <a style="color: blue;" href="#">Read More</a></p>
               </el-carousel-item>
             </el-carousel>
           </div>
         </div>
       </el-col>
-      <el-col :xs="0" :sm="2" :md="4" :lg="3" :xl="1">
+      
+      <el-col :xs="0" :sm="1" :md="4" :lg="3" :xl="1">
         <div class="grid-content bg-purple-light">&nbsp;</div>
       </el-col>
     </el-row>
@@ -228,7 +245,7 @@
 </script>
 
 <style lang="scss" scoped>
-  $bg:#fbfdff;
+  $bg:#d8d8d8;
   $dark_gray:#889aa4;
   $light_gray:#eee;
 

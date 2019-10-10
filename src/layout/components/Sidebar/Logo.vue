@@ -25,7 +25,7 @@ export default {
   data() {
     return {
       title: 'Vue Admin Template',
-      logo: 'https://alfabankjogja.com/kursuskomputer/wp-content/uploads/2018/01/cropped-Alfabank-Yogyakarta-Pelatihan-dan-Kursus-new.png'
+      logo: 'http://alfabanksemarang.com/downlot.php?file=LOGO1.png'
     }
   }
 }
@@ -46,7 +46,7 @@ export default {
   width: 100%;
   height: 50px;
   line-height: 50px;
-  background: #2b2f3a;
+  background: #ffffff;
   text-align: center;
   overflow: hidden;
 
@@ -55,8 +55,8 @@ export default {
     width: 100%;
 
     & .sidebar-logo {
-      width: 128px;
-      height: 32px;
+      width: 160px;
+      height: 50px;
       vertical-align: middle;
       margin-right: 12px;
     }

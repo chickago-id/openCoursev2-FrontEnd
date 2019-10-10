@@ -60,7 +60,7 @@ export const constantRoutes = [
   {
     path: "/akademik",
     component: Layout,
-    redirect: "/akademik/menu1",
+    redirect: "/akademik/kelas",
     name: "Akademik",
     meta: {
       title: "Akademik",
@@ -112,14 +112,14 @@ export const constantRoutes = [
         children: [
           {
             path: "presensi-siswa",
-            component: () => import("@/views/akademik/presensi/siswa/index"),
-            name: "Nilaihurufcategory",
+            component: () => import("@/views/akademik/presensi/siswa"),
+            name: "presensi-siswa",
             meta: { title: "Presensi Siswa" }
           },
           {
             path: "presensi-pengajar",
-            component: () => import("@/views/akademik/presensi/pengajar/index"),
-            name: "nilaihuruf",
+            component: () => import("@/views/akademik/presensi/pengajar"),
+            name: "presensi-pengajar",
             meta: { title: "Presensi Pengajar" }
           }
         ]
@@ -224,15 +224,16 @@ export const constantRoutes = [
       icon: "nested"
     },
     children: [
+      // {
+      //   path: 'profilinstitusi',
+      //   component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
+      //   meta: { title: 'Institute Management' }
+      // },
       {
-        path: 'profilinstitusi',
-        component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
-        meta: { title: 'Institute Management' }
-      },
-      {
-        path: 'listinstitusi',
-        component: () => import('@/views/manajemeninstitusi/listinstitusi/index'),
-        meta: { title: 'Company List' }
+        path: "listinstitusi",
+        component: () =>
+          import("@/views/manajemeninstitusi/listinstitusi/index"),
+        meta: { title: "Company List" }
       }
     ]
   },

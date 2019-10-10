@@ -1,0 +1,170 @@
+[
+  {
+    "id": 1,
+    "user": {
+      "id": 1,
+      "nama": "Rahardianto Pringganti",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Pemrograman Web"
+      },
+      "materi": {
+        "id": 1,
+        "nama_materi": "Pemrograman PHP"
+      }
+    },
+    "jam_absen": "08.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 2,
+    "user": {
+      "id": 2,
+      "nama": "Wahyu Saputri",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Pemrograman Web"
+      },
+      "materi": {
+        "id": 3,
+        "nama_materi": "Microsoft Word"
+      }
+    },
+    "jam_absen": "11.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 3,
+    "user": {
+      "id": 3,
+      "nama": "Roy Hernando",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Office"
+      },
+      "materi": {
+        "id": 2,
+        "nama_materi": "Microsoft Excel"
+      }
+    },
+    "jam_absen": "08.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 4,
+    "user": {
+      "id": 4,
+      "nama": "Mirza Halida",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Office"
+      },
+      "materi": {
+        "id": 1,
+        "nama_materi": "Pemrograman PHP"
+      }
+    },
+    "jam_absen": "14.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 1,
+    "user": {
+      "id": 1,
+      "nama": "Dee Qodir",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Office"
+      },
+      "materi": {
+        "id": 1,
+        "nama_materi": "Pemrograman PHP"
+      }
+    },
+    "jam_absen": "08.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 2,
+    "user": {
+      "id": 2,
+      "nama": "Singgih Ismail Ardiansyah",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Office"
+      },
+      "materi": {
+        "id": 3,
+        "nama_materi": "Microsoft Word"
+      }
+    },
+    "jam_absen": "11.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 3,
+    "user": {
+      "id": 3,
+      "nama": "Sebastian Claudia",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Office"
+      },
+      "materi": {
+        "id": 2,
+        "nama_materi": "Microsoft Excel"
+      }
+    },
+    "jam_absen": "08.00",
+    "tanggal": "2019-10-11"
+  },
+  {
+    "id": 4,
+    "user": {
+      "id": 4,
+      "nama": "Surya Izhar",
+      "roles": "Siswa"
+    },
+    "jadwal": {
+      "id": 1,
+      "kelas": {
+        "id": 1,
+        "nama_kelas": "Office"
+      },
+      "materi": {
+        "id": 1,
+        "nama_materi": "Pemrograman PHP"
+      }
+    },
+    "jam_absen": "14.00",
+    "tanggal": "2019-10-11"
+  }
+]

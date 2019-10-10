@@ -249,7 +249,7 @@ export const constantRoutes = [
     children: [
       {
         path: "user",
-        //      component: () => import('@/views/user/index'),
+              component: () => import('@/views/manajemenuser/userlist/index'),
         meta: { title: "User" }
       },
       {

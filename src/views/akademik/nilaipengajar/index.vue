@@ -207,11 +207,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
-import rate from '@/components/rate/index'
+//import rate from '@/components/rate/index'
 
 export default {
   components: {
-    rate,
+  //  rate,
   },
   filters: {
     groupMateri: function (value) {

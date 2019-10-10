@@ -1,0 +1,182 @@
+[
+    {
+        "id": 1,
+        "kode_materi": "OFF",
+        "nama_materi": "Komputer Office (Ms. Word + Ms. Excel",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 2,
+        "kode_materi": "MAN",
+        "nama_materi": "Mandarin",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 3,
+        "kode_materi": "ENG",
+        "nama_materi": "English for Banking (Conversation)",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 4,
+        "kode_materi": "PHP",
+        "nama_materi": "Pemrograman PHP",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 5,
+        "kode_materi": "AKN",
+        "nama_materi": "Akuntansi",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 6,
+        "kode_materi": "AP",
+        "nama_materi": "Akuntansi Perbankan",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 7,
+        "kode_materi": "KAEA",
+        "nama_materi": "Komputer Akuntansi Excel Acc",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 8,
+        "kode_materi": "PD",
+        "nama_materi": "Personality Development",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 9,
+        "kode_materi": "PPU",
+        "nama_materi": "Pengantar Perbankan Umum",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 10,
+        "kode_materi": "JDOP",
+        "nama_materi": "Dasar - Dasar Pengetahuan Produk/ Jasa Dan Operasional Perbankan",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 11,
+        "kode_materi": "BSSB",
+        "nama_materi": "Basic Selling Skills For Bankers",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 12,
+        "kode_materi": "AK",
+        "nama_materi": "Analisa Kredit",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 13,
+        "kode_materi": "APJ",
+        "nama_materi": "Analisa Penilaian Jaminan",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 14,
+        "kode_materi": "APLP",
+        "nama_materi": "Aspek Legal Hukum Perbankan",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 15,
+        "kode_materi": "MR",
+        "nama_materi": "Manajemen Risiko",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 16,
+        "kode_materi": "PB",
+        "nama_materi": "Profil Bisnis",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 17,
+        "kode_materi": "APUDPPT",
+        "nama_materi": "Anti Pencucian Uang Dan Pencegahan Pendanaan Terorisme ",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 18,
+        "kode_materi": "TP",
+        "nama_materi": "Toefl Preparation",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 19,
+        "kode_materi": "KSMK",
+        "nama_materi": "Kiat sukses melamar kerja",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    },
+    {
+        "id": 20,
+        "kode_materi": "RP",
+        "nama_materi": "Riset Pasar (Google trend, Riset pesaing, Riset keyword, Riset hashtag)",
+        "created_by": 1,
+        "created_date": "2019-10-11 00:00:00.000000",
+        "updated_by": 1,
+        "updated_date": "2019-10-11 00:00:00.000000"
+    }
+]

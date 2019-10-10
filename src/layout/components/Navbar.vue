@@ -3,12 +3,7 @@
   <div>
     <div class="navbar">
     <hamburger :is-active="sidebar.opened" class="hamburger-container" @toggleClick="toggleSideBar" />
-
     <breadcrumb class="breadcrumb-container" />
-      
-      <!-- <span class="hamburger-container">
-        halo2
-      </span> -->
     <div class="right-menu"> 
       <el-dropdown class="avatar-container" trigger="click">
         <div>
@@ -18,7 +13,6 @@
           <i class="el-icon-caret-bottom" />
         </div>
         </div>
-        
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
           <router-link to="/profile/index">
             <el-dropdown-item>
@@ -41,17 +35,15 @@
         <div class="username">{{username}}</div>
         <div class="roles">{{roles}}</div>
       </div> 
-    </div>
-    
+    </div>   
   </div>
-    <div class="container">
-      <div class="run-text">
-        <marquee-text repeat="1" duration="2" class="run">
+    <div class="runbar">
+      <div class="run">
+        <div class="pass">
               ini running text 
-      </marquee-text>
+        </div>
       </div>
-      
-    </div>
+    </div>  
   </div>
 </template>
 
@@ -115,11 +107,6 @@ export default {
       background: rgba(0, 0, 0, .025)
     }
   }
-
-  .breadcrumb-container {
-    float: left;
-  }
-
   .container{
     width: 100%;
     
@@ -145,17 +132,6 @@ export default {
     margin-right: 5px;
     line-height: 24px;
   }
-  .run{
-    background: blue;
-    float: right;
-    position: relative;
-    z-index: 5 !important;
-    right: auto;
-    margin: auto;
-    width: 150px;
-
-  }
-
   .logout{
     display: block;
     background: #2053b9;
@@ -212,5 +188,95 @@ export default {
       }
     }
   }
+}
+.runbar {
+  height: 30px;
+  overflow: hidden;
+  position: relative;
+  background: transparent;
+  // box-shadow: 0 1px 4px rgba(0,21,41,.08);
+
+  .run{
+    background: transparent;
+    float: none;
+    position: absolute;
+    z-index: 5 !important;
+    // margin-left: 10px;
+    width: 100%;
+    // max-width:400px;
+  }
+  .bounce {
+    position: relative;
+    width: auto;
+    height: 100%;
+    margin: 0;
+    line-height: 40px;
+    text-align: left;
+    /* Apply animation to this element */	
+    -moz-animation: bounce 5s linear infinite alternate;
+    -webkit-animation: bounce 5s linear infinite alternate;
+    animation: bounce 5s linear infinite alternate;
+    }
+    /* Move it (define the animation) */
+    @-moz-keyframes bounce {
+    0%   { -moz-transform: translateX(70%); }
+    100% { -moz-transform: translateX(0%); }
+    }
+    @-webkit-keyframes bounce {
+    0%   { -webkit-transform: translateX(70%); }
+    100% { -webkit-transform: translateX(0%); }
+    }
+    @keyframes bounce {
+    0%   { 
+    -moz-transform: translateX(70%); /* Firefox bug fix */
+    -webkit-transform: translateX(70%); /* Firefox bug fix */
+    transform: translateX(70%); 		
+    }
+    100% { 
+    -moz-transform: translateX(0%); /* Firefox bug fix */
+    -webkit-transform: translateX(0%); /* Firefox bug fix */
+    transform: translateX(0%); 
+    }
+  }
+  .pass {
+    font-size: 1em;
+    color: auto;
+    position: relative;
+    width: auto;
+    height: 100%;
+    margin: 0;
+    line-height: 30px;
+    text-align: center;
+    /* Starting position */
+    -moz-transform:translateX(100%);
+    -webkit-transform:translateX(100%);	
+    transform:translateX(100%);
+    /* Apply animation to this element */	
+    -moz-animation: pass 15s linear infinite;
+    -webkit-animation: pass 15s linear infinite;
+    animation: pass 15s linear infinite;
+    }
+    /* Move it (define the animation) */
+    @-moz-keyframes pass {
+    0%   { -moz-transform: translateX(100%); }
+    100% { -moz-transform: translateX(-100%); }
+    }
+    @-webkit-keyframes pass {
+    0%   { -webkit-transform: translateX(100%); }
+    100% { -webkit-transform: translateX(-100%); }
+    }
+    @keyframes pass {
+    0%   { 
+    -moz-transform: translateX(100%); /* Firefox bug fix */
+    -webkit-transform: translateX(100%); /* Firefox bug fix */
+    transform: translateX(100%); 		
+    }
+    100% { 
+    -moz-transform: translateX(-100%); /* Firefox bug fix */
+    -webkit-transform: translateX(-100%); /* Firefox bug fix */
+    transform: translateX(-100%); 
+    }
+}
+  
 }
 </style>

@@ -1,13 +1,14 @@
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Input Nilai Siswa" />
+
+    <el-alert :closable="false" title="Presensi Siswa" />
     <br> 
     <el-form :model="form">
       <el-form-item label="Pilih Kelas" :label-width="formLabelWidth">
         <el-select @change="showPeserta($event)" v-model="id_kelas" placeholder="Select">
           <el-option
             v-for="item in kelasOption"
-            :key="item.key"
+            :key="item.value"
             :label="item.label"
             :value="item.value">
           </el-option>
@@ -28,12 +29,17 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Kode Kelas">
+      <el-table-column label="Pengajar / tahun">
         <template slot-scope="scope">
           {{ scope.row.kelas.kode_kelas }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Peserta">
+      <el-table-column label="Kelas">
+        <template slot-scope="scope">
+          {{ scope.row.user.nama_lengkap }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Pengajar">
         <template slot-scope="scope">
           {{ scope.row.user.nama_lengkap }}
         </template>
@@ -55,17 +61,17 @@
           <el-select @change="showKategoriNilaiMateri($event)" v-model="id_materi" placeholder="Select">
             <el-option
               v-for="item in materiOption"
-              :key="item.key"
+              :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>   
         </el-form-item>
         <el-form-item label="Pilih Kategori Nilai" :label-width="formLabelWidth">
-          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai_materi" placeholder="Select">
+          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai" placeholder="Select">
             <el-option
               v-for="item in kategoriNilaiMateriOption"
-              :key="item.key"
+              :key="item.value"
               :label="item.label"
               :value="item.value">
             </el-option>
@@ -87,7 +93,6 @@
       </span>
     </el-dialog>
 <!-- End of Form Input Data -->
-    
   </div>
 </template>
 
@@ -108,14 +113,13 @@ export default {
   },
   data() {
     return {
-      kelasOption: [{'key': '', 'value': '', 'label': ''}],
-      materiOption: [{'key': '','value': '', 'label': ''}],
-      kategoriNilaiMateriOption: [{'key': '','value': '', 'label': ''}],
+      kelasOption: [{'value': '', 'label': ''}],
+      materiOption: [{'value': '', 'label': ''}],
+      kategoriNilaiMateriOption: [{'value': '', 'label': ''}],
       user_id: '',
       id_kelas: '',
       id_materi: '',
       id_kategori_nilai: '',
-      id_kategori_nilai_materi: '',
       listLoading: false,
       listData: [],
       bobot_nilai: '',
@@ -159,7 +163,6 @@ export default {
         response.data.data.forEach(item => {
           this.kategoriNilaiMateriOption.push (
             {
-              key: item.id,
               value: item.id,
               label: item.kategori_nilai.nama_kategori
             }
@@ -285,11 +288,11 @@ export default {
       this.getData()
     }, 
     addData(){
-      //console.log(this.form)
-       if(this.form.id != '') {
+      if(this.form.id != '') {
         axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id,
           this.form, { headers: this.auth })
           .then((data) => {
+            this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
@@ -297,10 +300,11 @@ export default {
         axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
           this.form, { headers: this.auth })
           .then((data) => {
+            this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           });
-      } 
+      }
     },
     getPesertaByIdKelas(id) {
       this.listLoading = true
@@ -311,6 +315,7 @@ export default {
       ).then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
+        console.log(this.listData)
       })
     },
     showPeserta(event) {
@@ -320,7 +325,6 @@ export default {
         this.id_kelas = event
         this.getPesertaByIdKelas(event)
       }
-      console.log(this.id_kelas)
     },
     showKategoriNilaiMateri(event) {
       if (event == null) {
@@ -329,11 +333,8 @@ export default {
         this.id_materi = event
         this.getKategoriNilaiByIdMateri(event)
       }
-      console.log(this.id_materi)
     },
     showBobotNilai(event) {
-      this.id_kategori_nilai = event
-      console.log(this.id_kategori_nilai)
       if (event == null) {
         this.listKategoriNilai = []
       } else {

@@ -1,0 +1,47 @@
+[
+    {
+        "id": 1,
+        "biaya": "200000",
+        "jumlah_pertemuan": 20,
+        "kode_kelas": "OFF.2019.10.10",
+        "status": "Aktif",
+        "tanggal_mulai": "2019-10-11 00:00:00.000000",
+        "target_peserta": 20
+    },
+    {
+        "id": 2,
+        "biaya": "200000",
+        "jumlah_pertemuan": 30,
+        "kode_kelas": "PWEB.2019.10.10",
+        "status": "Aktif",
+        "tanggal_mulai": "2019-10-11 00:00:00.000000",
+        "target_peserta": 20
+    },
+    {
+        "id": 3,
+        "biaya": "200000",
+        "jumlah_pertemuan": 40,
+        "kode_kelas": "AP.2019.10.10",
+        "status": "Aktif",
+        "tanggal_mulai": "2019-10-11 00:00:00.000000",
+        "target_peserta": 20
+    },
+    {
+        "id": 4,
+        "biaya": "200000",
+        "jumlah_pertemuan": 50,
+        "kode_kelas": "DG.2019.10.10",
+        "status": "Aktif",
+        "tanggal_mulai": "2019-10-11 00:00:00.000000",
+        "target_peserta": 20
+    },
+    {
+        "id": 5,
+        "biaya": "200000",
+        "jumlah_pertemuan": 60,
+        "kode_kelas": "MM.2019.10.10",
+        "status": "Aktif",
+        "tanggal_mulai": "2019-10-11 00:00:00.000000",
+        "target_peserta": 20
+    }
+]

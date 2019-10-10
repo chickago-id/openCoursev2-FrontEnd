@@ -1,0 +1,146 @@
+[
+    {
+        "id" : 1,
+        "user": {
+            "id":1,
+            "nama":"Muhammad Zaki",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "OFF.2019.10.10",
+            "materi": {
+                "id": 1,
+                "nama_materi": "Pemrograman PHP"
+            }
+        },
+        "jam_absen":"08.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 2,
+        "user": {
+            "id":2,
+            "nama":"Muhammad Akbar",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "PWEB.2019.10.10",
+            "materi": {
+                "id": 3,
+                "nama_materi": "Microsoft Word"
+            }
+        },
+        "jam_absen":"11.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 3,
+        "user": {
+            "id":3,
+            "nama":"Yoga Hermawan",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "OFF.2019.10.10",
+            "materi": {
+                "id": 2,
+                "nama_materi": "Microsoft Excel"
+            }
+        },
+        "jam_absen":"08.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 4,
+        "user": {
+            "id":4,
+            "nama":"Rowan Atkinson",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "AP.2019.10.10",
+            "materi": {
+                "id": 1,
+                "nama_materi": "Pemrograman PHP"
+            }
+        },
+        "jam_absen":"14.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 1,
+        "user": {
+            "id":1,
+            "nama":"Muhammad Zaki",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "DG.2019.10.10",
+            "materi": {
+                "id": 1,
+                "nama_materi": "Pemrograman PHP"
+            }
+        },
+        "jam_absen":"08.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 2,
+        "user": {
+            "id":2,
+            "nama":"Muhammad Akbar",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "DG.2019.10.10",
+            "materi": {
+                "id": 3,
+                "nama_materi": "Microsoft Word"
+            }
+        },
+        "jam_absen":"11.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 3,
+        "user": {
+            "id":3,
+            "nama":"Yoga Hermawan",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "OFF.2019.10.10",
+            "materi": {
+                "id": 2,
+                "nama_materi": "Microsoft Excel"
+            }
+        },
+        "jam_absen":"08.00",
+        "tanggal": "2019-10-11"
+    },
+    {
+        "id" : 4,
+        "user": {
+            "id":4,
+            "nama":"Rowan Atkinson",
+            "roles": "Pengajar"
+        },
+        "jadwal": {
+            "id": 1,
+            "kode_kelas": "OFF.2019.10.10",
+            "materi": {
+                "id": 1,
+                "nama_materi": "Pemrograman PHP"
+            }
+        },
+        "jam_absen":"14.00",
+        "tanggal": "2019-10-11"
+    }
+]

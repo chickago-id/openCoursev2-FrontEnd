@@ -389,14 +389,19 @@ export const constantRoutes = [
     },
     children: [
       {
-        path: "report1",
-        component: () => import("@/views/masterdata/nilaihuruf/index"),
-        meta: { title: "Report #1" }
+        path: "nilaisiswa",
+        component: () => import("@/views/report/nilaisiswa/index"),
+        meta: { title: "Nilai Siswa" }
       },
       {
-        path: "report2",
-        component: () => import("@/views/masterdata/nilaihuruf/index"),
-        meta: { title: "Report #2" }
+        path: "presensisiswa",
+        component: () => import("@/views/report/presensisiswa/index"),
+        meta: { title: "Presensi Siswa" }
+      },
+      {
+        path: "penilaianpengajar",
+        component: () => import("@/views/report/penilaianpengajar/index"),
+        meta: { title: "Penilaian Pengajar" }
       }
     ]
   },

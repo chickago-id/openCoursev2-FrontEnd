@@ -190,7 +190,7 @@ export default {
   }
 }
 .runbar {
-  height: 35px;
+  height: 30px;
   overflow: hidden;
   position: relative;
   background: transparent;
@@ -245,7 +245,7 @@ export default {
     width: auto;
     height: 100%;
     margin: 0;
-    line-height: 40px;
+    line-height: 30px;
     text-align: center;
     /* Starting position */
     -moz-transform:translateX(100%);

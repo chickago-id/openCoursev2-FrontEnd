@@ -1,200 +1,337 @@
 <template>
   <div style="padding:30px;">
+    <el-alert :closable="false" title="List Penilaian Pengajar" />
 
-    <el-alert :closable="false" title="Penilaian Pengajar" />
-    <br> 
-    <el-form :model="form">
-      <el-form-item label="Pilih Kelas" :label-width="formLabelWidth">
-        <el-select @change="showPeserta($event)" v-model="id_kelas" placeholder="Select">
-          <el-option
-            v-for="item in kelasOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>   
-      </el-form-item>
-      <!-- <el-form-item label="Tahun Ajaran" :label-width="formLabelWidth"> -->
-        <el-select @change="showTahunAkademik($event)" v-model="id_tahun_ajaran" placeholder="Select">
-          <el-option
-            v-for="item in tahun_ajaranOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>   
-      <!-- </el-form-item> -->
-    </el-form>    
-     <el-form :model="form">
-      
-    </el-form>    
-     <el-form :model="form">
-      <el-form-item label="Pilih Pengajar" :label-width="formLabelWidth">
-        <el-select @change="showPengajar($event)" v-model="id_user" placeholder="Select">
-          <el-option
-            v-for="item in userOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>   
-      </el-form-item>
-    </el-form>    
-<!-- List Data -->
-    <el-table
-      v-loading="listLoading"
-      :data="listData"
+<br>    
+<!-- <el-row type="flex" class="row-bg" justify="end">
+  <el-button size="mini" type="primary"><router-link to="addpenilaian">Tambah</router-link></el-button>
+</el-row> -->
+<br>    
+  <el-row  type="flex" class="row-bg" justify="space-between">
+      <el-col :span="20" justify="end">
+        <el-form>
+
+          <el-form-item label="Pilih Range Tanggal" style="display: block">
+            <el-date-picker style="width: 70%" v-model="value2" type="daterange" align="right" unlink-panels
+              range-separator="To" start-placeholder="Start date" end-placeholder="End date"
+              :picker-options="pickerOptions"></el-date-picker>
+          </el-form-item>
+          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+            <el-form-item label="Tahun Akademik">
+              <el-select @change="setMateri" v-model="materiSelect" placeholder="Pilih">
+                <el-option v-for="item in materiOption" :key="item.id" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Kelas" >
+              <el-select @change="getMateri" v-model="kelasSelect" placeholder="Pilih" style="width: 148px">
+                <el-option v-for="item in kelasOption" :key="item.id" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">Filter</el-button>
+            </el-form-item>
+          </el-form>
+
+        </el-form>
+      </el-col>
+      <el-col :span="4" >
+       <div style="text-align: right">
+          <router-link target="_blank" to="/pdf/penilaianpengajar">
+          <el-button type="primary">
+            <i class="el-icon-download"></i>&nbsp;
+            PDF
+          </el-button>
+        </router-link>
+        <router-link target="_blank" to="/pdf/penilaianpengajar">
+          <el-button type="success" style="margin-top: 20px;">
+            <i class="el-icon-download"></i>&nbsp;
+            Excel
+          </el-button>
+        </router-link>
+
+       </div>
+      </el-col>
+
+    </el-row>
+    
+    <!-- Form Tambah Data -->
+   <el-dialog title="Penilaian Pengajar" :visible.sync="dialogFormVisible">
+      <el-form :model="form">
+        <!-- <el-form-item required label="Nama Pengajar" :label-width="formLabelWidth">
+          <el-select @change="cekBobotNilai($event)" v-model="form.username_user" filterable placeholder="Pilih Materi">
+            <el-option
+              v-for="item in materiOption"
+              :key="item.id"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item required label="Nama Siswa" :label-width="formLabelWidth">
+          <el-select v-model="form.id_kategori_nilai" filterable placeholder="Pilih Kategori">
+            <el-option
+              v-for="item in kategoriOption"
+              :key="item.id"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>   -->
+        <el-form-item required label="Penilaian Pengajar" :label-width="formLabelWidth">
+          <div class="pading"> <el-rate
+              v-model="value3"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Penguasaan Materi" :label-width="formLabelWidth">
+        <div class="pading"> <el-rate
+              v-model="value2"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Pemberian Tugas" :label-width="formLabelWidth">
+          <div class="pading"> <el-rate
+              v-model="value4"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Cara Penyampaian" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value4"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Kejelasan Dalam Membimbing" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value5"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Cara Mengelola Siswa" :label-width="formLabelWidth">
+          <div class="pading"> <el-rate
+              v-model="value5"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Kesiapan dan Kesabaran Mengajar" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value3"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Kesungguhan dalam Mengajar" :label-width="formLabelWidth">
+          <div class="pading"> <el-rate
+              v-model="value1"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Keseriusan dalam motivasi" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value4"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Kesopanan dalam mengajar" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value3"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Merespon Tanya Jawab/ Konsultasi" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value5"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Intermezo/ Selingan Humor" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value5"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Ketepatan Waktu Pelatihan" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value5"
+              disabled>
+              </el-rate></div>
+        </el-form-item>
+        <el-form-item required label="Penampilan dan Kerapihan" :label-width="formLabelWidth">
+           <div class="pading"> <el-rate
+              v-model="value4"
+              disabled>
+              </el-rate></div>
+        </el-form-item>      
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="addData">Next</el-button>
+      </span>
+    </el-dialog>
+    <!-- End of Form Tambah Data -->
+      <el-dialog title="Penilaian Lembaga" :visible.sync="dialogFormVisible2">
+      <el-form :model="form">
+      <el-form-item required label="Pelayanan Customer Service" :label-width="formLabelWidth">
+          <div class="pading"><rate/></div>
+        </el-form-item>
+        <el-form-item required label="Kebersihan & Kerapihan Lembaga" :label-width="formLabelWidth">
+          <div class="pading"><rate/></div>
+        </el-form-item>
+        <el-form-item required label="Fasilitas Pendukung" :label-width="formLabelWidth">
+          <div class="pading"><rate/></div>
+        </el-form-item>
+        <el-form-item required label="Modul/ Bahan Ajar" :label-width="formLabelWidth">
+          <div class="pading"><rate/></div>
+        </el-form-item>
+        Apakah Anda bersedia menyarankan ke teman Anda untuk kursus di ALFABANK?
+        <el-radio-group v-model="radio">
+      <el-radio :label="3">Ya</el-radio>
+      <el-radio :label="6">Tidak</el-radio>
+      </el-radio-group>
+
+
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <!-- <el-button @click="dialogFormVisible2 = false">Cancel</el-button> -->
+        <el-button type="primary" @click="addData">Close</el-button>
+      </span>
+    </el-dialog>
+
+
+  <el-table
+    :data="tableData"
+    stripe
+    style="width: 100%"
       element-loading-text="Loading"
       border
       fit
       highlight-current-row
+      align="center"
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="No" width="95">
         <template slot-scope="scope">
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Kode Kelas">
-        <template slot-scope="scope">
-          {{ scope.row.kelas.kode_kelas }}
-        </template>
+      <el-table-column  prop="nama" label="Nama Pengajar">
+        <!-- <template slot-scope="scope">
+          {{ scope.row.user.username }}
+        </template> -->
+        
       </el-table-column>
-      <el-table-column label="Tahun Ajaran">
-        <template slot-scope="scope">
-          {{ scope.row.tahun_akademik.tahun_mulai.tahun_selesai }}
-        </template>
+            <el-table-column prop="kelas" label="Kelas">
+        <!-- <template slot-scope="scope">
+          {{ scope.row.user.username }}
+        </template>-->
+      </el-table-column> 
+      <el-table-column prop="period" label="Period">
+        <!-- <template slot-scope="scope">
+          {{ scope.row.kategori_nilai.nama_kategori }}
+        </template> -->
       </el-table-column>
-      <el-table-column label="Pengajar">
-        <template slot-scope="scope">
-          {{ scope.row.user.nama_lengkap }}
-        </template>
+      <el-table-column prop="value" label="Total Skor" >
+<!-- <el-rate
+  v-model="value"
+  disabled
+  show-score
+  text-color="#ff9900"
+  score-template="{value}">
+</el-rate> -->
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
-          <el-button @click="inputNilai(scope.row)" size="mini" type="primary" icon="el-icon-edit" rounded>
-            Input Nilai
-          </el-button>
+          <el-button @click="editData(scope)" size="mini" type="primary" icon="el-icon-edit" circle></el-button>
         </template>
       </el-table-column>
-    </el-table>
-<!-- End of List Data -->    
-
-<!-- Form Input Data -->
-    <el-dialog title="Input Kategori Nilai" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="Pilih Materi" :label-width="formLabelWidth">
-          <el-select @change="showKategoriNilaiMateri($event)" v-model="id_materi" placeholder="Select">
-            <el-option
-              v-for="item in materiOption"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>   
-        </el-form-item>
-        <el-form-item label="Pilih Kategori Nilai" :label-width="formLabelWidth">
-          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai" placeholder="Select">
-            <el-option
-              v-for="item in kategoriNilaiMateriOption"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>   
-        </el-form-item>
-        <el-form-item required label="Bobot Nilai" :label-width="formLabelWidth">
-          <el-input disabled type="number" min="0" max="100" v-model="this.bobot_nilai" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item required label="Nilai Input" :label-width="formLabelWidth">
-          <el-input @change="getNilaiHitung" type="number" min="0" max="100" v-model="form.nilai_input" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item required label="Nilai Hitung" :label-width="formLabelWidth">
-          <el-input disabled type="number" min="0" max="100" v-model="form.nilai_hitung" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="addData">Confirm</el-button>
-      </span>
-    </el-dialog>
-<!-- End of Form Input Data -->
+    </el-table> 
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
 import axios from 'axios'
+//import rate from '@/components/rate/index'
 
 export default {
+  components: {
+  //  rate,
+  },
+  filters: {
+    groupMateri: function (value) {
+      if (!value) return ''
+      let sumBobotNilai = 0
+      for (let index = 0; index < value.length; index++) {
+        sumBobotNilai += value[index]['bobot_nilai'];
+        
+      }
+      return 100 - sumBobotNilai
+    }
+  },
   computed: {
     ...mapGetters([
       'token',
       'username',
       'roles'
-    ]),
-    getNilaiHitung() {
-      return this.form.nilai_hitung = this.bobot_nilai * this.form.nilai_input / 100 
-    }
+    ])
   },
   data() {
+    
+
     return {
-      kelasOption: [{'value': '', 'label': ''}],
-      materiOption: [{'value': '', 'label': ''}],
-      kategoriNilaiMateriOption: [{'value': '', 'label': ''}],
-      user_id: '',
-      id_kelas: '',
-      id_tahun_akademik: '',
+      tableData: [{
+          nama: 'Supi Core',
+          kelas: 'Design grafis',
+          period: 'Agustus',
+          user: 'Tom',
+          value:'4.2',
+        },{
+          nama: 'Supi Core Dua',
+          kelas: 'Design grafis',
+          period: 'Agustus',
+          user: 'Cinta',
+          value:'4',
+        },],      
+        value1:'1',  
+        value2:'2', 
+        value3:'3',  
+        value4:'4',
+        value5:'5',
+        
+        
+      auth: '',
       id_user: '',
-      listLoading: false,
-      listData: [],
-      bobot_nilai: '',
+      listLoading: true,
+      materiOption: [{'value': '', 'label': ''}],
+      materiSelect: '',
+      kategoriOption: [{'value': '', 'label': ''}],
       form: {
         id: '',
-        id_kelas_peserta: '',
-        id_kategori_nilai_materi: '',
-        nilai_input: '',
-        nilai_hitung: '',
-        created_by: 1,//''
-        updated_by: 1,//'',
-        created_date: '',
-        updated_date: '',
+        id_materi: '',
+        id_kategori_nilai: '',
+        bobot_nilai: ''
       },
-      auth: '',
-      formLabelWidth: '120px',
-      dialogFormVisible: false
+      successAlertVisible: false,
+      dialogFormVisible: false,
+      dialogFormVisible2: false,
+      dialogFormVisible3: false,
+      formLabelWidth: '280px',
+      listData: [],
+      listDataByIdMateri: [],
+      sisaBobotNilai: 100
     }
   },
   created() {
     this.getUserInfo()
-    this.getKelas()
-    this.getMateri()
+    this.getData()
   },
   mounted() {
-    //this.getData()
+    this.getData()
+    this.getMateri()
+    this.getKategori()
   },
   methods: {
-    getBobotNilai(){
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi/materi/' + this.id_materi + '/kategori-nilai/' + this.id_kategori_nilai,  
-      {headers: this.auth})
-      .then((response) => {
-        this.bobot_nilai = response.data.data[0]['bobot_nilai']
-        this.form.id_kategori_nilai_materi = response.data.data[0]['id']
-        })
-    },
-    getKategoriNilaiByIdMateri(id_materi) {
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi/materi/' + this.id_materi, 
-      {headers: this.auth})
-      .then((response) => {
-        response.data.data.forEach(item => {
-          this.kategoriNilaiMateriOption.push (
-            {
-              value: item.id,
-              label: item.kategori_nilai.nama_kategori
-            }
-          )
-        })
-        })
-    },
     addNotif() {
       const h = this.$createElement;
       this.$notify({
@@ -222,66 +359,68 @@ export default {
           this.roles = ''
         }
       },
-    getData() {
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
-      this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/nilai-siswa', {headers: auth})
-      .then((response) => {
-        this.listData = response.data.data;
-        this.listLoading = false
-      })
-    },
-    getKelas() {
-      axios.get(process.env.VUE_APP_BASE_API+'/kelas', {headers: this.auth})
-      .then((response) => {
-        response.data.data.forEach(item => {
-          this.kelasOption.push (
-            {
-              value: item.id,
-              label: item.kode_kelas
-            }
-          )
-        })
-      //this.form.id_kelas = item.id
-      })
-    },
-    getTahunAkademik() {
-      axios.get(process.env.VUE_APP_BASE_API+'/tahun_akademik', {headers: this.auth})
+    getMateri() {
+      axios.get(process.env.VUE_APP_BASE_API+'/user', {headers: this.auth})
       .then((response) => {
         response.data.data.forEach(item => {
           this.materiOption.push (
             {
               value: item.id,
-              label: item.tanggal_muali
+              label: item.username
             }
           )
         })
-        //this.id_materi = item.id
       })
     },
-    
+    getKategori() {
+      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai', {headers: this.auth})
+      .then((response) => {
+        response.data.data.forEach(item => {
+          this.kategoriOption.push (
+            {
+              value: item.id_kategori_nilai,
+              label: item.nama_kategori
+            }
+          )
+        })
+      })
+    },
+    getDataByIdMateri(id) {
+      this.listLoading = true
+      axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/materi/' + id, {headers: this.auth})
+      .then((response) => {
+        this.listDataByIdMateri = response.data.data;
+        this.listLoading = false
+      })
+    },
+    getData() {
+      this.listLoading = true
+      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi', {headers: this.auth})
+      .then((response) => {
+        this.listData = response.data.data;
+        this.listLoading = false
+      })
+    },
     clearData() {
-      this.form.id = ''
-      this.form.id_kategori_nilai_materi = ''
-      this.form.id_kelas_peserta = ''
-      this.form.nilai_input = ''
-      this.form.nilai_hitung = ''
-      this.form.nama_kategori = ''
-      this.form.created_by = ''
-      this.form.updated_by = ''
-      this.form.created_date = ''
-      this.form.updated_date = ''
+      this.form.id_kategori_nilai = ''
+      this.form.id_materi = ''
+      this.form.id_kategori_nilai = ''
+      this.form.bobot_nilai = ''
+      this.dialogFormVisible = true
+    },
+    goTo() {
+      this.form.id_kategori_nilai = ''
+      this.form.id_materi = ''
+      this.form.id_kategori_nilai = ''
+      this.form.bobot_nilai = ''
       this.dialogFormVisible = true
     },
     editData(scope){
       this.dialogFormVisible = true 
-      this.form.id_kategori_nilai = scope.row.id_kategori_nilai
-      this.form.nama_kategori = scope.row.nama_kategori
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.id = scope.row.id
+      this.form.id_materi = scope.row.materi.id
+      this.form.id_kategori_nilai = scope.row.kategori_nilai.id_kategori_nilai
+      this.form.bobot_nilai = scope.row.bobot_nilai
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -289,12 +428,7 @@ export default {
           cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          axios.delete(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + id, { headers: this.auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -314,63 +448,38 @@ export default {
       this.getData()
     }, 
     addData(){
-      if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id,
-          this.form, { headers: this.auth })
-          .then((data) => {
-            this.getData()
-            this.addNotif()
-            this.dialogFormVisible = false
-          })
-      } else { 
-        axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
-          this.form, { headers: this.auth })
-          .then((data) => {
-            this.getData()
-            this.addNotif()
-            this.dialogFormVisible = false
-          });
+      this.dialogFormVisible = false
+      this.dialogFormVisible2 = true
+      // if(this.form.id != '') {
+      //   axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + this.form.id,
+      //     this.form, { headers: this.auth })
+      //     .then((data) => {
+      //       this.getData()
+      //       this.addNotif()
+      //       this.dialogFormVisible = false
+      //       this.sisaBobotNilai = 100
+      //     })
+      // } else { 
+      //   axios.post(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi', 
+      //     this.form, { headers: this.auth })
+      //     .then((data) => {
+      //       this.getData()
+      //       this.addNotif()
+      //       this.dialogFormVisible = false
+      //       this.sisaBobotNilai = 100
+      //     });
+      // }
+    },
+    cekBobotNilai(event) {
+      if (event != null) {
+        this.getDataByIdMateri(event)
       }
     },
-    getPesertaByIdKelas(id) {
-      this.listLoading = true
-      axios.get(
-        process.env.VUE_APP_BASE_API + 
-        '/kelaspeserta/kelas/' + id, 
-        {headers: this.auth}
-      ).then((response) => {
-        this.listData = response.data.data;
-        this.listLoading = false
-        console.log(this.listData)
-      })
-    },
-    showPeserta(event) {
-      if (event == null) {
-        this.listData = []
-      } else {
-        this.id_kelas = event
-        this.getPesertaByIdKelas(event)
-      }
-    },
-    showTahunAkademik(event) {
-      if (event == null) {
-        this.listTahunAkademik = []
-      } else {
-        this.id_tahun_ajaran = event
-        this.getKategoriNilaiByIdMateri(event)
-      }
-    },
-    showBobotNilai(event) {
-      if (event == null) {
-        this.listKategoriNilai = []
-      } else {
-        this.getBobotNilai()
-      }
-    },
-    inputNilai(scope) {
-      this.dialogFormVisible = true
-      this.form.id_kelas_peserta = scope.id
-    }
   }
 }
 </script>
+<style scoped>
+.pading{
+  padding: 11px;
+}
+</style>

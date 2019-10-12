@@ -1,350 +1,347 @@
 <template>
   <div style="padding:30px;">
+    <el-alert :closable="false" title="List Nilai Siswa" />
 
-    <el-alert :closable="false" title="Nilai Siswa" />
-    <br> 
-    <el-form :model="form">
-      <el-form-item label="Pilih Kelas" :label-width="formLabelWidth">
-        <el-select @change="showPeserta($event)" v-model="id_kelas" placeholder="Select">
-          <el-option
-            v-for="item in kelasOption"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value">
-          </el-option>
-        </el-select>   
-      </el-form-item>
-    </el-form>    
-<!-- List Data -->
-    <el-table
+    <br />
+    <el-row  type="flex" class="row-bg" justify="center">
+      <el-col :xs="20" :sm="20" :md="20" :lg="20" :xl="20"  >
+        <el-form >
+          <el-form-item label="Pilih Range Tanggal" style="display: block">
+            <el-date-picker style="width: 70%" v-model="value2" type="daterange" align="right" unlink-panels
+              range-separator="To" start-placeholder="Start date" end-placeholder="End date"
+              :picker-options="pickerOptions"></el-date-picker>
+          </el-form-item>
+          <el-form :inline="true" :model="formInline" class="demo-form-inline">
+            <el-form-item label="Kelas" >
+              <el-select @change="getMateri" v-model="kelasSelect" placeholder="Pilih" style="width: 148px">
+                <el-option v-for="item in kelasOption" :key="item.id" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item label="Tahun Ajaran">
+              <el-select @change="setMateri" v-model="materiSelect" placeholder="Pilih">
+                <el-option v-for="item in materiOption" :key="item.id" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+             <el-form-item label="Pengajar">
+              <el-select @change="setMateri" v-model="materiSelect" placeholder="Pilih" style="width: 220px">
+                <el-option v-for="item in materiOption" :key="item.id" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" @click="onSubmit">Filter</el-button>
+            </el-form-item>
+          </el-form>
+        </el-form>
+      </el-col>
+      <el-col  :xs="4" :sm="4" :md="4" :lg="4" :xl="4" >
+        <div  style="text-align: right">
+        <router-link target="_blank" to="/pdf/nilaisiswa">
+          <el-button type="primary">
+            <i class="el-icon-download"></i>&nbsp;
+            PDF
+          </el-button>
+        </router-link>
+        <router-link target="_blank" to="/pdf/nilaisiswa">
+          <el-button type="success" style="margin-top: 23px;" >
+            <i class="el-icon-download"></i>&nbsp;
+            Excel
+          </el-button>
+        </router-link>
+        </div>
+      </el-col>
+
+    </el-row>
+      <!-- Tabel List Data -->
+       <el-table
       v-loading="listLoading"
       :data="listData"
       element-loading-text="Loading"
       border
       fit
       highlight-current-row
+      
     >
       <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index+1 }}
-        </template>
+        <template slot-scope="scope">{{ scope.$index+1 }}</template>
       </el-table-column>
-      <el-table-column label="Kode Kelas">
-        <template slot-scope="scope">
-          {{ scope.row.user.nama_lengkap }}
-        </template>
+
+      <el-table-column label="Kelas">
+        <template slot-scope="scope">{{ scope.row.jadwal.kelas.nama_kelas }}</template>
       </el-table-column>
-      <el-table-column label="Tahun Ajaran">
-        <template slot-scope="scope">
-          {{ scope.row.kelas.kode_kelas }}
-        </template>
+      <el-table-column label="Pengajar / tahun">
+        <template slot-scope="scope">{{ scope.row.tanggal }}</template>
       </el-table-column>
-      <el-table-column label="Pengajar">
-        <template slot-scope="scope">
-          {{ scope.row.user.nama_lengkap }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Action">
-        <template slot-scope="scope">
-          <el-button @click="inputNilai(scope.row)" size="mini" type="primary" icon="el-icon-edit" rounded>
-            Input Nilai
-          </el-button>
-        </template>
+      <el-table-column label="Nama Pengajar">
+        <template slot-scope="scope">{{ scope.row.user.nama }}</template>
       </el-table-column>
     </el-table>
-<!-- End of List Data -->    
-
-<!-- Form Input Data -->
-    <el-dialog title="Input Kategori Nilai" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="Pilih Materi" :label-width="formLabelWidth">
-          <el-select @change="showKategoriNilaiMateri($event)" v-model="id_materi" placeholder="Select">
-            <el-option
-              v-for="item in materiOption"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>   
-        </el-form-item>
-        <el-form-item label="Pilih Kategori Nilai" :label-width="formLabelWidth">
-          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai" placeholder="Select">
-            <el-option
-              v-for="item in kategoriNilaiMateriOption"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value">
-            </el-option>
-          </el-select>   
-        </el-form-item>
-        <el-form-item required label="Bobot Nilai" :label-width="formLabelWidth">
-          <el-input disabled type="number" min="0" max="100" v-model="this.bobot_nilai" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item required label="Nilai Input" :label-width="formLabelWidth">
-          <el-input @change="getNilaiHitung" type="number" min="0" max="100" v-model="form.nilai_input" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item required label="Nilai Hitung" :label-width="formLabelWidth">
-          <el-input disabled type="number" min="0" max="100" v-model="form.nilai_hitung" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="addData">Confirm</el-button>
-      </span>
-    </el-dialog>
-<!-- End of Form Input Data -->
+   
+    <!-- End of Tabel List Data -->
+    <el-row type="flex" justify="end">
+      <br />
+      <div class="block">
+        <el-pagination layout="prev, pager, next" :total="50"></el-pagination>
+      </div>
+      <br />
+    </el-row>
   </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import axios from 'axios'
+  import {
+    mapGetters
+  } from "vuex";
+  import axios from "axios";
 
-export default {
-  computed: {
-    ...mapGetters([
-      'token',
-      'username',
-      'roles'
-    ]),
-    getNilaiHitung() {
-      return this.form.nilai_hitung = this.bobot_nilai * this.form.nilai_input / 100 
-    }
-  },
-  data() {
-    return {
-      kelasOption: [{'value': '', 'label': ''}],
-      materiOption: [{'value': '', 'label': ''}],
-      kategoriNilaiMateriOption: [{'value': '', 'label': ''}],
-      user_id: '',
-      id_kelas: '',
-      id_materi: '',
-      id_kategori_nilai: '',
-      listLoading: false,
-      listData: [],
-      bobot_nilai: '',
-      form: {
-        id: '',
-        id_kelas_peserta: '',
-        id_kategori_nilai_materi: '',
-        nilai_input: '',
-        nilai_hitung: '',
-        created_by: 1,//''
-        updated_by: 1,//'',
-        created_date: '',
-        updated_date: '',
-      },
-      auth: '',
-      formLabelWidth: '120px',
-      dialogFormVisible: false
-    }
-  },
-  created() {
-    this.getUserInfo()
-    this.getKelas()
-    this.getMateri()
-  },
-  mounted() {
-    //this.getData()
-  },
-  methods: {
-    getBobotNilai(){
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi/materi/' + this.id_materi + '/kategori-nilai/' + this.id_kategori_nilai,  
-      {headers: this.auth})
-      .then((response) => {
-        this.bobot_nilai = response.data.data[0]['bobot_nilai']
-        this.form.id_kategori_nilai_materi = response.data.data[0]['id']
-        })
+  export default {
+    computed: {
+      ...mapGetters(["token", "username", "roles"])
     },
-    getKategoriNilaiByIdMateri(id_materi) {
-      axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi/materi/' + this.id_materi, 
-      {headers: this.auth})
-      .then((response) => {
-        response.data.data.forEach(item => {
-          this.kategoriNilaiMateriOption.push (
+    data() {
+      return {
+        formInline: {
+          region: ""
+        },
+        auth: "",
+        user_id: "",
+        listLoading: true,
+        listData: [],
+        kelasOption: [{
+          key: "",
+          label: "",
+          value: ""
+        }],
+        kelasSelect: "",
+        materiOption: [{
+          key: "",
+          label: "",
+          value: ""
+        }],
+        materiSelect: "",
+        form: {
+          id_kategori_nilai: "",
+          nama_kategori: "",
+          created_by: "",
+          updated_by: 1,
+          created_date: "",
+          updated_date: ""
+        },
+        successAlertVisible: false,
+        dialogFormVisible: false,
+        formLabelWidth: "120px",
+        pickerOptions: {
+          shortcuts: [{
+              text: "Last week",
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                picker.$emit("pick", [start, end]);
+              }
+            },
             {
-              value: item.id,
-              label: item.kategori_nilai.nama_kategori
+              text: "Last month",
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                picker.$emit("pick", [start, end]);
+              }
+            },
+            {
+              text: "Last 3 months",
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+                picker.$emit("pick", [start, end]);
+              }
             }
-          )
-        })
-        })
+          ]
+        },
+        value1: "",
+        value2: ""
+      };
     },
-    addNotif() {
-      const h = this.$createElement;
-      this.$notify({
-        title: 'Success',
-        message: h('i', { style: 'color: teal' }, 'Data berhasil ditambah/diperbaharui'),
-        type: 'success',
-        showClose: false,
-        duration: 2000
-      });
+    created() {
+      this.getUserInfo();
+      this.getData();
+      this.getKelas();
     },
-    getUserInfo() {
-        if(localStorage.getItem('token') != null) {
-          const token = 'Bearer '+localStorage.getItem('token')
+    mounted() {
+      this.getData();
+    },
+    methods: {
+      onSubmit() {
+        console.log("submit!");
+      },
+      addNotif() {
+        const h = this.$createElement;
+        this.$notify({
+          title: "Success",
+          message: h(
+            "i", {
+              style: "color: teal"
+            },
+            "Data berhasil ditambah/diperbaharui"
+          ),
+          type: "success",
+          showClose: false,
+          duration: 2000
+        });
+      },
+      getUserInfo() {
+        if (localStorage.getItem("token") != null) {
+          const token = "Bearer " + localStorage.getItem("token");
           const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          this.auth = auth
-          axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
-          .then(response =>{
-            let userData = JSON.parse(response.data.data)
-            this.user_id = userData.user.id
-          })
-        }else{
-          this.roles = ''
+            Authorization: token,
+            "Content-Type": "application/json"
+          };
+          this.auth = auth;
+          axios
+            .get(process.env.VUE_APP_ROOT_API + "/profil", {
+              headers: auth
+            })
+            .then(response => {
+              let userData = JSON.parse(response.data.data);
+              this.user_id = userData.user.id;
+            });
+        } else {
+          this.roles = "";
         }
       },
-    getData() {
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
-      this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/nilai-siswa', {headers: auth})
-      .then((response) => {
-        this.listData = response.data.data;
-        this.listLoading = false
-      })
-    },
-    getKelas() {
-      axios.get(process.env.VUE_APP_BASE_API+'/kelas', {headers: this.auth})
-      .then((response) => {
-        response.data.data.forEach(item => {
-          this.kelasOption.push (
-            {
-              value: item.id,
-              label: item.kode_kelas
-            }
-          )
-        })
-      //this.form.id_kelas = item.id
-      })
-    },
-    getMateri() {
-      axios.get(process.env.VUE_APP_BASE_API+'/materi', {headers: this.auth})
-      .then((response) => {
-        response.data.data.forEach(item => {
-          this.materiOption.push (
-            {
-              value: item.id,
-              label: item.nama_materi
-            }
-          )
-        })
-        //this.id_materi = item.id
-      })
-    },
-    clearData() {
-      this.form.id = ''
-      this.form.id_kategori_nilai_materi = ''
-      this.form.id_kelas_peserta = ''
-      this.form.nilai_input = ''
-      this.form.nilai_hitung = ''
-      this.form.nama_kategori = ''
-      this.form.created_by = ''
-      this.form.updated_by = ''
-      this.form.created_date = ''
-      this.form.updated_date = ''
-      this.dialogFormVisible = true
-    },
-    editData(scope){
-      this.dialogFormVisible = true 
-      this.form.id_kategori_nilai = scope.row.id_kategori_nilai
-      this.form.nama_kategori = scope.row.nama_kategori
-      this.form.updated_by = 1;//scope.row.updated_by;
-    },
-    deleteData(id, index){
-      this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          axios.delete(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + id, { headers: auth })
-          .then((res) =>{
-          console.log(res)
-          this.listData.splice(index, 1)
-          }, (error) => {
-            console.log(error)
-          }) 
-          this.$message({
-            type: 'success',
-            message: 'Delete completed'
+      getData() {
+        this.listLoading = true;
+        //axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai', {headers: this.auth})
+        axios
+          .get("http://localhost:9528/fakePresensiSiswa.json")
+          .then(response => {
+            this.listData = response.data;
+            this.listLoading = false;
           });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: 'Delete canceled'
-          });          
-        });
-      this.getData()
-    }, 
-    addData(){
-      if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id,
-          this.form, { headers: this.auth })
-          .then((data) => {
-            this.getData()
-            this.addNotif()
-            this.dialogFormVisible = false
+      },
+      clearData() {
+        (this.form.id_kategori_nilai = ""),
+        (this.form.nama_kategori = ""),
+        (this.form.created_by = ""),
+        (this.form.updated_by = ""),
+        (this.form.created_date = ""),
+        (this.form.updated_date = ""),
+        (this.dialogFormVisible = true);
+      },
+      editData(scope) {
+        this.dialogFormVisible = true;
+        this.form.id_kategori_nilai = scope.row.id_kategori_nilai;
+        this.form.nama_kategori = scope.row.nama_kategori;
+        this.form.updated_by = this.user_id; //scope.row.updated_by;
+      },
+      deleteData(id, index) {
+        this.$confirm(
+            "This will permanently delete the file. Continue?",
+            "Warning", {
+              confirmButtonText: "OK",
+              cancelButtonText: "Cancel",
+              type: "warning"
+            }
+          )
+          .then(() => {
+            axios
+              .delete(process.env.VUE_APP_BASE_API + "/kategori-nilai/" + id, {
+                headers: this.auth
+              })
+              .then(
+                res => {
+                  this.listData.splice(index, 1);
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+            this.$message({
+              type: "success",
+              message: "Delete completed"
+            });
           })
-      } else { 
-        axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
-          this.form, { headers: this.auth })
-          .then((data) => {
-            this.getData()
-            this.addNotif()
-            this.dialogFormVisible = false
+          .catch(() => {
+            this.$message({
+              type: "info",
+              message: "Delete canceled"
+            });
           });
+        this.getData();
+      },
+      addData() {
+        if (this.form.id_kategori_nilai != "") {
+          this.form.updated_by = this.user_id;
+          axios
+            .put(
+              process.env.VUE_APP_BASE_API +
+              "/kategori-nilai/" +
+              this.form.id_kategori_nilai,
+              this.form, {
+                headers: this.auth
+              }
+            )
+            .then(data => {
+              this.getData();
+              this.addNotif();
+              this.dialogFormVisible = false;
+            });
+        } else {
+          this.form.created_by = this.user_id;
+          this.form.updated_by = this.user_id;
+          axios
+            .post(process.env.VUE_APP_BASE_API + "/kategori-nilai", this.form, {
+              headers: this.auth
+            })
+            .then(data => {
+              this.getData();
+              this.addNotif();
+              console.log(data);
+              this.dialogFormVisible = false;
+            });
+        }
+      },
+      getKelas() {
+        axios
+          .get(process.env.VUE_APP_BASE_API + "/kelas", {
+            headers: this.auth
+          })
+          .then(response => {
+            response.data.data.forEach(item => {
+              this.kelasOption.push({
+                key: item.id,
+                label: item.masterKelas.nama_kelas,
+                value: item
+              });
+            });
+            //this.id_materi = item.id
+          });
+      },
+      getMateri() {
+        axios
+          .get(process.env.VUE_APP_BASE_API + "/materi", {
+            headers: this.auth
+          })
+          .then(response => {
+            console.log(response.data.data);
+            response.data.data.forEach(item => {
+              this.materiOption.push({
+                key: item.id,
+                label: item.nama_materi,
+                value: item
+              });
+            });
+          });
+      },
+      setMateri() {
+        console.log(this.kelasSelect);
+        console.log(this.materiSelect);
       }
-    },
-    getPesertaByIdKelas(id) {
-      this.listLoading = true
-      axios.get(
-        process.env.VUE_APP_BASE_API + 
-        '/kelaspeserta/kelas/' + id, 
-        {headers: this.auth}
-      ).then((response) => {
-        this.listData = response.data.data;
-        this.listLoading = false
-        console.log(this.listData)
-      })
-    },
-    showPeserta(event) {
-      if (event == null) {
-        this.listData = []
-      } else {
-        this.id_kelas = event
-        this.getPesertaByIdKelas(event)
-      }
-    },
-    showKategoriNilaiMateri(event) {
-      if (event == null) {
-        this.listKategoriNilai = []
-      } else {
-        this.id_materi = event
-        this.getKategoriNilaiByIdMateri(event)
-      }
-    },
-    showBobotNilai(event) {
-      if (event == null) {
-        this.listKategoriNilai = []
-      } else {
-        this.getBobotNilai()
-      }
-    },
-    inputNilai(scope) {
-      this.dialogFormVisible = true
-      this.form.id_kelas_peserta = scope.id
     }
-  }
-}
+  };
+
 </script>

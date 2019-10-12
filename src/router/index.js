@@ -378,7 +378,25 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-
+  
+  {
+    path: '/pdf/presensisiswa',
+    component: () => import('@/views/pdf/presensisiswa/index'),
+    name: "penilaianpengajar",
+    hidden: true
+  },
+  {
+    path: '/pdf/nilaisiswa',
+    component: () => import('@/views/pdf/nilaisiswa/index'),
+    name: "nilaisiswa",
+    hidden: true,
+  },
+  {
+    path: '/pdf/penilaianpengajar',
+    component: () => import('@/views/pdf/penilaianpengajar/index'),
+    name: "nilaisiswa",
+    hidden: true,
+  },
   {
     path: "/report",
     component: Layout,

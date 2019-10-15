@@ -7,16 +7,20 @@
     <a href="#" target="_blank" style="margin-left:15px;">
       <el-tag type="info">Documentation</el-tag>
     </a>
+
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+    </el-row> <br />
+
     <el-table
       ref="multipleTable"
       v-loading="listLoading"
-      :data="list"
+      :data="listData"
       element-loading-text="Loading..."
       border
       fit
       highlight-current-row
-      @selection-change="handleSelectionChange"
-    >
+      @selection-change="handleSelectionChange">
       <el-table-column type="selection" align="center" />
       <el-table-column align="center" label="Id" width="95">
         <template slot-scope="scope">
@@ -25,35 +29,36 @@
       </el-table-column>
       <el-table-column label="Jadwal Pelajaran">
         <template slot-scope="scope">
-          {{ scope.row.title }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column label="Kode Kelas" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag>{{ scope.row.author }}</el-tag>
+          <el-tag>{{ scope.row.kode_kelas }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column label="Kelas" width="115" align="center">
         <template slot-scope="scope">
-          {{ scope.row.pageviews }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="Pengajar" width="220">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+        {{ scope.row.id_ruang }}
+         <!-- <strong v-for="ruang in jadwal.id_ruang" :key="ruang.id">{{ name }}</strong> -->
         </template>
       </el-table-column>
       <el-table-column align="center" label="Time" width="220">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+          <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
       <el-table-column align="center" label="Action" width="220">
         <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
+          <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-download" circle></el-button>
+          <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
+          <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -61,33 +66,164 @@
 </template>
 
 <script>
-import { fetchList } from '@/api/article'
+//import { fetchList } from '@/api/article'
+import { mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
+  computed: {
+    ...mapGetters([
+      'token',
+      'username',
+      'roles'
+    ]),
+
+  },
+
   name: 'SelectExcel',
   data() {
     return {
       list: null,
       listLoading: true,
       multipleSelection: [],
+      listData: [],
       downloadLoading: false,
-      filename: ''
+      filename: '',
+      form: {
+        id: '',
+        id_ruang:'',
+        kode_kelas: '',
+        created_by: 1,
+        updated_by: 1,
+        created_at: '',
+        updated_at: '',
+      },
+      successAlertVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px'
     }
   },
+  
   created() {
-    this.fetchData()
+    this.getData()
   },
+  
+  mounted() {
+    this.getData()
+  },
+
   methods: {
-    fetchData() {
+
+    addNotif() {
+      const h = this.$createElement;
+      this.$notify({
+        title: 'Success',
+        message: h('i', { style: 'color: teal' }, 'Data berhasil ditambah/diperbaharui'),
+        type: 'success',
+        showClose: false,
+        duration: 2000
+      });
+    },
+    getData() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
+      axios.get(process.env.VUE_APP_BASE_API + '/jadwal', {headers: auth})
+      .then((response) => {
+        this.listData = response.data.data;
         this.listLoading = false
       })
     },
+
+    clearData() {
+      this.form.id = '',
+      this.form.id_ruang='',
+      this.form.created_by = 1,
+      this.form.updated_by = 1,
+      this.form.created_at = '',
+      this.form.updated_at = '',
+      this.dialogFormVisible = true
+    },
+
+    editData(scope){
+      this.dialogFormVisible = true 
+      this.form.id = scope.row.id;
+      this.form.updated_by = 1;//scope.row.updated_by;
+    },
+
+    deleteData(id, index){
+      this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          const token = 'Bearer '+localStorage.getItem('token')
+          const auth = {
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+          console.log(id)
+          axios.delete(process.env.VUE_APP_BASE_API + '/jadwal/' + id, { headers: auth })
+          .then((res) =>{
+          console.log(res)
+          this.listData.splice(index, 1)
+          }, (error) => {
+            console.log(error)
+          }) 
+          this.$message({
+            type: 'success',
+            message: 'Delete completed'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: 'Delete canceled'
+          });          
+        });
+      this.getData()
+    },
+
+    addData(){
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
+      
+      if(this.form.id != '') {
+        axios.put(process.env.VUE_APP_BASE_API + '/jadwal/' + this.form.id,
+          this.form, { headers: auth })
+          .then((data) => {
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          })
+      } else {
+        axios.post(process.env.VUE_APP_BASE_API + '/jadwal', 
+          this.form, { headers: auth })
+          .then((data) => {
+            console.log(this.form.name);
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          });
+      } 
+    },
+    // fetchData() {
+    //   this.listLoading = true
+    //   fetchList(this.listQuery).then(response => {
+    //     this.list = response.data.items
+    //     this.listLoading = false
+    //   })
+    // },
+
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
+
     handleDownload() {
       if (this.multipleSelection.length) {
         this.downloadLoading = true

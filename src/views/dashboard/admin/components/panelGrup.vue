@@ -6,10 +6,10 @@
           <svg-icon icon-class="stick-man" class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">
+          <div id="siswa" name="siswa" class="card-panel-text">
             Total Siswa
           </div>
-          <count-to :start-val="0" :end-val="100" :duration="5600" class="card-panel-num" />
+          <count-to :start-val="0" :end-val="100"  :duration="5600" class="card-panel-num" /> (70)
         </div>
       </div>
     </el-col>

@@ -1,5 +1,6 @@
 <template>
-  <el-table :data="list" style="width: 100%;padding-top: 15px;">
+  <div>
+    <el-table :data="list" style="width: 100%;padding-top: 15px;">
     <el-table-column label="Nama Siswa" min-width="200">
       <template style="font-size:36px;">
         <h4>Local</h4>
@@ -7,28 +8,32 @@
       </template>
     </el-table-column>
     <el-table-column label="Waktu" width="195" align="center">
-      local
+      Selasa, 12 OKtober 2019
       <!-- <template slot-scope="scope">
         ¥{{ scope.row.price | toThousandFilter }}
       </template> -->
     </el-table-column>
     <el-table-column label="Kelas" width="100" align="center">
       <template>
-        joasm
+        OFF
       </template>
       <!-- <template slot-scope="{row}">
           {{ row.status }}
       </template> -->
-    </el-table-column>
+    </el-table-column> 
     <el-table-column label="Ruang" width="100" align="center">
       <template>
-        jand
+        Jenaka
       </template>
       <!-- <template slot-scope="{row}">
           {{ row.status }}
       </template> -->
     </el-table-column>
   </el-table>
+  <div>
+        <el-button style="width:100%" type="primary" @click="clearData">View</el-button>
+  </div>
+  </div>
   <!-- Yang dikomen sementara tidak digunakan, untuk GET data -->
 </template>
 
@@ -53,3 +58,9 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+.blok{
+  width: 100;
+}
+</style>

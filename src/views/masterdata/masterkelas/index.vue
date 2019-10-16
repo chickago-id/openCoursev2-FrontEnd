@@ -9,7 +9,7 @@
     <br />
 
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Master Kelas" :visible.sync="dialogFormVisible">
+    <el-dialog title="Master Kelas" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item required label="Kode Kelas" :label-width="formLabelWidth">
           <el-input v-model="form.kode_kelas" autocomplete="off"></el-input>

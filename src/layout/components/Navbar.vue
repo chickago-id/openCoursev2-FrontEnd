@@ -19,9 +19,11 @@
               Profil
             </el-dropdown-item>
           </router-link>
-          <router-link to="#">
+          <router-link to="/notification/index">
             <el-dropdown-item>
+              <el-badge :value="12" class="item">
               Notification
+              </el-badge>
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item class="logout" divided>

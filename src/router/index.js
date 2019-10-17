@@ -42,6 +42,13 @@ export const constantRoutes = [
     component: () => import("@/views/404"),
     hidden: true
   },
+  {
+    path: "/sent",
+    component: () => import("@/views/notification/sent"),
+    hidden: true
+  },
+  
+  
 
   {
     path: "/",
@@ -56,6 +63,9 @@ export const constantRoutes = [
       }
     ]
   },
+  
+
+  
 
   {
     path: "/akademik",
@@ -104,6 +114,7 @@ export const constantRoutes = [
         component: () => import("@/views/akademik/nilaipengajar/index"),
         meta: { title: "Penilaian Pengajar" }
       },
+      
       {
         path: "presensi",
         component: () => import("@/views/akademik/presensi/index"), // Parent router-view
@@ -126,6 +137,7 @@ export const constantRoutes = [
       }
     ]
   },
+  
 
   {
     path: "/masterdata",
@@ -213,6 +225,8 @@ export const constantRoutes = [
       }
     ]
   },
+  
+
 
   {
     path: "/institute",
@@ -271,9 +285,74 @@ export const constantRoutes = [
         component: () => import("@/views/profile/index"),
         name: "Profile",
         meta: { title: "Profile", icon: "user", noCache: true }
-      }
+      },
+      
     ]
   },
+  {
+    path: "/notification",
+    component: Layout,
+    redirect: "/notification/index",
+    hidden: true,
+    children: [
+      {
+        path: "index",
+        name: "notification",
+        component: () => import("@/views/notification/index"),
+        meta: { title: "Notification", noCache: true }
+      },
+      {
+        path: "/notification/sent",
+        name: "notification",
+        component: () => import("@/views/notification/sent"),
+        meta: { title: "Notification", noCache: true }
+      },
+      {
+        path: "/notification/draft",
+        name: "notification",
+        component: () => import("@/views/notification/draft"),
+        meta: { title: "Notification", noCache: true }
+      },
+      {
+        path: "/notification/trash",
+        name: "notification",
+        component: () => import("@/views/notification/trash"),
+        meta: { title: "Notification", noCache: true }
+      },
+      {
+        path: "/notification/important",
+        name: "notification",
+        component: () => import("@/views/notification/important"),
+        meta: { title: "Notification", noCache: true }
+      },
+      {
+        path: "/notification/news",
+        name: "notification",
+        component: () => import("@/views/notification/news"),
+        meta: { title: "Notification", noCache: true }
+      },
+
+
+      
+    ]
+  },
+  // {
+  //   path: "/sent",
+  //   component: Layout,
+  //   redirect: "/notification/sent",
+  //   hidden: true,
+  //   children: [
+  //     {
+  //       path: "sent",
+  //       name: "sent",
+  //       component: () => import("@/views/notification/sent"),
+  //       meta: { title: "sent", noCache: true }
+  //     },
+      
+  //   ]
+  // },
+  
+  
 
   // {
   //   path: '/example',
@@ -424,6 +503,7 @@ export const constantRoutes = [
       }
     ]
   },
+  
 
   // 404 page must be placed at the end !!!
   { path: "*", redirect: "/404", hidden: true }

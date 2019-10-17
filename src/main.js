@@ -13,6 +13,8 @@ import store from "./store";
 import router from "./router";
 import moment from "moment";
 
+
+
 import "@/icons"; // icon
 import "@/permission"; // permission control
 
@@ -28,6 +30,7 @@ import { mockXHR } from "../mock";
 if (process.env.NODE_ENV === "production") {
   mockXHR();
 }
+
 
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale });

@@ -66,18 +66,12 @@
           <el-input v-model="form.kode_pos" autocomplete="off"></el-input>
         </el-form-item>
         <el-form-item required label="Logo" :label-width="formLabelWidth">
-          <el-upload
-  action=""
-  :auto-upload="false"
-  >
-  <el-button size="mini" type="primary">Add file</el-button>
-</el-upload>
-
+          <input type="file" @change="onFileChanged">
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="addData">Confirm</el-button>
+        <el-button type="primary" @click="onUpload">Confirm</el-button>
       </span>
     </el-dialog>
     <!-- End of Form Tambah Data -->
@@ -121,6 +115,11 @@
           {{ scope.row.alamat }}
         </template>
       </el-table-column>
+      <el-table-column label="Logo">
+        <template slot-scope="scope">
+          <img width="100px" :src="scope.row.download_path" alt="gambar" srcset="">
+        </template>
+      </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
@@ -159,6 +158,7 @@ export default {
       nama_kota: '',
       user_id: '',
       auth: '',
+      userData: null,
       listLoading: true,
       listData: [],
       form: {
@@ -178,7 +178,9 @@ export default {
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '120px',
+      file: '',
+      selectedFile: null
     }
   },
   created() {
@@ -188,8 +190,89 @@ export default {
   },
   mounted() {
     this.getData()
+    this.getUserInfo()
   },
   methods: {
+    onFileChanged (event) {
+      this.file = event.target.files[0]
+      this.selectedFile = event.target.files[0]
+      console.log(this.file)
+      console.log(this.selectedFile)
+    },
+    addData(){
+      if(this.form.id != '') {
+        this.form.updated_by = this.user_id
+        axios.put(process.env.VUE_APP_BASE_API + '/institute-profile/' + this.form.id,
+          this.form, { headers: this.auth })
+          .then((data) => {
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          })
+      } else { 
+        this.form.created_by = this.user_id
+        this.form.updated_by = this.user_id
+        axios.post(process.env.VUE_APP_BASE_API + '/institute-profile', 
+          this.form, { headers: this.auth })
+          .then((data) => {
+            this.getData()
+            this.addNotif()
+            console.log(data)
+            this.dialogFormVisible = false
+        })
+      }
+    },
+    onUpload() {
+      if(this.form.id != '') {
+        const formData = new FormData()
+        formData.append('id', this.form.id)
+        formData.append('file', this.selectedFile, this.selectedFile.name)
+        formData.append('nama_institusi', this.form.nama_institusi)
+        formData.append('alamat', this.form.alamat)
+        formData.append('kode_institusi', this.form.kode_institusi)
+        formData.append('email', this.form.email)
+        formData.append('no_telepon', this.form.no_telepon)
+        formData.append('website', this.form.website)
+        formData.append('npwp', this.form.npwp)
+        formData.append('negara', this.form.negaara)
+        formData.append('provinsi', this.form.provinsi)
+        formData.append('kota', this.form.kota)
+        formData.append('kode_pos', this.kode_pos)
+        formData.append('auth', this.auth)
+        axios.put(process.env.VUE_APP_BASE_API + 
+          '/institute-profile/' + this.form.id, 
+          formData, {headers: this.auth}
+        ).then((data) => {
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          })
+      } else {
+        const formData = new FormData()
+        formData.append('file', this.selectedFile, this.selectedFile.name)
+        formData.append('nama_institusi', this.form.nama_institusi)
+        formData.append('alamat', this.form.alamat)
+        formData.append('kode_institusi', this.form.kode_institusi)
+        formData.append('email', this.form.email)
+        formData.append('no_telepon', this.form.no_telepon)
+        formData.append('website', this.form.website)
+        formData.append('npwp', this.form.npwp)
+        formData.append('negara', this.form.negaara)
+        formData.append('provinsi', this.form.provinsi)
+        formData.append('kota', this.form.kota)
+        formData.append('kode_pos', this.kode_pos)
+        formData.append('auth', this.auth)
+        axios.post(process.env.VUE_APP_BASE_API + 
+          '/institute-profile', 
+          formData, {headers: this.auth}
+        ).then((data) => {
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          })
+      }
+      
+    },
     addNotif() {
       const h = this.$createElement;
       this.$notify({
@@ -224,8 +307,9 @@ export default {
         this.auth = auth
         axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
         .then(response =>{
-          let userData = JSON.parse(response.data.data)
-          this.user_id = userData.user.id
+          this.userData = JSON.parse(response.data.data)
+          console.log(this.userData + 'user data coy')
+          this.user_id = this.userData.user.id
         })
       } else {
         this.roles = ''
@@ -254,6 +338,9 @@ export default {
       this.form.kode_pos = ''
       this.form.logo = ''
       this.dialogFormVisible = true
+      this.negaraSelect = ''
+      this.provSelect = ''
+      this.kotaSelect = ''
     },
     editData(scope){
       this.dialogFormVisible = true 
@@ -270,6 +357,24 @@ export default {
       this.form.kota = scope.row.kota
       this.form.kode_pos = scope.row.kode_pos
       this.form.logo = scope.row.logo
+      this.negaraSelect = scope.row.negara
+      this.provSelect = scope.row.provinsi
+      this.kotaSelect = scope.row.kota
+    },
+    showDetail(scope) {
+    axios.get(scope.row.download_path, {headers: this.auth}).then((response) => {
+        console.log(response)
+        //response.data.forEach(kota => {
+        //  if(kota.province_id == this.provId)
+        //  {
+        //    this.kotaOption.push({
+        //      key: kota.id,
+        //      label: kota.name,
+        //      value: kota
+        //    })
+        //  }
+        //})
+      })
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -315,7 +420,7 @@ export default {
             this.addNotif()
             console.log(data)
             this.dialogFormVisible = false
-          });
+        })
       }
     },
     showProvinsi() {
@@ -371,6 +476,23 @@ export default {
       console.log(this.form.kota)
        
     }
+  },
+  submitUpload() {
+    let formData = new FormData();
+    formData.append('file', this.file);
+    this.axios.post('http://localhost:9528/api.php',
+    formData,
+    {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    }
+    ).then(function(data){
+      console.log(data.data);
+    })
+    .catch(function(){
+      console.log('FAILURE!!');
+    });
   }
 }
 </script>

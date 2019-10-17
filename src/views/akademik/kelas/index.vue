@@ -106,6 +106,9 @@
       <el-table-column label="Target Peserta">
         <template slot-scope="scope">{{ scope.row.target_peserta }}</template>
       </el-table-column>
+      <el-table-column label="Nama Pengajar">
+        <template slot-scope="scope">{{ scope.row.tanggal_mulai }}</template>
+      </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
@@ -195,6 +198,10 @@ export default {
         });
         console.log(response);
       });
+    },
+    getNamaPengajar() {
+      axios.get("http://localhost:8081/user").then(response => {});
+      console.log(response);
     },
     kelasinfo() {
       const id = this.form.kode_kelas;

@@ -88,6 +88,11 @@ export const constantRoutes = [
         meta: { title: "Daftar Materi" }
       },
       {
+        path: "jadwal",
+        component: () => import("@/views/akademik/jadwal/index"),
+        meta: { title: "Jadwal" }
+      },
+      {
         path: "nilaisiswa",
         component: () => import("@/views/akademik/nilaisiswa/index"),
         meta: { title: "Nilai Siswa" },
@@ -219,6 +224,11 @@ export const constantRoutes = [
         meta: { title: "Master Sesi" }
       },
       {
+        path: "day",
+        component: () => import("@/views/masterdata/hari/index"),
+        meta: { title: "Daftar Hari" }
+      },
+      {
         path: "tahunakademik",
         component: () => import("@/views/masterdata/tahunakademik/index"),
         meta: { title: "Master Tahun Akademik" }
@@ -238,11 +248,11 @@ export const constantRoutes = [
       icon: "nested"
     },
     children: [
-      // {
-      //   path: 'profilinstitusi',
-      //   component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
-      //   meta: { title: 'Institute Management' }
-      // },
+      {
+        path: 'profilinstitusi',
+        component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
+        meta: { title: 'Institute Management' }
+      },
       {
         path: "listinstitusi",
         component: () =>
@@ -479,7 +489,7 @@ export const constantRoutes = [
   {
     path: "/report",
     component: Layout,
-    redirect: "/masterdata/menu1",
+    redirect: "/report/menu1",
     name: "report",
     meta: {
       title: "Report",

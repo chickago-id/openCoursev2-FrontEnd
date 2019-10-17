@@ -1,10 +1,10 @@
-import Vue from "vue";
-import Router from "vue-router";
+import Vue from 'vue'
+import Router from 'vue-router'
 
-Vue.use(Router);
+Vue.use(Router)
 
 /* Layout */
-import Layout from "@/layout";
+import Layout from '@/layout'
 
 /**
  * Note: sub-menu only appear when route children.length >= 1
@@ -32,147 +32,145 @@ import Layout from "@/layout";
  */
 export const constantRoutes = [
   {
-    path: "/login",
-    component: () => import("@/views/login/index"),
+    path: '/login',
+    component: () => import('@/views/login/index'),
     hidden: true
   },
 
   {
-    path: "/404",
-    component: () => import("@/views/404"),
+    path: '/404',
+    component: () => import('@/views/404'),
     hidden: true
   },
   {
-    path: "/sent",
-    component: () => import("@/views/notification/sent"),
+    path: '/sent',
+    component: () => import('@/views/notification/sent'),
     hidden: true
   },
-  
-  
 
   {
-    path: "/",
+    path: '/',
     component: Layout,
-    redirect: "/dashboard",
+    redirect: '/dashboard',
     children: [
       {
-        path: "dashboard",
-        name: "Dashboard",
-        component: () => import("@/views/dashboard/index"),
-        meta: { title: "Dashboard", icon: "dashboard" }
+        path: 'dashboard',
+        name: 'Dashboard',
+        component: () => import('@/views/dashboard/index'),
+        meta: { title: 'Dashboard', icon: 'dashboard' }
       }
     ]
   },
-  
-
-  
 
   {
-    path: "/akademik",
+    path: '/akademik',
     component: Layout,
-    redirect: "/akademik/kelas",
-    name: "Akademik",
+    redirect: '/akademik/kelas',
+    name: 'Akademik',
     meta: {
-      title: "Akademik",
-      icon: "nested"
+      title: 'Akademik',
+      icon: 'nested'
     },
     children: [
       {
-        path: "kelas",
-        component: () => import("@/views/akademik/kelas/index"),
-        meta: { title: "Daftar Kelas" }
+        path: 'kelas',
+        component: () => import('@/views/akademik/kelas/index'),
+        meta: { title: 'Daftar Kelas' }
       },
       {
-        path: "materi",
-        component: () => import("@/views/akademik/materi/index"),
-        meta: { title: "Daftar Materi" }
+        path: 'materi',
+        component: () => import('@/views/akademik/materi/index'),
+        meta: { title: 'Daftar Materi' }
       },
       {
-        path: "jadwal",
-        component: () => import("@/views/akademik/jadwal/index"),
-        meta: { title: "Jadwal" }
+        path: 'jadwal',
+        component: () => import('@/views/akademik/jadwal/index'),
+        meta: { title: 'Jadwal' }
       },
       {
-        path: "nilaisiswa",
-        component: () => import("@/views/akademik/nilaisiswa/index"),
-        meta: { title: "Nilai Siswa" },
+        path: 'nilaisiswa',
+        component: () => import('@/views/akademik/nilaisiswa/index'),
+        meta: { title: 'Nilai Siswa' },
         children: [
           {
-            path: "list",
-            component: () => import("@/views/akademik/nilaisiswa/list/index"),
-            meta: { title: "List Nilai Siswa" }
+            path: 'list',
+            component: () => import('@/views/akademik/nilaisiswa/list/index'),
+            meta: { title: 'List Nilai Siswa' }
           },
           {
-            path: "input",
-            component: () => import("@/views/akademik/nilaisiswa/input/index"),
-            meta: { title: "Input Nilai Siswa" }
+            path: 'input',
+            component: () => import('@/views/akademik/nilaisiswa/input/index'),
+            meta: { title: 'Input Nilai Siswa' }
           }
         ]
       },
       {
-        path: "kategorinilaimateri",
-        component: () => import("@/views/akademik/kategorinilaimateri/index"),
-        meta: { title: "Kategori Nilai Materi" }
+        path: 'kategorinilaimateri',
+        component: () => import('@/views/akademik/kategorinilaimateri/index'),
+        meta: { title: 'Kategori Nilai Materi' }
       },
       {
-        path: "nilaipengajar",
-        component: () => import("@/views/akademik/nilaipengajar/index"),
-        meta: { title: "Penilaian Pengajar" }
+        path: 'nilaipengajar',
+        component: () => import('@/views/akademik/nilaipengajar/index'),
+        meta: { title: 'Penilaian Pengajar' }
       },
-      
       {
-        path: "presensi",
-        component: () => import("@/views/akademik/presensi/index"), // Parent router-view
-        name: "presensi",
-        meta: { title: "Presensi" },
+        path: 'presensi',
+        component: () => import('@/views/akademik/presensi/index'), // Parent router-view
+        name: 'presensi',
+        meta: { title: 'Presensi' },
         children: [
           {
-            path: "presensi-siswa",
-            component: () => import("@/views/akademik/presensi/siswa"),
-            name: "presensi-siswa",
-            meta: { title: "Presensi Siswa" }
+            path: 'presensi-siswa',
+            component: () => import('@/views/akademik/presensi/siswa'),
+            name: 'presensi-siswa',
+            meta: { title: 'Presensi Siswa' }
           },
           {
-            path: "presensi-pengajar",
-            component: () => import("@/views/akademik/presensi/pengajar"),
-            name: "presensi-pengajar",
-            meta: { title: "Presensi Pengajar" }
+            path: 'presensi-pengajar',
+            component: () => import('@/views/akademik/presensi/pengajar'),
+            name: 'presensi-pengajar',
+            meta: { title: 'Presensi Pengajar' }
           }
         ]
+      },
+      {
+        path: 'broadcasting',
+        component: () => import('@/views/akademik/broadcast/index'),
+        meta: { title: 'Broadcasting' }
       }
     ]
   },
-  
 
   {
-    path: "/masterdata",
+    path: '/masterdata',
     component: Layout,
-    redirect: "/masterdata/menu1",
-    name: "MasterData",
+    redirect: '/masterdata/menu1',
+    name: 'MasterData',
     meta: {
-      title: "Master Data",
-      icon: "nested"
+      title: 'Master Data',
+      icon: 'nested'
     },
     children: [
       {
-        path: "masterbatch",
-        component: () => import("@/views/masterdata/masterbatch/index"),
-        meta: { title: "Master Batch" }
+        path: 'masterbatch',
+        component: () => import('@/views/masterdata/masterbatch/index'),
+        meta: { title: 'Master Batch' }
       },
       {
-        path: "masterkelas",
-        component: () => import("@/views/masterdata/masterkelas/index"),
-        meta: { title: "Master Kelas" }
+        path: 'masterkelas',
+        component: () => import('@/views/masterdata/masterkelas/index'),
+        meta: { title: 'Master Kelas' }
       },
       {
-        path: "kategorinilai",
-        component: () => import("@/views/masterdata/kategorinilai/index"),
-        meta: { title: "Master Kategori Nilai" }
+        path: 'kategorinilai',
+        component: () => import('@/views/masterdata/kategorinilai/index'),
+        meta: { title: 'Master Kategori Nilai' }
       },
       {
-        path: "nilaihuruf",
-        component: () => import("@/views/masterdata/nilaihuruf/index"),
-        meta: { title: "Master Nilai Huruf" }
+        path: 'nilaihuruf',
+        component: () => import('@/views/masterdata/nilaihuruf/index'),
+        meta: { title: 'Master Nilai Huruf' }
       },
       /* {
         path: 'nilaihuruf',
@@ -214,38 +212,41 @@ export const constantRoutes = [
         ]
       }, */
       {
-        path: "ruang",
-        component: () => import("@/views/masterdata/ruang/index"),
-        meta: { title: "Master Ruang" }
+        path: 'ruang',
+        component: () => import('@/views/masterdata/ruang/index'),
+        meta: { title: 'Master Ruang' }
       },
       {
-        path: "sesi",
-        component: () => import("@/views/masterdata/sesi/index"),
-        meta: { title: "Master Sesi" }
+        path: 'sesi',
+        component: () => import('@/views/masterdata/sesi/index'),
+        meta: { title: 'Master Sesi' }
       },
       {
-        path: "day",
-        component: () => import("@/views/masterdata/hari/index"),
-        meta: { title: "Daftar Hari" }
+        path: 'day',
+        component: () => import('@/views/masterdata/hari/index'),
+        meta: { title: 'Daftar Hari' }
       },
       {
-        path: "tahunakademik",
-        component: () => import("@/views/masterdata/tahunakademik/index"),
-        meta: { title: "Master Tahun Akademik" }
+        path: 'notifkategori',
+        component: () => import('@/views/masterdata/notifkategori/index'),
+        meta: { title: 'Notif Kategori' }
+      },
+      {
+        path: 'tahunakademik',
+        component: () => import('@/views/masterdata/tahunakademik/index'),
+        meta: { title: 'Master Tahun Akademik' }
       }
     ]
   },
-  
-
 
   {
-    path: "/institute",
+    path: '/institute',
     component: Layout,
-    redirect: "/user/menu1",
-    name: "report",
+    redirect: '/user/menu1',
+    name: 'report',
     meta: {
-      title: "Institute Management",
-      icon: "nested"
+      title: 'Institute Management',
+      icon: 'nested'
     },
     children: [
       {
@@ -254,96 +255,94 @@ export const constantRoutes = [
         meta: { title: 'Institute Management' }
       },
       {
-        path: "listinstitusi",
+        path: 'listinstitusi',
         component: () =>
-          import("@/views/manajemeninstitusi/listinstitusi/index"),
-        meta: { title: "Company List" }
+          import('@/views/manajemeninstitusi/listinstitusi/index'),
+        meta: { title: 'Company List' }
       }
     ]
   },
 
   {
-    path: "/manajemenuser",
+    path: '/manajemenuser',
     component: Layout,
-    redirect: "/user/menu1",
-    name: "report",
+    redirect: '/user/menu1',
+    name: 'report',
     meta: {
-      title: "User Management",
-      icon: "nested"
+      title: 'User Management',
+      icon: 'nested'
     },
     children: [
       {
-        path: "user",
-              component: () => import('@/views/manajemenuser/userlist/index'),
-        meta: { title: "User" }
+        path: 'user',
+        component: () => import('@/views/manajemenuser/userlist/index'),
+        meta: { title: 'User' }
       },
       {
-        path: "level",
-        component: () => import("@/views/manajemenuser/akseslevel/index"),
-        meta: { title: "Access Level" }
+        path: 'level',
+        component: () => import('@/views/manajemenuser/akseslevel/index'),
+        meta: { title: 'Access Level' }
       }
     ]
   },
   {
-    path: "/profile",
+    path: '/profile',
     component: Layout,
-    redirect: "/profile/index",
+    redirect: '/profile/index',
     hidden: true,
     children: [
       {
-        path: "index",
-        component: () => import("@/views/profile/index"),
-        name: "Profile",
-        meta: { title: "Profile", icon: "user", noCache: true }
-      },
-      
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'user', noCache: true }
+      }
+
     ]
   },
   {
-    path: "/notification",
+    path: '/notification',
     component: Layout,
-    redirect: "/notification/index",
+    redirect: '/notification/index',
     hidden: true,
     children: [
       {
-        path: "index",
-        name: "notification",
-        component: () => import("@/views/notification/index"),
-        meta: { title: "Notification", noCache: true }
+        path: 'index',
+        name: 'notification',
+        component: () => import('@/views/notification/index'),
+        meta: { title: 'Notification', noCache: true }
       },
       {
-        path: "/notification/sent",
-        name: "notification",
-        component: () => import("@/views/notification/sent"),
-        meta: { title: "Notification", noCache: true }
+        path: '/notification/sent',
+        name: 'notification',
+        component: () => import('@/views/notification/sent'),
+        meta: { title: 'Notification', noCache: true }
       },
       {
-        path: "/notification/draft",
-        name: "notification",
-        component: () => import("@/views/notification/draft"),
-        meta: { title: "Notification", noCache: true }
+        path: '/notification/draft',
+        name: 'notification',
+        component: () => import('@/views/notification/draft'),
+        meta: { title: 'Notification', noCache: true }
       },
       {
-        path: "/notification/trash",
-        name: "notification",
-        component: () => import("@/views/notification/trash"),
-        meta: { title: "Notification", noCache: true }
+        path: '/notification/trash',
+        name: 'notification',
+        component: () => import('@/views/notification/trash'),
+        meta: { title: 'Notification', noCache: true }
       },
       {
-        path: "/notification/important",
-        name: "notification",
-        component: () => import("@/views/notification/important"),
-        meta: { title: "Notification", noCache: true }
+        path: '/notification/important',
+        name: 'notification',
+        component: () => import('@/views/notification/important'),
+        meta: { title: 'Notification', noCache: true }
       },
       {
-        path: "/notification/news",
-        name: "notification",
-        component: () => import("@/views/notification/news"),
-        meta: { title: "Notification", noCache: true }
-      },
+        path: '/notification/news',
+        name: 'notification',
+        component: () => import('@/views/notification/news'),
+        meta: { title: 'Notification', noCache: true }
+      }
 
-
-      
     ]
   },
   // {
@@ -358,11 +357,9 @@ export const constantRoutes = [
   //       component: () => import("@/views/notification/sent"),
   //       meta: { title: "sent", noCache: true }
   //     },
-      
+
   //   ]
   // },
-  
-  
 
   // {
   //   path: '/example',
@@ -467,71 +464,70 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-  
+
   {
     path: '/pdf/presensisiswa',
     component: () => import('@/views/pdf/presensisiswa/index'),
-    name: "penilaianpengajar",
+    name: 'penilaianpengajar',
     hidden: true
   },
   {
     path: '/pdf/nilaisiswa',
     component: () => import('@/views/pdf/nilaisiswa/index'),
-    name: "nilaisiswa",
-    hidden: true,
+    name: 'nilaisiswa',
+    hidden: true
   },
   {
     path: '/pdf/penilaianpengajar',
     component: () => import('@/views/pdf/penilaianpengajar/index'),
-    name: "nilaisiswa",
-    hidden: true,
+    name: 'nilaisiswa',
+    hidden: true
   },
   {
-    path: "/report",
+    path: '/report',
     component: Layout,
-    redirect: "/report/menu1",
-    name: "report",
+    redirect: '/report/menu1',
+    name: 'report',
     meta: {
-      title: "Report",
-      icon: "nested"
+      title: 'Report',
+      icon: 'nested'
     },
     children: [
       {
-        path: "nilaisiswa",
-        component: () => import("@/views/report/nilaisiswa/index"),
-        meta: { title: "Nilai Siswa" }
+        path: 'nilaisiswa',
+        component: () => import('@/views/report/nilaisiswa/index'),
+        meta: { title: 'Nilai Siswa' }
       },
       {
-        path: "presensisiswa",
-        component: () => import("@/views/report/presensisiswa/index"),
-        meta: { title: "Presensi Siswa" }
+        path: 'presensisiswa',
+        component: () => import('@/views/report/presensisiswa/index'),
+        meta: { title: 'Presensi Siswa' }
       },
       {
-        path: "penilaianpengajar",
-        component: () => import("@/views/report/penilaianpengajar/index"),
-        meta: { title: "Penilaian Pengajar" }
+        path: 'penilaianpengajar',
+        component: () => import('@/views/report/penilaianpengajar/index'),
+        meta: { title: 'Penilaian Pengajar' }
       }
     ]
   },
-  
 
   // 404 page must be placed at the end !!!
-  { path: "*", redirect: "/404", hidden: true }
-];
+  { path: '*', redirect: '/404', hidden: true }
+]
 
 const createRouter = () =>
   new Router({
     // mode: 'history', // require service support
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRoutes
-  });
+  })
 
-const router = createRouter();
+const router = createRouter()
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
-  const newRouter = createRouter();
-  router.matcher = newRouter.matcher; // reset router
+  const newRouter = createRouter()
+  router.matcher = newRouter.matcher // reset router
 }
 
-export default router;
+export default router

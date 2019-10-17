@@ -7,11 +7,11 @@
     </el-row><br>
 
     <!-- Form Tambah Data -->
-    <el-dialog title="Tambah Hari" :visible.sync="dialogFormVisible">
+    <el-dialog align="center" title="Tambah Hari" :visible.sync="dialogFormVisible">
       <el-form :model="form">
 
         <el-form-item required label="Nama Hari" :label-width="formLabelWidth">
-          <el-input type="text" maxlength="10" v-model="form.name" autocomplete="off"></el-input>
+          <el-input type="text" maxlength="10" v-model="form.name" autocomplete="off" placeholder="Ex: Senin"></el-input>
         </el-form-item>
 
       </el-form>
@@ -43,7 +43,7 @@
       </el-table-column>
       <el-table-column label="Pembuat">
         <template slot-scope="scope">
-          {{ scope.row.created_by }}
+          {{ scope.row.user.username }}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal Buat">
@@ -83,7 +83,9 @@ export default {
       form: {
         id: '',
         name: '',
-        created_by: 1,
+        created_by:{
+          username:''
+        },
         updated_by: 1,
         created_at: '',
         updated_at: '',

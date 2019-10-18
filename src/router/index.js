@@ -126,6 +126,18 @@ export const constantRoutes = [
             component: () => import("@/views/akademik/presensi/pengajar"),
             name: "presensi-pengajar",
             meta: { title: "Presensi Pengajar" }
+          },
+          {
+            path: "buatkodepresensi",
+            component: () => import("@/views/akademik/presensi/buatkode"),
+            nama: "buatkodepresensi",
+            meta: { title: "Buat Kode Presensi"}
+          },
+          {
+            path:"inputpresensi",
+            component: () => import("@/views/akademik/presensi/inputpresensi"),
+            nama:"inputpresensi",
+            meta: { title: "Input Presensi"}
           }
         ]
       }

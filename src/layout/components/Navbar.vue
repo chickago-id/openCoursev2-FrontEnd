@@ -41,8 +41,8 @@
   </div>
     <div class="runbar">
       <div class="run">
-        <div class="pass">
-              ini running text 
+        <div v-for="pass in listData" :key="pass.bodymessage" class="pass">
+            {{ pass.date | formatDay }} , {{ pass.date | formatDate2 }} | {{ pass.bodymessage }}
         </div>
       </div>
     </div>  
@@ -55,9 +55,10 @@ import Breadcrumb from '@/components/Breadcrumb'
 import Hamburger from '@/components/Hamburger'
 import MarqueeText from 'vue-marquee-text-component'
 import Avatar from 'vue-avatar'
+import axios from 'axios'
 
 export default {
-  name: 'Helloword',
+  name: 'Navbar',
   components: {
     Breadcrumb,
     Hamburger,
@@ -74,10 +75,43 @@ export default {
   },
   data(){
     return{
-      url:'@/views/assets/logo/logo.png'
+      url:'@/views/assets/logo/logo.png',
+      listLoading: true,
+      listData: {subject},
+      form: {
+        id: '',
+        bodymessage: '',
+        subject:'',
+        date:'',
+      },
+      successAlertVisible: false,
+      dialogFormVisible: false,
+      formLabelWidth: '120px'
     }
   },
+
+  created() {
+    this.getData()
+  },
+  mounted() {
+    this.getData()
+  },
+  
   methods: {
+    getData() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
+      this.listLoading = true
+      axios.get(process.env.VUE_APP_BASE_API + '/mailbox/running-text', {headers: auth})
+      .then((response) => {
+        this.listData = response.data.data;
+        this.listLoading = false
+      })
+    },
+
     toggleSideBar() {
       this.$store.dispatch('app/toggleSideBar')
     },

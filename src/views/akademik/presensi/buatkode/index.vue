@@ -36,7 +36,7 @@
     </el-row>
 <!-- End of QR Code Card -->
 <br>
-    <!-- Tabel List Data -->
+    <!-- Tabel List Data Presensi -->
     <el-button size="small">Refresh Data</el-button>
     <br>
     <br>

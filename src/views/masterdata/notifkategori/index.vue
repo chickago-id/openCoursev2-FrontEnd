@@ -2,16 +2,20 @@
 
 <template>
   <div style="padding:30px;">
-    <el-row type="flex" class="row-bg" justify="end">
-      <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-    </el-row><br>
+    <el-alert :closable="false" title="notifcategory" />
 
+<br>    
+<el-row type="flex" class="row-bg" justify="end">
+          <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+</el-row>
+<br>    
+    
     <!-- Form Tambah Data -->
-    <el-dialog align="center" title="Tambah Hari" :visible.sync="dialogFormVisible">
+    <el-dialog align="center" title="Tambah Data" :visible.sync="dialogFormVisible">
       <el-form :model="form">
 
-        <el-form-item required label="Nama Hari" :label-width="formLabelWidth">
-          <el-input type="text" maxlength="10" v-model="form.name" autocomplete="off" placeholder="Ex: Senin"></el-input>
+        <el-form-item required label="Nama Notif Kategori" :label-width="formLabelWidth">
+          <el-input type="text" v-model="form.name" autocomplete="off" placeholder="Ex: Notification"></el-input>
         </el-form-item>
 
       </el-form>
@@ -22,7 +26,7 @@
     </el-dialog>
     <!-- End of Form Tambah Data -->
 
-    <!-- Tabel List Data -->
+    <!-- List Data Table -->
     <el-table
       v-loading="listLoading"
       :data="listData"
@@ -36,14 +40,14 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Nama Hari">
+      <el-table-column label="Name">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
       <el-table-column label="Pembuat">
         <template slot-scope="scope">
-          {{ scope.row.user.username }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal Buat">
@@ -51,7 +55,6 @@
           {{ scope.row.created_at | formatDate}}
         </template>
       </el-table-column>
-      
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
@@ -59,7 +62,8 @@
         </template>
       </el-table-column>
     </el-table>
-    <!-- End of Tabel List Data -->
+    <!-- End of List Data Table -->
+
   </div>
 </template>
 
@@ -78,6 +82,7 @@ export default {
   },
   data() {
     return {
+      list: null,
       listLoading: true,
       listData: [],
       form: {
@@ -86,16 +91,17 @@ export default {
         created_by:{
           username:''
         },
-        updated_by: 1,
         created_at: '',
-        updated_at: '',
+        updated_by:'',
+        updated_at:''
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '120px'
+      formLabelWidth: '150px'
     }
   },
   created() {
+    this.getUserInfo()
     this.getData()
   },
   mounted() {
@@ -112,33 +118,42 @@ export default {
         duration: 2000
       });
     },
-    getData() {
-      const token = 'Bearer '+localStorage.getItem('token')
-      const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
+    getUserInfo() {
+      if(localStorage.getItem('token') != null) {
+        const token = 'Bearer '+localStorage.getItem('token')
+        const auth = {
+          'Authorization' : token,
+          'Content-Type' : 'application/json'
+        }
+        this.auth = auth
+        axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
+        .then(response =>{
+          let userData = JSON.parse(response.data.data)
+          this.user_id = userData.user.id
+        })
+      } else {
+        this.roles = ''
       }
+    },
+    getData() {
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/day', {headers: auth})
+      axios.get(process.env.VUE_APP_BASE_API + '/notifcategory', {headers: this.auth})
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     clearData() {
-      this.form.id = '',
-      this.form.name='',
-      this.form.created_by = 1,
-      this.form.updated_by = 1,
-      this.form.created_at = '',
-      this.form.updated_at = '',
+      this.form.id= ''
+      this.form.name= ''
+      this.form.created_by = '1'
       this.dialogFormVisible = true
     },
     editData(scope){
-      this.dialogFormVisible = true 
-      this.form.id = scope.row.id;
-      this.form.name = scope.row.name;
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.dialogFormVisible = true
+      this.form.id= scope.row.id
+      this.form.name= scope.row.name
+      this.form.updated_by = this.user_id
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -152,7 +167,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/day/' + id, { headers: auth })
+          axios.delete(process.env.VUE_APP_BASE_API + '/notifcategory/' + id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)
@@ -177,25 +192,24 @@ export default {
         'Authorization' : token,
         'Content-Type' : 'application/json'
       }
-      
+      console.log(token)      
       if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API + '/day/' + this.form.id,
+        axios.post(process.env.VUE_APP_BASE_API+'/notifcategory/'+this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
-      } else {
-        axios.post(process.env.VUE_APP_BASE_API + '/day', 
+      } else { 
+        axios.post(process.env.VUE_APP_BASE_API+'/notifcategory', 
           this.form, { headers: auth })
           .then((data) => {
-            console.log(this.form.name);
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           });
-      } 
+      }
     },
   }
 }

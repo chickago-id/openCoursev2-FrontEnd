@@ -28,7 +28,7 @@
 <!-- End of QR Code Card -->
 <br>
     <!-- Tabel List Data -->
-    <el-button size="small">Refresh Data</el-button>
+    <el-button @click="refreshData()" size="small">Refresh Data</el-button>
     <br>
     <br>
     <el-table
@@ -46,22 +46,22 @@
       </el-table-column>
       <el-table-column label="Kelas">
         <template slot-scope="scope">
-          {{ scope.row.jadwal.kode_kelas }}
+          {{ scope.row.kelas.masterKelas.nama_kelas }}
         </template>
       </el-table-column>
       <el-table-column label="Nama Peserta">
         <template slot-scope="scope">
-          {{ scope.row.user.nama }}
+          {{ scope.row.userDetail.nama_lengkap }}
         </template>
       </el-table-column>
       <el-table-column label="Jam Presensi">
         <template slot-scope="scope">
-          {{ scope.row.jam_absen }}
+          {{ scope.row.clock | formatTime }}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal">
         <template slot-scope="scope">
-          {{ scope.row.tanggal }}
+          {{ scope.row.clock | formatDate3 }}
         </template>
       </el-table-column>
     </el-table>
@@ -87,8 +87,8 @@ export default {
     return {
       auth: '',
       user_id: '',
-      id_kelas: '',
       form: {
+        id_kelas: '',
         token: ''
       },
       listData: [],
@@ -118,7 +118,7 @@ export default {
     },
     getDataPresensi() {
       this.listLoading = true
-      axios.post(process.env.VUE_APP_BASE_API + '/attendance/find/peserta/' + this.id_kelas + '/' + this.user_id, {headers: this.auth})
+      axios.post(process.env.VUE_APP_BASE_API + '/attendance/find/peserta/', this.form, {headers: this.auth})
       .then(response => {
         if(response.data.status === 'ERROR') {
           alert(response.data.message)
@@ -136,10 +136,13 @@ export default {
         if(response.data.status === 'ERROR') {
           alert(response.data.message)
         } else {
-          this.id_kelas = response.data.data[0]['id_kelas']
+          this.form.id_kelas = response.data.data[0]['id_kelas']
           this.getDataPresensi()
         }
       })
+    },
+    refreshData() {
+      this.getDataPresensi()
     }    
   }
 }

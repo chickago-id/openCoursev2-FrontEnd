@@ -6,7 +6,7 @@
       </el-col>
      
       <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="11" :span="24" >
-        <div class="grid-content bg-purple-light asd" style="background: #fff; height: 650px; padding: 60px;">
+        <div class="grid-contentbg-purple-light asd" style="background: #fff; height: 650px; padding: 60px;">
           <el-tabs :tab-position="tabPosition" style="height: 200px;">
             <el-tab-pane>
               <span slot="label"><i class="el-icon-login"></i> Sign in instead</span>
@@ -101,14 +101,19 @@
     },
     data() {
       const validateUsername = (rule, value, callback) => {
-        if (!validUsername(value)) {
-          callback(new Error('Please enter the correct user name'))
+      if (value === '') {
+        callback(new Error('please input username'));
+       }else if(value.length < 3) {
+             callback(new Error('The username can not be less than 3 digits'))
         } else {
           callback()
         }
-      }
+         
+      };
       const validatePassword = (rule, value, callback) => {
-        if (value.length < 6) {
+           if (value === '') {
+        callback(new Error('please input password'));
+        }  else if (value.length < 6) {
           callback(new Error('The password can not be less than 6 digits'))
         } else {
           callback()
@@ -122,7 +127,8 @@
         loginRules: {
           username: [{
             required: true,
-            trigger: 'blur' /* , validator: validateUsername */
+            trigger: 'blur', /* , validator: validateUsername */
+            validator: validateUsername
           }],
           password: [{
             required: true,
@@ -176,6 +182,20 @@
           })
           .catch(err => console.log(err))
       },
+      gagalNotif() {
+      const h = this.$createElement;
+     this.$message({
+              title: "warning",
+        message: h(
+          "i",
+          { style: "color: teal" },
+          "Incorrect username and password"
+        ),
+        type: "info",
+        showClose: false,
+        duration: 2000
+          });   
+    },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
           console.log(this.loginForm.username)
@@ -191,6 +211,7 @@
               })
               .then(() => this.$router.push('/'))
               .catch(err => console.log(err))
+              // this.gagalNotif();
 
             /* this.$store.dispatch('login', this.loginForm)
             .then(() => this.$router.push('/'))
@@ -207,8 +228,10 @@
               this.loading = false
             }) */
           } else {
-            console.log('Errror boskuu')
-            return false
+            // console.log('Errror boskuu')
+           
+            // return false
+             this.gagalNotif();
           }
         })
       },
@@ -353,7 +376,7 @@
     padding-top: 6px;
     font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
     font-size: 16px;
-    line-height: 1.0;
+    line-height: 1.5;
     overflow: hidden;
   }
 
@@ -362,7 +385,8 @@
   .inputkeren>textarea {
     box-sizing: border-box;
     margin: 0;
-    border: solid 1px red;
+    border: solid 1px #dddddd;
+    /* border-color: red; */
     /* Safari */
     border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
     border-top-color: transparent;

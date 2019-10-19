@@ -37,7 +37,7 @@
 <!-- End of QR Code Card -->
 <br>
     <!-- Tabel List Data Presensi -->
-    <el-button size="small">Refresh Data</el-button>
+    <el-button @click="refreshData()" size="small">Refresh Data</el-button>
     <br>
     <br>
     <el-table
@@ -55,22 +55,22 @@
       </el-table-column>
       <el-table-column label="Kelas">
         <template slot-scope="scope">
-          {{ scope.row.jadwal.kode_kelas }}
+          {{ scope.row.kelas.masterKelas.nama_kelas }}
         </template>
       </el-table-column>
       <el-table-column label="Nama Pengajar">
         <template slot-scope="scope">
-          {{ scope.row.user.nama }}
+          {{ scope.row.userDetail.nama_lengkap }}
         </template>
       </el-table-column>
       <el-table-column label="Jam Presensi">
         <template slot-scope="scope">
-          {{ scope.row.jam_absen }}
+          {{ scope.row.clock | formatTime }}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal">
         <template slot-scope="scope">
-          {{ scope.row.tanggal }}
+          {{ scope.row.clock | formatDate3 }}
         </template>
       </el-table-column>
     </el-table>
@@ -106,7 +106,8 @@ export default {
             user_id: '',
             kelasOption: [{'key': '', 'value': '', 'label': ''}],
             form: {
-              id_kelas: ''
+              id_kelas: '',
+              token: ''
             },
             tokenKelas: '',
             listData: [],
@@ -163,6 +164,23 @@ export default {
                 this.tokenKelas = response.data.data[0]['token']
                 console.log(this.auth)
             })
+        },
+        getDataPresensi() {
+          this.form.token = this.tokenKelas
+          this.listLoading = true
+          axios.post(process.env.VUE_APP_BASE_API + '/attendance/find/kelas/', this.form, {headers: this.auth})
+          .then(response => {
+            if(response.data.status === 'ERROR') {
+              alert(response.data.message)
+              this.listLoading = false
+            } else {
+              this.listData = response.data.data
+              this.listLoading = false
+            }
+          })
+        },
+        refreshData() {
+          this.getDataPresensi()
         }
     }
 }

@@ -135,8 +135,8 @@ export const constantRoutes = [
           {
             path: 'buatkodepresensi',
             component: () => import('@/views/akademik/presensi/buatkode'),
-            nama: "buatkodepresensi",
-            meta: { title: "Buat Kode Presensi"}
+            nama: 'buatkodepresensi',
+            meta: { title: 'Buat Kode Presensi'}
           },
           {
             path:'inputpresensi',
@@ -242,6 +242,11 @@ export const constantRoutes = [
         path: 'notifkategori',
         component: () => import('@/views/masterdata/notifkategori/index'),
         meta: { title: 'Notif Kategori' }
+      },
+      {
+        path: 'status',
+        component: () => import('@/views/masterdata/status/index'),
+        meta: { title: 'Master Status' }
       },
       {
         path: 'tahunakademik',

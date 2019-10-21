@@ -72,6 +72,7 @@ export default {
         }
       };
     return {
+      msg: '',
       list: null,
       listLoading: true,
       listData: [],
@@ -102,11 +103,8 @@ export default {
     
     
   },
-  created() {
-    this.getData();
-  },
   mounted() {
-    this.getData();
+  
   },
   methods: {
 
@@ -156,18 +154,11 @@ export default {
         message: h(
           "i",
           { style: "color: teal" },
-          "lengakapi dengan benar bray"
+          this.msg
         ),
         type: "info",
         showClose: false,
         duration: 2000
-      });
-    },
-    getData() {
-      this.listLoading = true;
-      axios.get("http://localhost:8081/buat-akun").then(response => {
-        this.listData = response.data;
-        this.listLoading = false;
       });
     },
     clearData() {
@@ -192,9 +183,21 @@ export default {
             { headers: auth }
           )
           .then(data => {
+            console.log(data.data.message)
+            if(data.data.status === 'error') {
+              this.msg = data.data.message
+              this.gagalNotif()
+            } else {
+              //this.getData()
+              this.successNotif()
+              this.clearData()
+            }
+            /* if(data.data.status === 'error') {
+              alert(data.data.message)
+            }
             this.getData();
             this.successNotif();
-            this.clearData();
+            this.clearData(); */
             this.dialogFormVisible = false;
           });
       } else {

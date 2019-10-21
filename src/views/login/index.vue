@@ -1,11 +1,11 @@
 <template>
   <el-card class="container" style="background: #ccc">
     <el-row >
-      <el-col :xs="0" :sm="1" :md="4" :lg="3" :xl="1">
+      <el-col :xs="0" :sm="1" :md="3" :lg="3" :xl="1">
         <div class="">&nbsp;</div>
       </el-col>
      
-      <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="11" :span="24" >
+      <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24" >
         <div class="grid-contentbg-purple-light asd" style="background: #fff; height: 650px; padding: 60px;">
           <el-tabs :tab-position="tabPosition" style="height: 200px;">
             <el-tab-pane>
@@ -61,7 +61,7 @@
 
         </div>
       </el-col>
-       <el-col :xs="24" :sm="11" :md="8" :lg="9" :xl="11" :span="24" offse="24" >
+       <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24" offse="24" >
         <div class="grid-content bg-purple">
           <div class="block">
             <el-carousel height="650px" width="300px">
@@ -78,7 +78,7 @@
         </div>
       </el-col>
       
-      <el-col :xs="0" :sm="1" :md="4" :lg="3" :xl="1">
+      <el-col :xs="0" :sm="1" :md="3" :lg="3" :xl="1">
         <div class="grid-content bg-purple-light">&nbsp;</div>
       </el-col>
     </el-row>

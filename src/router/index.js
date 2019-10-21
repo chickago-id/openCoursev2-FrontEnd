@@ -255,7 +255,7 @@ export const constantRoutes = [
     path: '/institute',
     component: Layout,
     redirect: '/user/menu1',
-    name: 'report',
+    name: 'institute',
     meta: {
       title: 'Institute Management',
       icon: 'nested'
@@ -279,18 +279,20 @@ export const constantRoutes = [
     path: '/manajemenuser',
     component: Layout,
     redirect: '/user/menu1',
-    name: 'report',
+    name: 'manajemenuser',
     meta: {
       title: 'User Management',
       icon: 'nested'
     },
     children: [
       {
+        name: 'manajemen user',
         path: 'user',
         component: () => import('@/views/manajemenuser/userlist/index'),
         meta: { title: 'User' }
       },
       {
+        name: 'manajemen level',
         path: 'level',
         component: () => import('@/views/manajemenuser/akseslevel/index'),
         meta: { title: 'Access Level' }
@@ -320,37 +322,37 @@ export const constantRoutes = [
     children: [
       {
         path: 'index',
-        name: 'notification',
+        name: 'notifications',
         component: () => import('@/views/notification/index'),
         meta: { title: 'Notification', noCache: true }
       },
       {
         path: '/notification/sent',
-        name: 'notification',
+        name: 'notification sent',
         component: () => import('@/views/notification/sent'),
         meta: { title: 'Notification', noCache: true }
       },
       {
         path: '/notification/draft',
-        name: 'notification',
+        name: 'notification draft',
         component: () => import('@/views/notification/draft'),
         meta: { title: 'Notification', noCache: true }
       },
       {
         path: '/notification/trash',
-        name: 'notification',
+        name: 'notification trash',
         component: () => import('@/views/notification/trash'),
         meta: { title: 'Notification', noCache: true }
       },
       {
         path: '/notification/important',
-        name: 'notification',
+        name: 'notification important',
         component: () => import('@/views/notification/important'),
         meta: { title: 'Notification', noCache: true }
       },
       {
         path: '/notification/news',
-        name: 'notification',
+        name: 'notification news',
         component: () => import('@/views/notification/news'),
         meta: { title: 'Notification', noCache: true }
       }
@@ -480,19 +482,19 @@ export const constantRoutes = [
   {
     path: '/pdf/presensisiswa',
     component: () => import('@/views/pdf/presensisiswa/index'),
-    name: 'penilaianpengajar',
+    name: 'pdf presensisiswa',
     hidden: true
   },
   {
     path: '/pdf/nilaisiswa',
     component: () => import('@/views/pdf/nilaisiswa/index'),
-    name: 'nilaisiswa',
+    name: 'pdf nilaisiswa',
     hidden: true
   },
   {
     path: '/pdf/penilaianpengajar',
     component: () => import('@/views/pdf/penilaianpengajar/index'),
-    name: 'nilaisiswa',
+    name: 'pdf penilaianpengajar',
     hidden: true
   },
   {
@@ -506,17 +508,20 @@ export const constantRoutes = [
     },
     children: [
       {
+        name: 'report nilai siswa',
         path: 'nilaisiswa',
         component: () => import('@/views/report/nilaisiswa/index'),
         meta: { title: 'Nilai Siswa' }
       },
       {
+        name: 'report presensi siswa',
         path: 'presensisiswa',
         component: () => import('@/views/report/presensisiswa/index'),
         meta: { title: 'Presensi Siswa' }
       },
       {
-        path: 'penilaianpengajar',
+        name: 'report penilaian pengajar',
+        path: 'penilaian pengajar',
         component: () => import('@/views/report/penilaianpengajar/index'),
         meta: { title: 'Penilaian Pengajar' }
       }

@@ -33,7 +33,7 @@
         </el-form-item>
         <el-form-item required label="Bobot Nilai" :label-width="formLabelWidth">
           <el-input type="number" v-model="form.bobot_nilai" autocomplete="off"></el-input>
-          Sisa bobot nilai = {{listDataByIdMateri | groupMateri }}
+          Sisa bobot nilai = {{this.sisaBobotNilai = listDataByIdMateri | groupMateri }}
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -88,7 +88,9 @@ import axios from 'axios'
 export default {
   filters: {
     groupMateri: function (value) {
-      if (!value) return ''
+      if (!value) {
+        return 100
+      } 
       let sumBobotNilai = 0
       for (let index = 0; index < value.length; index++) {
         sumBobotNilai += value[index]['bobot_nilai'];
@@ -106,6 +108,7 @@ export default {
   },
   data() {
     return {
+      msg: '',
       auth: '',
       id_user: '',
       listLoading: true,
@@ -123,7 +126,7 @@ export default {
       formLabelWidth: '150px',
       listData: [],
       listDataByIdMateri: [],
-      sisaBobotNilai: 100
+      sisaBobotNilai: ''
     }
   },
   created() {
@@ -136,6 +139,15 @@ export default {
     this.getKategori()
   },
   methods: {
+    failedNotif() {
+      const h = this.$createElement;
+      this.$notify({
+        message: h('i', {style: 'color: red'}, this.msg),
+        type: 'error',
+        showClose: false,
+        duration: 2000
+      })
+    },
     addNotif() {
       const h = this.$createElement;
       this.$notify({
@@ -193,8 +205,15 @@ export default {
       this.listLoading = true
       axios.get(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/materi/' + id, {headers: this.auth})
       .then((response) => {
-        this.listDataByIdMateri = response.data.data;
-        this.listLoading = false
+        console.log(response.data.status)
+        if(response.data.status === 'OK') {
+          this.listDataByIdMateri = response.data.data;
+          this.listLoading = false
+        } else {
+          this.listDataByIdMateri = ''
+          this.listLoading = false
+        }
+        
       })
     },
     getData() {
@@ -210,6 +229,7 @@ export default {
       this.form.id_materi = ''
       this.form.id_kategori_nilai = ''
       this.form.bobot_nilai = ''
+      this.sisaBobotNilai = 100
       this.dialogFormVisible = true
     },
     editData(scope){
@@ -218,6 +238,7 @@ export default {
       this.form.id_materi = scope.row.materi.id
       this.form.id_kategori_nilai = scope.row.kategori_nilai.id_kategori_nilai
       this.form.bobot_nilai = scope.row.bobot_nilai
+      this.getDataByIdMateri(this.form.id_materi)
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -249,19 +270,35 @@ export default {
         axios.put(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi/' + this.form.id,
           this.form, { headers: this.auth })
           .then((data) => {
-            this.getData()
-            this.addNotif()
-            this.dialogFormVisible = false
-            this.sisaBobotNilai = 100
+            if(data.data.status === 'ERROR') {
+              this.msg = data.data.message
+              this.failedNotif()
+            } else {
+              this.getData()
+              this.addNotif()
+              this.dialogFormVisible = false
+              this.sisaBobotNilai = 100
+            }
+          }).catch((error) => {
+            this.msg = error
+            this.failedNotif()
           })
       } else { 
         axios.post(process.env.VUE_APP_BASE_API + '/kategori-nilai-materi', 
           this.form, { headers: this.auth })
           .then((data) => {
-            this.getData()
-            this.addNotif()
-            this.dialogFormVisible = false
-            this.sisaBobotNilai = 100
+            if(data.data.status === 'ERROR') {
+              this.msg = data.data.message
+              this.failedNotif()
+            } else {
+              this.getData()
+              this.addNotif()
+              this.dialogFormVisible = false
+              this.sisaBobotNilai = 100
+            }
+          }).catch((error) => {
+            this.msg = error
+            this.failedNotif()
           });
       }
     },

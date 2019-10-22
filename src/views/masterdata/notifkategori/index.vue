@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="Pembuat">
         <template slot-scope="scope">
-          {{ scope.row.id }}
+          {{ scope.row.created_by }}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal Buat">
@@ -88,11 +88,9 @@ export default {
       form: {
         id: '',
         name: '',
-        created_by:{
-          username:''
-        },
+        created_by:1,
         created_at: '',
-        updated_by:'',
+        updated_by:1,
         updated_at:''
       },
       successAlertVisible: false,
@@ -146,14 +144,18 @@ export default {
     clearData() {
       this.form.id= ''
       this.form.name= ''
-      this.form.created_by = '1'
+      this.form.created_by = 1
+      this.form.created_at = ''
+      this.form.updated_by = 1
+      this.form.updated_at =''
       this.dialogFormVisible = true
     },
     editData(scope){
       this.dialogFormVisible = true
-      this.form.id= scope.row.id
-      this.form.name= scope.row.name
-      this.form.updated_by = this.user_id
+      this.form.id= scope.row.id;
+      this.form.name= scope.row.name;
+      this.form.created_by=scope.row.created_by;
+      this.form.updated_by = 1
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -194,7 +196,7 @@ export default {
       }
       console.log(token)      
       if(this.form.id != '') {
-        axios.post(process.env.VUE_APP_BASE_API+'/notifcategory/'+this.form.id,
+        axios.put(process.env.VUE_APP_BASE_API+'/notifcategory/'+this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

@@ -47,7 +47,7 @@
       </el-table-column>
       <el-table-column label="Pembuat">
         <template slot-scope="scope">
-          {{ scope.row.created_by }}
+          {{ scope.row.user.username }}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal Buat">

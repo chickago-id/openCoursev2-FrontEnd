@@ -138,7 +138,7 @@ export default {
       this.dialogFormVisible = true 
       this.form.id = scope.row.id;
       this.form.name = scope.row.name;
-      this.form.updated_by = 1;//scope.row.updated_by;
+      this.form.updated_by = 1;
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {

@@ -15,7 +15,7 @@
         </el-form-item>
 
         <el-form-item required label="Kapasitas" :label-width="formLabelWidth">
-          <el-input type="number"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="2" v-model="form.kapasitas" autocomplete="off"></el-input>
+          <el-input type="number"  oninput="javascript: if (this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="4" v-model="form.kapasitas" autocomplete="off"></el-input>
         </el-form-item>
         
         <el-form-item label="Keterangan" :label-width="formLabelWidth">
@@ -192,7 +192,7 @@ export default {
         'Authorization' : token,
         'Content-Type' : 'application/json'
       }
-      console.log(token)      
+      console.log(token)  
       if(this.form.id != '') {
         axios.put(process.env.VUE_APP_BASE_API + '/ruang/' + this.form.id,
           this.form, { headers: auth })

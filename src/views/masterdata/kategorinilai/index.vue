@@ -169,7 +169,7 @@ export default {
           });          
         });
       this.getData()
-    }, 
+    },
     addData(){
       if(this.form.id_kategori_nilai != '') {
         this.form.updated_by = this.user_id

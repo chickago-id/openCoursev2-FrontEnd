@@ -3,12 +3,11 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const state = {
-  token: localStorage.getItem('token') || '',
+  token: getToken(),
   name: '',
   username: '',
   avatar: '',
-  user : {},
-  roles: localStorage.getItem('role') || ''
+  roles: []
 }
 
 const mutations = {
@@ -31,7 +30,7 @@ const mutations = {
     state.status = 'success'
     state.role = payload.role
     state.token = payload.token
-    state.user = payload.user
+    state.user = payload
   },
   auth_error(state){
     state.status = 'error'
@@ -40,46 +39,22 @@ const mutations = {
 }
 
 const actions = {
-  // user login
-  /* login({ commit }, userInfo) {
+  // user login custom
+  /* login({commit}, userInfo){
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password }).then(response => {
-        console.log(response.roles[0])
-        commit('SET_TOKEN', response.access_token)
-        commit('SET_USERNAME', response.username)
-        commit('SET_ROLES', response.roles[0])
-        localStorage.setItem('token', response.access_token)
-        localStorage.setItem('role', response.roles[0])
-        setToken(response.access_token)
-        resolve(response)
-      }).catch(error => {
-        reject(error)
-      })
-    })
-  }, */
-
-  login({commit}, userInfo){
-    const { username, password } = userInfo
-    return new Promise((resolve, reject) => {
-        //commit('auth_request')
         login({username: username, password: password})
         .then(response => {
-        console.log(response)
-        const token = response['access_token']
         commit('SET_TOKEN', response['access_token'])
-        commit('SET_ROLES', response['roles'][0])
+        commit('SET_ROLES', response['roles'])
         commit('SET_USERNAME', response['username'])
+        commit('SET_USER', response)
         localStorage.setItem('token', response['access_token'])
-        localStorage.setItem('role', response['roles'][0])
+        localStorage.setItem('role', response['roles'])
+        localStorage.setItem('username', response['username'])
+        localStorage.setItem('user', response)
         setToken(response['access_token'])
-        // Add the following line:
-        commit('auth_success', {
-          token: token,
-          username: response['username'],
-          role: response['roles'][0] 
-        })
-            resolve(response)
+        resolve(response)
         })
         .catch(err => {
             commit('auth_error')
@@ -87,54 +62,25 @@ const actions = {
             reject(err)
         })
     })
-  },
+  }, */
 
-
-  // user login
-  /* login({ commit }, user) {
+  // user login default
+  login({ commit }, userInfo) {
+    const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ data: user }).then(response => {
-        console.log(reject)
-        const token = response.data.access_token
-        let user = response.data.roles[0]
-        let atur = response.data.roles[0]
-        setToken(response.data.token)
-        localStorage.setItem('token', token)
-        localStorage.setItem('role', response.data.roles[0])
-        // Add the following line:
-        axios.defaults.headers.common['Authorization'] = token
-        commit('auth_success', {
-          token: token,
-          user: user,
-          role: atur
-        })
-        resolve(response)
+      login({ username: username.trim(), password: password }).then(response => {
+        commit('SET_USERNAME', response['username'])
+        commit('SET_TOKEN', response['access_token'])
+        setToken(response['access_token'])
+        resolve()
       }).catch(error => {
         reject(error)
       })
     })
-  }, */
+  },
 
-  // get user info
-  /* getInfo({ commit, state}) {
-    getInfo(state.token).then(response =>{
-      if (!response) {
-      console.log('Verification failed, please Login again.')
-      reject('Verification failed, please Login again.')
-      }
-
-      commit('SET_USERNAME', response.username)
-      commit('SET_ROLES', response.roles[0])
-      resolve(data)
-      console.log(data)
-    }).catch(error => {
-        console.log(error)
-        reject(error)
-      })
-      return response.data;
-  }, */
-
-  getInfo({ commit, state }) {
+  // get user info custom
+  /* getInfo({ commit, state }) {
     
     return new Promise((resolve, reject) => {
       getInfo(state.token).then(response => {
@@ -144,25 +90,62 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        commit('SET_USERNAME', response.username)
-        commit('SET_ROLES', response.roles[0])
-        resolve(data)
-        console.log(data)
+        commit('SET_USERNAME', response.data.user.username)
+        commit('SET_ROLES', response.data.user.role)
+        resolve(response)
+        console.log(response.data.user.role)
       }).catch(error => {
         console.log(error)
         reject(error)
       })
     })
+  }, */
+
+  // get user info default
+  getInfo({ commit, state }) {
+    return new Promise((resolve, reject) => {
+      getInfo(state.token).then(response => {
+        const {data} = response
+         if (!data) {
+          reject('Verification failed, please Login again.')
+        } else {
+          const roles = [response.data[0].user.role]
+          // roles must be a non-empty array
+          if (!roles || roles.length <= 0) {
+            reject('getInfo: roles must be a non-null array!')
+          } else {
+            commit('SET_USERNAME', response.data[0].user.username)
+            commit('SET_NAME', response.data[0].nama_lengkap)
+            commit('SET_ROLES', roles)
+            resolve(data)
+          }
+        }
+      }) .catch(error => {
+        reject(error)
+      })
+    })
   },
 
-  // user logout
-  /* logout({ commit }) {
-    //console.log(state.token)
+  // user logout custom
+  logout({commit}){
+    console.log('logout')
     return new Promise((resolve, reject) => {
-      console.log(state)
+        commit('SET_TOKEN', '')
+        commit('SET_ROLES', [])
+        removeToken()
+        resetRouter()
+        resolve()
+    }).catch((error) => {
+      reject(error)
+    })
+  }, 
+
+  // user logout default
+  /* logout({ commit, state }) {
+    return new Promise((resolve, reject) => {
       logout(state.token).then(() => {
         commit('SET_TOKEN', '')
-        console.log(state.token)
+        commit('SET_ROLES', [])
         removeToken()
         resetRouter()
         resolve()
@@ -172,17 +155,6 @@ const actions = {
     })
   }, */
 
-  logout({commit}){
-    console.log('logout')
-    return new Promise((resolve, reject) => {
-        commit('logout')
-        commit('SET_TOKEN', '')
-        removeToken()
-        //delete config.headers['Authorization']
-        resolve()
-    })
-  },
-
   // remove token
   resetToken({ commit }) {
     return new Promise(resolve => {
@@ -190,7 +162,33 @@ const actions = {
       removeToken()
       resolve()
     })
+  },
+
+  // dynamically modify permissions
+  changeRoles({ commit, dispatch }, role) {
+    return new Promise(async resolve => {
+      const token = role + '-token'
+
+      commit('SET_TOKEN', token)
+      setToken(token)
+
+      const { roles } = await dispatch('getInfo')
+
+      resetRouter()
+
+      // generate accessible routes map based on roles
+      const accessRoutes = await dispatch('permission/generateRoutes', roles, { root: true })
+
+      // dynamically add accessible routes
+      router.addRoutes(accessRoutes)
+
+      // reset visited views and cached views
+      dispatch('tagsView/delAllViews', null, { root: true })
+
+      resolve()
+    })
   }
+
 }
 
 export default {

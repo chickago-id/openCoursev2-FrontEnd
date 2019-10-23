@@ -2,50 +2,84 @@
     <div class="dashboard-editor-container">
       <github-corner class="github-corner"/>
       
-      <panel-group @handleSetLineChartData="handleSetLineChartData" />
+      <DataView/>
+      <!-- untuk ref ke halaman yang dituju (belum fungsi) -->
+      <div class="collapsibler">
+        <el-row :gutter="32">
+          <el-collapse v-model="activeNames" @change="handleChange">
+            <el-col :xs="24" :sm="12" :lg="12">
+              <el-collapse-item title="Kelas" name="1">
+                <div class="chart-wrapper">
+                  <LineChart/>
+                  <!-- untuk lihat total vs Periode -->
+                </div>
+              </el-collapse-item>
+            </el-col>
+            <el-col :xs="24" :sm="12" :lg="12">
+              <el-collapse-item title="Periode" name="2">
+                <div class="chart-wrapper">
+                  <TipeChart/>
+                  <!-- untuk lihat kelas vs peserta -->
+                </div>
+              </el-collapse-item>
+            </el-col>
+          </el-collapse>
+        </el-row>
+      </div>
       
-      <el-row gutter="32">
-          <el-col :xs="24" :sm="12" :lg="14">
+     <el-row gutter="32">
+          <el-col :xs="24" :sm="12" :lg="24">
+            <div class="chart-wrapper">
+                <BarChart/> 
+                <!-- untuk lihat rekap jumlah kelas -->
+                <PesertaChart/>
+                <!-- untuk lihat rekap peserta -->
+            </div>
+          </el-col>
+        </el-row>
+      <el-row :gutter="32">
+          <!-- <el-col :xs="24" :sm="12" :lg="14">
             <div class="chart-wrapper">
               <line-chart :chart-data="lineChartData" />
             </div>
-          </el-col>
-           <el-col :xs="24" :sm="12" :lg="10">
+          </el-col> -->
+           <el-col :xs="24" :sm="12" :lg="24">
             <div class="chart-wrapper">
               <pie-chart />
+              <!-- diagram banyaknya peserta berdasarkan kelas -->
             </div>
           </el-col>
         </el-row>
-        <el-row gutter="32">
-          <el-col :xs="24" :sm="12" :lg="24">
-            <div class="chart-wrapper">
-              <bar-chart/>
-            </div>
-          </el-col>
-        </el-row>
+        
       <el-row :gutter="8">
         <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 48}" :xl="{span: 24}" style="padding-right:8px;margin-bottom:30px;">
           <transaction-table />
+          <!-- daftar nama siswa -->
         </el-col>
       </el-row>
     </div>
 </template>
 
 <script>
-import panelGroup from './components/panelGrup'
+// import panelGroup from './components/panelGrup' << gak dipake di hapus saja
+// import panGroup from './components/panGrup'<< gak dipake
+import DataView from './components/DataView'
 import LineChart from './components/LineChart'
+import TipeChart from './components/ClassTypeChart'
 import TransactionTable from './components/TransactionTable'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
+import PesertaChart from './components/PesertaChart'
+import { log } from 'util'
 
 const lineChartData = {
-  siswa: {
-    expectedData: [40, 65, 45, 40, 50, 90, 35, 40, 65, 45, 40, 50],
-    actualData: [61, 50, 30, 73, 86, 92, 57, 30, 73, 86, 92, 57]
+  periodic: {
+    jumlahKelas: [15, 19, 14, 10, 10, 13, 23, 14, 0, 0, 0, 0],
+    jumlahPeserta: [63, 61, 66, 27, 12, 41, 135, 24, 0, 0, 0, 0]
   },
-  kelas: {
-    expectedData: [7, 10, 10, 5, 5, 6, 7, 1, 4, 9, 2, 8],
-    actualData: [4, 10, 8, 3, 5, 9, 10, 8, 3, 5, 9, 10]
+  tipe: {
+    totalKelas: [30, 68, 12, 6, 2],
+    totalPeserta: [108, 72, 180, 57, 12]
   },
   sertifikat: {
     expectedData: [25, 20, 15, 30, 35, 50, 40, 15, 30, 35, 50, 40],
@@ -57,20 +91,37 @@ const lineChartData = {
 export default {
     name: 'DashboardAdmin',
     components: {
-      panelGroup,
+      // panelGroup, << gak dipake
+      // panGroup, << gak dipake
+      DataView,
       LineChart,
+      TipeChart,
       TransactionTable,
       PieChart,
-      BarChart
+      BarChart,
+      PesertaChart
     },
     data() {
       return {
-        lineChartData: lineChartData.siswa
+        lineChartData: lineChartData.periodic,
+        activeNames: ['1','2'],
+        activeName: 'satu',
+        tabPosition: 'top'
       }
     },
     methods: {
       handleSetLineChartData(type) {
         this.lineChartData = lineChartData[type]
+      },
+      handleTipeChartData(type) {
+        this.lineChartData = lineChartData[type]
+      },
+      handleChange(val){
+        console.log(val);
+        
+      },
+      handleClick(tab, event) {
+        console.log(tab, event);
       }
     }
 }
@@ -88,6 +139,19 @@ export default {
     border: 0;
     right: 0;
   }
+
+  .collapsible {
+    background-color: #777;
+    color: white;
+    cursor: pointer;
+    padding: 18px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 15px;
+  }
+
 
   .chart-wrapper {
     background: #fff;

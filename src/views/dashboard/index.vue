@@ -3,25 +3,26 @@
     <!-- <div class="dashboard-text">name: {{ username }}</div>
     <div class="dashboard-text">token: {{ token }}</div>
     <div class="dashboard-text">roles: {{ roles }}</div> -->
-    <component :is="roles" />
+    <component :is="roles[0]" />
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
-import adminDashboard from './admin'
-
+import Admin from './admin'
+import Peserta from './peserta'
 
 
 export default {
   name: 'Dashboard',
   components:{
-    adminDashboard,
+    Admin,
+    Peserta
 
   },
   data() {
     return {
-      roles: 'adminDashboard'
+      //roles: 'adminDashboard'
     }
   },
   computed: {
@@ -32,9 +33,9 @@ export default {
     ])
   },
   created() {
-    if (!this.roles.includes('admin')) {
+    /* if (!this.roles.includes('admin')) {
       this.roles = 'editorDashboard'
-    }
+    } */
   }
 }
 </script>

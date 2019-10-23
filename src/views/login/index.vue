@@ -120,6 +120,7 @@
         }
       }
       return {
+        msg: '',
         loginForm: {
           username: '',
           password: ''
@@ -167,101 +168,49 @@
           this.$refs.password.focus()
         })
       },
-
-      login() {
-        let username = this.username
-        let password = this.password
-        this.$store.dispatch('login', {
-            username,
-            password
-          })
-          .then(() => {
-            // this.$router.push('/fill')
-            this.ceklengkap()
-            this.hideModal()
-          })
-          .catch(err => console.log(err))
-      },
       gagalNotif() {
       const h = this.$createElement;
-     this.$message({
-              title: "warning",
+      this.$notify({
         message: h(
           "i",
-          { style: "color: teal" },
-          "Incorrect username and password"
+          { style: "color: red" },
+          'Username atau password salah',  
         ),
-        type: "info",
+        type: "error",
         showClose: false,
         duration: 2000
-          });   
+      });  
+      this.loading = false 
     },
       handleLogin() {
         this.$refs.loginForm.validate(valid => {
-          console.log(this.loginForm.username)
           if (valid) {
-
-            let username = this.loginForm.username
-            let password = this.loginForm.password
-            console.log(username)
-
-            this.$store.dispatch('user/login', {
-                username,
-                password
+            this.loading = true
+            this.$store.dispatch('user/login', this.loginForm)
+              .then(() => {
+                this.$router.push({path: this.redirect || '/'})
+                this.loading = false
+                })
+              .catch((err) => {
+                this.msg = err
+                this.gagalNotif()
               })
-              .then(() => this.$router.push('/'))
-              .catch(err => console.log(err))
-              // this.gagalNotif();
-
-            /* this.$store.dispatch('login', this.loginForm)
-            .then(() => this.$router.push('/'))
-            .catch((err) => {
-              console.log(err)
-              this.loading = false
-            }) */
-
-            /* this.loading = true
-            this.$store.dispatch('user/login', this.loginForm).then(() => {
-              this.$router.push({ path: this.redirect || '/' })
-              this.loading = false
-            }).catch(() => {
-              this.loading = false
-            }) */
           } else {
-            // console.log('Errror boskuu')
-           
-            // return false
-             this.gagalNotif();
+            this.msg = 'error submit!!'
+            this.gagalNotif()
+            return false
           }
         })
       },
-      ceklengkap() {
-        const token = 'Bearer ' + localStorage.getItem('token')
-        const ndas = {
-          'Authorization': token,
-          'Content-Type': 'application/json'
-        }
-        axios.get(process.env.VUE_APP_BASE_API + '/profil', {
-            headers: ndas
-          })
-          .then(response => {
-            // console.log(response.data)
-            // var baru = JSON.parse(response.data)
-            // console.log(JSON.parse(response.data.data))
-            let lengkapi = JSON.parse(response.data.data)
-            console.log(lengkapi)
-            if (lengkapi.alamat != null) {
-              console.log('isi')
-              // window.location = '/'
-              this.$router.push('/afterlogin')
-            } else {
-              console.log('kosong isi')
-              // window.location = '/'
-              // window.location = this.$router.push('/fill')
-              this.$router.push('/fill')
-            }
-          })
-      }
+      getOtherQuery(query) {
+        return Object.keys(query).reduce((acc, cur) => {
+          if (cur !== 'redirect') {
+            acc[cur] = query[cur]
+          }
+          return acc
+        }, {})
+      },
+      
     }
   }
 

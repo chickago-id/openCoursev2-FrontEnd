@@ -10,7 +10,7 @@ import { mapGetters } from 'vuex'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // no redirect whitelist
+const whiteList = ['/login', '/auth-redirect'] // no redirect whitelist
 
 router.beforeEach(async(to, from, next) => {
   // start progress bar
@@ -25,24 +25,31 @@ router.beforeEach(async(to, from, next) => {
   if (hasToken) {
     if (to.path === '/login') {
       // if is logged in, redirect to the home page
-      
       next({ path: '/' })
       NProgress.done()
-      console.log(hasToken)
     } else {
-      const hasGetUserInfo = getInfo()
-      console.log(hasGetUserInfo)
-      if (hasGetUserInfo) {
+      // determine whether the user has obtained his permission roles through getInfo
+      const hasRoles = store.getters.roles && store.getters.roles.length > 0
+      if (hasRoles) {
         next()
       } else {
         try {
           // get user info
-          await store.dispatch('getInfo')
+          // note: roles must be a object array! such as: ['admin'] or ,['developer','editor']
+          const data = await store.dispatch('user/getInfo')
+          const roles = [data[0].user.role]
+          // generate accessible routes map based on roles
+          const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
 
-          next()
+          // dynamically add accessible routes
+          router.addRoutes(accessRoutes)
+    
+          // hack method to ensure that addRoutes is complete
+          // set the replace: true, so the navigation will not leave a history record
+          next({ ...to, replace: true })
         } catch (error) {
           // remove token and go to login page to re-login
-          await store.dispatch('resetToken')
+          await store.dispatch('user/resetToken')
           Message.error(error || 'Has Error')
           next(`/login?redirect=${to.path}`)
           NProgress.done()

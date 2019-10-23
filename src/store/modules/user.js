@@ -3,7 +3,7 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 import { resetRouter } from '@/router'
 
 const state = {
-  token: getToken(),
+  token: getToken() || localStorage.getItem('token'),
   name: '',
   username: '',
   avatar: '',
@@ -71,6 +71,7 @@ const actions = {
       login({ username: username.trim(), password: password }).then(response => {
         commit('SET_USERNAME', response['username'])
         commit('SET_TOKEN', response['access_token'])
+        localStorage.setItem('token', response['access_token'])
         setToken(response['access_token'])
         resolve()
       }).catch(error => {

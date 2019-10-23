@@ -34,8 +34,8 @@
     </div>
     <div class="right-menu">
       <div class="kotak">
-        <div class="username">{{username}}</div>
-        <div class="roles">{{roles}}</div>
+        <div class="username">{{name}}</div>
+        <div class="roles">{{roles[0]}}</div>
       </div> 
     </div>   
   </div>
@@ -69,6 +69,7 @@ export default {
     ...mapGetters([
       'sidebar',
       'avatar',
+      'name',
       'username',
       'roles'
     ])

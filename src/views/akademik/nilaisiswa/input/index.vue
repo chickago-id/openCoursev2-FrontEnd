@@ -62,7 +62,7 @@
           </el-select>   
         </el-form-item>
         <el-form-item label="Pilih Kategori Nilai" :label-width="formLabelWidth">
-          <el-select @change="showBobotNilai($event)" v-model="id_kategori_nilai_materi" placeholder="Select">
+          <el-select @change="showBobotNilai($event)" v-model="selectedKategoriNilai" placeholder="Select">
             <el-option
               v-for="item in kategoriNilaiMateriOption"
               :key="item.key"
@@ -108,6 +108,8 @@ export default {
   },
   data() {
     return {
+      selectedKategoriNilai: '',
+      msg: '',
       kelasOption: [{'key': '', 'value': '', 'label': ''}],
       materiOption: [{'key': '','value': '', 'label': ''}],
       kategoriNilaiMateriOption: [{'key': '','value': '', 'label': ''}],
@@ -125,8 +127,8 @@ export default {
         id_kategori_nilai_materi: '',
         nilai_input: '',
         nilai_hitung: '',
-        created_by: 1,//''
-        updated_by: 1,//'',
+        created_by: '',
+        updated_by: '',
         created_date: '',
         updated_date: '',
       },
@@ -144,15 +146,33 @@ export default {
     //this.getData()
   },
   methods: {
+    failedNotif() {
+      const h = this.$createElement;
+      this.$notify({
+        message: h(
+          "i",
+          { style: "color: red" },
+          this.msg,  
+        ),
+        type: "error",
+        showClose: false,
+        duration: 2000
+      });  
+      this.loading = false 
+    },
     getBobotNilai(){
+      console.log('id materi :' + this.id_materi)
+      console.log('id kategori nilai : ' + this.id_kategori_nilai)
       axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi/materi/' + this.id_materi + '/kategori-nilai/' + this.id_kategori_nilai,  
       {headers: this.auth})
       .then((response) => {
+        console.log(response.data.data[0])
         this.bobot_nilai = response.data.data[0]['bobot_nilai']
         this.form.id_kategori_nilai_materi = response.data.data[0]['id']
         })
     },
     getKategoriNilaiByIdMateri(id_materi) {
+      this.kategoriNilaiMateriOption = []
       axios.get(process.env.VUE_APP_BASE_API+'/kategori-nilai-materi/materi/' + this.id_materi, 
       {headers: this.auth})
       .then((response) => {
@@ -160,7 +180,7 @@ export default {
           this.kategoriNilaiMateriOption.push (
             {
               key: item.id,
-              value: item.id,
+              value: item,
               label: item.kategori_nilai.nama_kategori
             }
           )
@@ -218,7 +238,6 @@ export default {
             }
           )
         })
-      //this.form.id_kelas = item.id
       })
     },
     getMateri() {
@@ -232,7 +251,6 @@ export default {
             }
           )
         })
-        //this.id_materi = item.id
       })
     },
     clearData() {
@@ -267,10 +285,9 @@ export default {
           }
           axios.delete(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + id, { headers: auth })
           .then((res) =>{
-          console.log(res)
-          this.listData.splice(index, 1)
+            this.listData.splice(index, 1)
           }, (error) => {
-            console.log(error)
+            this.msg = error
           }) 
           this.$message({
             type: 'success',
@@ -290,15 +307,27 @@ export default {
         axios.put(process.env.VUE_APP_BASE_API + '/nilai-siswa/' + this.form.id,
           this.form, { headers: this.auth })
           .then((data) => {
-            this.addNotif()
-            this.dialogFormVisible = false
+            if(data.data.status === 'ERROR') {
+              this.msg = data.data.message
+              this.failedNotif()
+            } else {
+              this.addNotif()
+              this.dialogFormVisible = false
+            }
           })
       } else { 
+        console.log('post')
         axios.post(process.env.VUE_APP_BASE_API + '/nilai-siswa', 
           this.form, { headers: this.auth })
           .then((data) => {
-            this.addNotif()
-            this.dialogFormVisible = false
+            console.log(data.data.status)
+            if(data.data.status === 'ERROR') {
+              this.msg = data.data.message
+              this.failedNotif()
+            } else {
+              this.addNotif()
+              this.dialogFormVisible = false
+            }
           });
       } 
     },
@@ -332,9 +361,9 @@ export default {
       console.log(this.id_materi)
     },
     showBobotNilai(event) {
-      this.id_kategori_nilai = event
-      console.log(this.id_kategori_nilai)
-      if (event == null) {
+      this.id_kategori_nilai = event.id_kategori_nilai
+      this.id_kategori_nilai_materi = event.id
+      if (event === null) {
         this.listKategoriNilai = []
       } else {
         this.getBobotNilai()

@@ -258,10 +258,8 @@ export const constantRoutes = [
     component: () => import('@/views/pdf/penilaianpengajar/index'),
     name: 'pdf penilaianpengajar',
     hidden: true
-  },
-  
+  }
 
-  
 ]
 
 /**
@@ -269,6 +267,108 @@ export const constantRoutes = [
  * the routes that need to be dynamically loaded based on user roles
  */
 export const asyncRoutes = [
+
+  {
+    path: '/akademik',
+    component: Layout,
+    redirect: '/akademik/kelas',
+    name: 'Akademik',
+    meta: {
+      title: 'Akademik',
+      icon: 'nested'
+    },
+    children: [
+      {
+        path: 'kelas',
+        component: () => import('@/views/akademik/kelas/index'),
+        meta: { title: 'Daftar List Kelas', roles: ['Admin'] }
+      },
+      {
+        path: 'materi',
+        component: () => import('@/views/akademik/materi/index'),
+        meta: { title: 'Daftar List Materi', roles: ['Admin'] }
+      },
+      {
+        path: 'jadwal',
+        component: () => import('@/views/akademik/jadwal/index'),
+        meta: { title: 'Jadwal', roles: ['Admin'] }
+      },
+      {
+        path: 'instructor',
+        component: () => import('@/views/akademik/daftarinstructor/index'),
+        meta: { title: 'Daftar Instructor', roles: ['Admin'] }
+      },
+      {
+        path: 'siswa',
+        component: () => import('@/views/akademik/daftarsiswa/index'),
+        meta: { title: 'Daftar Siswa', roles: ['Admin' || 'Pengajar'] }
+      },
+      {
+        path: 'nilaisiswa',
+        component: () => import('@/views/akademik/nilaisiswa/index'),
+        meta: { title: 'Nilai Siswa' },
+        children: [
+          {
+            path: 'list',
+            component: () => import('@/views/akademik/nilaisiswa/list/index'),
+            meta: { title: 'List Nilai Siswa', roles: ['Admin'] }
+          },
+          {
+            path: 'input',
+            component: () => import('@/views/akademik/nilaisiswa/input/index'),
+            meta: { title: 'Input Nilai Siswa', roles: ['Pengajar'] }
+          }
+        ]
+      },
+      {
+        path: 'kategorinilaimateri',
+        component: () => import('@/views/akademik/kategorinilaimateri/index'),
+        meta: { title: 'Kategori Nilai Materi', roles: ['Admin'] }
+      },
+      {
+        path: 'nilaipengajar',
+        component: () => import('@/views/akademik/nilaipengajar/index'),
+        meta: { title: 'Penilaian Pengajar', roles: ['Admin'] }
+      },
+      {
+        path: 'presensi',
+        component: () => import('@/views/akademik/presensi/index'), // Parent router-view
+        name: 'presensi',
+        meta: { title: 'Presensi' },
+        children: [
+          {
+            path: 'presensi-siswa',
+            component: () => import('@/views/akademik/presensi/siswa'),
+            name: 'presensi-siswa',
+            meta: { title: 'Presensi Siswa', roles: ['Admin'] }
+          },
+          {
+            path: 'presensi-pengajar',
+            component: () => import('@/views/akademik/presensi/pengajar'),
+            name: 'presensi-pengajar',
+            meta: { title: 'Presensi Pengajar', roles: ['Admin'] }
+          },
+          {
+            path: 'buatkodepresensi',
+            component: () => import('@/views/akademik/presensi/buatkode'),
+            nama: 'buatkodepresensi',
+            meta: { title: 'Buat Kode Presensi', roles: ['Pengajar'] }
+          },
+          {
+            path: 'inputpresensi',
+            component: () => import('@/views/akademik/presensi/inputpresensi'),
+            nama: 'inputpresensi',
+            meta: { title: 'Input Presensi', roles: ['Peserta'] }
+          }
+        ]
+      },
+      {
+        path: 'broadcasting',
+        component: () => import('@/views/akademik/broadcast/index'),
+        meta: { title: 'Broadcasting', roles: ['Admin'] }
+      }
+    ]
+  },
   {
     path: '/masterdata',
     component: Layout,
@@ -289,6 +389,11 @@ export const asyncRoutes = [
         path: 'masterkelas',
         component: () => import('@/views/masterdata/masterkelas/index'),
         meta: { title: 'Master Kelas' }
+      },
+      {
+        path: 'masterkelastipe',
+        component: () => import('@/views/masterdata/masterkelastipe/index'),
+        meta: { title: 'Master Kelas Tipe' }
       },
       {
         path: 'kategorinilai',
@@ -333,96 +438,55 @@ export const asyncRoutes = [
     ]
   },
   {
-    path: '/akademik',
+    path: '/institute',
     component: Layout,
-    redirect: '/akademik/kelas',
-    name: 'Akademik',
+    redirect: '/user/menu1',
+    name: 'institute',
     meta: {
-      title: 'Akademik',
-      icon: 'nested'
+      title: 'Institute Management',
+      icon: 'nested',
+      roles: ['Admin']
     },
     children: [
       {
-        path: 'kelas',
-        component: () => import('@/views/akademik/kelas/index'),
-        meta: { title: 'Daftar Kelas', roles: ['Admin']}
+        path: 'profilinstitusi',
+        component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
+        meta: { title: 'Institute Management' }
       },
       {
-        path: 'materi',
-        component: () => import('@/views/akademik/materi/index'),
-        meta: { title: 'Daftar Materi', roles: ['Admin']}
-      },
-      {
-        path: 'jadwal',
-        component: () => import('@/views/akademik/jadwal/index'),
-        meta: { title: 'Jadwal', roles: ['Admin'] }
-      },
-      {
-        path: 'nilaisiswa',
-        component: () => import('@/views/akademik/nilaisiswa/index'),
-        meta: { title: 'Nilai Siswa' },
-        children: [
-          {
-            path: 'list',
-            component: () => import('@/views/akademik/nilaisiswa/list/index'),
-            meta: { title: 'List Nilai Siswa', roles: ['Admin'] }
-          },
-          {
-            path: 'input',
-            component: () => import('@/views/akademik/nilaisiswa/input/index'),
-            meta: { title: 'Input Nilai Siswa', roles: ['Pengajar'] }
-          }
-        ]
-      },
-      {
-        path: 'kategorinilaimateri',
-        component: () => import('@/views/akademik/kategorinilaimateri/index'),
-        meta: { title: 'Kategori Nilai Materi' , roles: ['Admin']}
-      },
-      {
-        path: 'nilaipengajar',
-        component: () => import('@/views/akademik/nilaipengajar/index'),
-        meta: { title: 'Penilaian Pengajar' , roles: ['Admin']}
-      },
-      {
-        path: 'presensi',
-        component: () => import('@/views/akademik/presensi/index'), // Parent router-view
-        name: 'presensi',
-        meta: { title: 'Presensi' },
-        children: [
-          {
-            path: 'presensi-siswa',
-            component: () => import('@/views/akademik/presensi/siswa'),
-            name: 'presensi-siswa',
-            meta: { title: 'Presensi Siswa', roles: ['Admin']}
-          },
-          {
-            path: 'presensi-pengajar',
-            component: () => import('@/views/akademik/presensi/pengajar'),
-            name: 'presensi-pengajar',
-            meta: { title: 'Presensi Pengajar', roles: ['Admin']}
-          },
-          {
-            path: 'buatkodepresensi',
-            component: () => import('@/views/akademik/presensi/buatkode'),
-            nama: 'buatkodepresensi',
-            meta: { title: 'Buat Kode Presensi', roles: ['Pengajar']}
-          },
-          {
-            path:'inputpresensi',
-            component: () => import('@/views/akademik/presensi/inputpresensi'),
-            nama:'inputpresensi',
-            meta: { title: 'Input Presensi', roles:['Peserta']}
-          }
-        ]
-      },
-      {
-        path: 'broadcasting',
-        component: () => import('@/views/akademik/broadcast/index'),
-        meta: { title: 'Broadcasting' }
-      },
+        path: 'listinstitusi',
+        component: () =>
+          import('@/views/manajemeninstitusi/listinstitusi/index'),
+        meta: { title: 'Company List' }
+      }
     ]
   },
+  {
+    path: '/manajemenuser',
+    component: Layout,
+    redirect: '/user/menu1',
+    name: 'manajemenuser',
+    meta: {
+      title: 'User Management',
+      icon: 'nested',
+      roles: ['Admin']
+    },
+    children: [
+      {
+        name: 'manajemen user',
+        path: 'user',
+        component: () => import('@/views/manajemenuser/userlist/index'),
+        meta: { title: 'User' }
+      },
+      {
+        name: 'manajemen level',
+        path: 'level',
+        component: () => import('@/views/manajemenuser/akseslevel/index'),
+        meta: { title: 'Access Level' }
+      }
+    ]
+  },
+
   {
     path: '/report',
     component: Layout,
@@ -454,55 +518,7 @@ export const asyncRoutes = [
       }
     ]
   },
-  {
-    path: '/manajemenuser',
-    component: Layout,
-    redirect: '/user/menu1',
-    name: 'manajemenuser',
-    meta: {
-      title: 'User Management',
-      icon: 'nested',
-      roles: ['Admin']
-    },
-    children: [
-      {
-        name: 'manajemen user',
-        path: 'user',
-        component: () => import('@/views/manajemenuser/userlist/index'),
-        meta: { title: 'User' }
-      },
-      {
-        name: 'manajemen level',
-        path: 'level',
-        component: () => import('@/views/manajemenuser/akseslevel/index'),
-        meta: { title: 'Access Level' }
-      }
-    ]
-  },
-  {
-    path: '/institute',
-    component: Layout,
-    redirect: '/user/menu1',
-    name: 'institute',
-    meta: {
-      title: 'Institute Management',
-      icon: 'nested',
-      roles: ['Admin']
-    },
-    children: [
-      {
-        path: 'profilinstitusi',
-        component: () => import('@/views/manajemeninstitusi/profilinstitusi/index'),
-        meta: {title: 'Institute Management'}
-      },
-      {
-        path: 'listinstitusi',
-        component: () =>
-          import('@/views/manajemeninstitusi/listinstitusi/index'),
-        meta: {title: 'Company List'}
-      }
-    ]
-  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]

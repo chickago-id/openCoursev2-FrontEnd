@@ -1,49 +1,56 @@
 <template>
   <el-row :gutter="40" class="panel-group">
     <el-col :xs="24" :sm="12" :lg="8" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('siswa')">
-        <div class="card-panel-icon-wrapper icon-people">
-          <svg-icon icon-class="stick-man" class-name="card-panel-icon" />
+      <router-link to="#">
+        <div class="card-panel">
+            <div class="card-panel-icon-wrapper icon-people">
+              <svg-icon icon-class="stick-man" class-name="card-panel-icon" />
+            </div>
+            <div class="card-panel-description">
+              <div id="siswa" name="siswa" class="card-panel-text">
+                Total Siswa
+              </div>
+              <count-to :start-val="0" :end-val="100"  :duration="5600" class="card-panel-num" /> (70)
+            </div>
         </div>
-        <div class="card-panel-description">
-          <div id="siswa" name="siswa" class="card-panel-text">
-            Total Siswa
-          </div>
-          <count-to :start-val="0" :end-val="100"  :duration="5600" class="card-panel-num" /> (70)
-        </div>
-      </div>
+      </router-link>
     </el-col>
     <el-col :xs="24" :sm="12" :lg="8" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('kelas')">
-        <div class="card-panel-icon-wrapper icon-message">
-          <svg-icon icon-class="shop" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Total Kelas
+      <router-link to="/akademik/kelas">
+        <div class="card-panel">
+          <div class="card-panel-icon-wrapper icon-message">
+            <svg-icon icon-class="shop" class-name="card-panel-icon" />
           </div>
-          <count-to :start-val="0" :end-val="10" :duration="5000" class="card-panel-num" />
+          <div class="card-panel-description">
+            <div class="card-panel-text">
+              Total Kelas
+            </div>
+            <count-to :start-val="0" :end-val="10" :duration="5000" class="card-panel-num" />
+          </div>
         </div>
-      </div>
+      </router-link>
     </el-col>
     <el-col :xs="24" :sm="12" :lg="8" class="card-panel-col">
-      <div class="card-panel" @click="handleSetLineChartData('sertifikat')">
-        <div class="card-panel-icon-wrapper icon-money">
-          <svg-icon icon-class="monitor" class-name="card-panel-icon" />
-        </div>
-        <div class="card-panel-description">
-          <div class="card-panel-text">
-            Sertifikat Diambil
+      <router-link to="#">
+        <div class="card-panel">
+          <div class="card-panel-icon-wrapper icon-money">
+            <svg-icon icon-class="monitor" class-name="card-panel-icon" />
           </div>
-          <count-to :start-val="0" :end-val="100" :duration="5200" class="card-panel-num" />
+          <div class="card-panel-description">
+            <div class="card-panel-text">
+              Sertifikat Diambil
+            </div>
+            <count-to :start-val="0" :end-val="100" :duration="5200" class="card-panel-num" />
+          </div>
         </div>
-      </div>
+      </router-link>
     </el-col>
   </el-row>
 </template>
 
 <script>
 import CountTo from 'vue-count-to'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -62,7 +69,7 @@ export default {
   margin-top: 18px;
 
   .card-panel-col {
-    margin-bottom: 32px;
+    margin-bottom: 18px;
   }
 
   .card-panel {

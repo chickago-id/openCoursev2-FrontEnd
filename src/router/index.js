@@ -77,6 +77,21 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/profiledata',
+    component: Layout,
+    redirect: '/profiledata/index',
+    hidden: true,
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profiledata/index'),
+        name: 'profiledata',
+        meta: { title: 'profiledata', icon: 'user', noCache: true }
+      }
+
+    ]
+  },
+  {
     path: '/notification',
     component: Layout,
     redirect: '/notification/index',

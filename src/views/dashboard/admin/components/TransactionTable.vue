@@ -3,7 +3,7 @@
     <el-table :data="list" style="width: 100%;padding-top: 15px;">
     <el-table-column label="Nama Siswa" min-width="200">
       <template style="font-size:36px;">
-        <h4>Local</h4>
+        <h4>Sankuriang</h4>
         <!-- {{ scope.row.order_no | orderNoFilter }} slot-scope="scope" -->
       </template>
     </el-table-column>
@@ -31,7 +31,12 @@
     </el-table-column>
   </el-table>
   <div>
-        <el-button style="width:100%" type="primary" @click="clearData">View</el-button>
+    <router-link to="#">
+      <el-button style="width:100%" type="primary" @click="clearData" value="VIew">
+      View    
+      </el-button>
+    </router-link> 
+        
   </div>
   </div>
   <!-- Yang dikomen sementara tidak digunakan, untuk GET data -->

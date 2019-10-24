@@ -1,5 +1,5 @@
 <template>
-  <div style="padding:0px 20px 30px 30px;">
+  <div >
      <div class="title-container">
         <h1 style="text-align: center;">Sign Up</h1>
         <h5 style="text-align: center;">to continue to application</h5>
@@ -34,7 +34,7 @@
           </label>
         </el-form-item>
       </el-form>  
-      <span slot="footer" class="dialog-footer">
+      <span >
         <el-button @click="clearData">Cancel</el-button>
         <el-button type="primary" @click="submitForm('form')">Confirm</el-button>
       </span>

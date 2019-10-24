@@ -14,7 +14,7 @@
                 label-position="left" style="">
 
                 <div style="text-align: center">
-                  <i><img src="http://alfabanksemarang.com/downlot.php?file=LOGO1.png" alt="" style="width: 250px;"></i>
+                  <i><img src="http://alfabanksemarang.com/downlot.php?file=LOGO1.png" alt="" style="width: 200px;"></i>
                   <h2>Sign In</h2>
                   <p>to continue to Application</p>
                 </div>

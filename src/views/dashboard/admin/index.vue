@@ -4,19 +4,22 @@
       
       <DataView/>
       <!-- untuk ref ke halaman yang dituju (belum fungsi) -->
-      <div class="collapsibler">
-        <el-row :gutter="32">
-          <el-collapse v-model="activeNames" @change="handleChange">
-            <el-col :xs="24" :sm="12" :lg="12">
-              <el-collapse-item title="Kelas" name="1">
+      <div class="collapsible">
+        <div class="source">
+          <el-row :gutter="32">
+          
+            <el-collapse v-model="activeNames" @change="handleChange">
+              <el-col :xs="24" :sm="12" :lg="12">
+              <el-collapse-item title="Periode" name="1">
                 <div class="chart-wrapper">
                   <LineChart/>
                   <!-- untuk lihat total vs Periode -->
                 </div>
               </el-collapse-item>
             </el-col>
+            
             <el-col :xs="24" :sm="12" :lg="12">
-              <el-collapse-item title="Periode" name="2">
+              <el-collapse-item title="Kelas" name="2">
                 <div class="chart-wrapper">
                   <TipeChart/>
                   <!-- untuk lihat kelas vs peserta -->
@@ -24,7 +27,10 @@
               </el-collapse-item>
             </el-col>
           </el-collapse>
+         
         </el-row>
+         </div>
+        
       </div>
       
      <el-row gutter="32">
@@ -141,13 +147,13 @@ export default {
   }
 
   .collapsible {
-    background-color: #777;
-    color: white;
-    cursor: pointer;
-    padding: 18px;
+    background-color: transparent;
+    color: transparent;
+    cursor: pointer;  
+    padding-bottom: 18px;
     width: 100%;
     border: none;
-    text-align: left;
+    text-align: center;
     outline: none;
     font-size: 15px;
   }
@@ -158,6 +164,14 @@ export default {
     padding: 16px 16px 0;
     margin-bottom: 32px;
     font-family:Arial, Helvetica, sans-serif
+  }
+
+  .source{
+    background: #fff;
+    border-bottom: 5px solid white;
+    padding-right: 18px;
+    padding-left: 18px;
+    
   }
 }
 

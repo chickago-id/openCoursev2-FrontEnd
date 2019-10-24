@@ -19,6 +19,11 @@
               Profil
             </el-dropdown-item>
           </router-link>
+           <router-link to="/profiledata">
+            <el-dropdown-item>
+              Profil data
+            </el-dropdown-item>
+          </router-link>
           <router-link to="/notification/index">
             <el-dropdown-item>
               <el-badge :value="12" class="item">

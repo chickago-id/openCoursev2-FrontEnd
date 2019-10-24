@@ -14,7 +14,10 @@
       <el-form :model="form">
 
         <el-form-item required label="Nama Status" :label-width="formLabelWidth">
-          <el-input type="text" v-model="form.name" autocomplete="off" placeholder="Ex: Notification"></el-input>
+          <el-input type="text" v-model="form.name" autocomplete="off" placeholder="e.g.: Notification"></el-input>
+        </el-form-item>
+        <el-form-item label="Keterangan" :label-width="formLabelWidth">
+          <el-input type="text" v-model="form.description" autocomplete="off" placeholder=""></el-input>
         </el-form-item>
 
       </el-form>
@@ -42,6 +45,11 @@
       <el-table-column label="Name">
         <template slot-scope="scope">
           {{ scope.row.name }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Keterangan">
+        <template slot-scope="scope">
+          {{ scope.row.desc }}
         </template>
       </el-table-column>
       <el-table-column label="Pembuat">
@@ -156,6 +164,7 @@ export default {
         form: {
             id: '',
             name: '',
+            desc: '',
             created_by:1,
             created_at: '',
             updated_by:1,
@@ -224,6 +233,7 @@ export default {
     clearData() {
       this.form.id= ''
       this.form.name= ''
+      this.form.desc= ''
       this.form.created_by = 1
       this.form.created_at = ''
       this.form.updated_by = 1
@@ -234,6 +244,7 @@ export default {
       this.dialogFormVisible = true
       this.form.id= scope.row.id;
       this.form.name= scope.row.name;
+      this.form.desc= scope.row.desc;
   //    this.form.created_by=scope.row.created_by;
       this.form.updated_by =scope.row.updated_by;
     },

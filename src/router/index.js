@@ -332,6 +332,11 @@ export const asyncRoutes = [
             path: 'input',
             component: () => import('@/views/akademik/nilaisiswa/input/index'),
             meta: { title: 'Input Nilai Siswa', roles: ['Pengajar'] }
+          },
+          {
+            path: 'lihat',
+            component: () => import('@/views/akademik/nilaisiswa/lihat/index'),
+            meta: { title: 'Lihat Nilai', roles: ['Peserta']}
           }
         ]
       },
@@ -366,13 +371,13 @@ export const asyncRoutes = [
           {
             path: 'buatkodepresensi',
             component: () => import('@/views/akademik/presensi/buatkode'),
-            nama: 'buatkodepresensi',
+            name: 'buatkodepresensi',
             meta: { title: 'Buat Kode Presensi', roles: ['Pengajar'] }
           },
           {
             path: 'inputpresensi',
             component: () => import('@/views/akademik/presensi/inputpresensi'),
-            nama: 'inputpresensi',
+            name: 'inputpresensi',
             meta: { title: 'Input Presensi', roles: ['Peserta'] }
           }
         ]

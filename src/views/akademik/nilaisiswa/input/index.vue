@@ -4,7 +4,7 @@
     <br> 
     <el-form :model="form">
       <el-form-item label="Pilih Kelas" :label-width="formLabelWidth">
-        <el-select @change="showPeserta($event)" v-model="id_kelas" placeholder="Select">
+        <el-select @change="showPeserta($event)" v-model="selectedKelas" placeholder="Select">
           <el-option
             v-for="item in kelasOption"
             :key="item.key"
@@ -109,6 +109,7 @@ export default {
   data() {
     return {
       selectedKategoriNilai: '',
+      selectedKelas: '',
       msg: '',
       kelasOption: [{'key': '', 'value': '', 'label': ''}],
       materiOption: [{'key': '','value': '', 'label': ''}],
@@ -208,7 +209,9 @@ export default {
           axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
           .then(response =>{
             let userData = JSON.parse(response.data.data)
+            console.log(userData)
             this.user_id = userData.user.id
+            console.log(this.user_id)
           })
         }else{
           this.roles = ''
@@ -233,7 +236,8 @@ export default {
         response.data.data.forEach(item => {
           this.kelasOption.push (
             {
-              value: item.id,
+              key: item.id,
+              value: item,
               label: item.kode_kelas
             }
           )
@@ -335,19 +339,22 @@ export default {
       this.listLoading = true
       axios.get(
         process.env.VUE_APP_BASE_API + 
-        '/kelaspeserta/kelas/' + id, 
+        '/kelaspeserta/kelas/' + this.id_kelas, 
         {headers: this.auth}
       ).then((response) => {
+        console.log(response)
         this.listData = response.data.data;
         this.listLoading = false
       })
     },
     showPeserta(event) {
+      console.log(event)
+      console.log(event.id)
       if (event == null) {
         this.listData = []
       } else {
-        this.id_kelas = event
-        this.getPesertaByIdKelas(event)
+        this.id_kelas = event.id
+        this.getPesertaByIdKelas(event.id)
       }
       console.log(this.id_kelas)
     },

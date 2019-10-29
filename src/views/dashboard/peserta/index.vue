@@ -67,16 +67,26 @@
         </el-card>
       </el-col>
     </el-row>
+    <br>
+    <el-row>
+      <el-col>
+        <el-card :gutter="12">
+            <Kelas/>
+        </el-card>
+      </el-col>
+    </el-row>
+   
   </div>
 </template>
 
 <script>
 import axios from 'axios'
+import Kelas from './components/CarouselCard'
 
 export default {
     name: 'DashboardPeserta',
     components: {
-      
+      Kelas
     },
     created() {
       this.getData()

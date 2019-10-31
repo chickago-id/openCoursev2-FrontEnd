@@ -84,15 +84,16 @@ export default {
   },
   data() {
     return {
-      list: null,
       listLoading: true,
       listData: [],
       form: {
         id: '',
         kode_materi: '',
         nama_materi: '',
-        created_at: '',
         created_by: 1,
+        updated_by: 1,
+        created_at: '',
+        updated_at: '',
       },
       successAlertVisible: false,
       dialogFormVisible: false,
@@ -133,16 +134,19 @@ export default {
       this.form.id= '',
       this.form.kode_materi= '',
       this.form.nama_materi= '',
-      this.form.created_at= '',
-      this.form.created_by=1,
+      this.form.created_by = 1,
+      this.form.updated_by = 1,
+      this.form.created_at = '',
+      this.form.updated_at = '',
       this.dialogFormVisible = true
     },
     editData(scope){
-      this.form.id= scope.row.id;
-      this.form.kode_materi= scope.row.kode_materi;
-      this.form.nama_materi= scope.row.nama_materi;
-      this.form.created_at= scope.row.created_at;
-      this.dialogFormVisible = true
+      this.dialogFormVisible = true 
+      this.form.id= scope.row.id,
+      this.form.kode_materi= scope.row.kode_materi,
+      this.form.nama_materi= scope.row.nama_materi,
+      this.form.updated_by = 1,
+      this.form.created_by = 1
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
@@ -183,7 +187,7 @@ export default {
       }
       console.log(token)      
       if(this.form.id != '') {
-        axios.post(process.env.VUE_APP_BASE_API + '/materi/' + this.form.id,
+        axios.put(process.env.VUE_APP_BASE_API + '/materi/' + this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()

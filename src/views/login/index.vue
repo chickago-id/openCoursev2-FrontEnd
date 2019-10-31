@@ -1,17 +1,24 @@
 <template>
   <el-card class="container" style="background: #ccc">
-    <el-row >
+    <el-row>
       <el-col :xs="0" :sm="1" :md="3" :lg="3" :xl="1">
         <div class="">&nbsp;</div>
       </el-col>
-     
-      <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24" >
+
+      <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24">
         <div class="grid-contentbg-purple-light asd" style="background: #fff; height: 650px; padding: 60px;">
           <el-tabs :tab-position="tabPosition" style="height: 200px;">
             <el-tab-pane>
-              <span slot="label"><i class="el-icon-login"></i> Sign in instead</span>
-              <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="form" auto-complete="on"
-                label-position="left" style="">
+              <span slot="label"><i class="el-icon-login" /> Sign in instead</span>
+              <el-form
+                ref="loginForm"
+                :model="loginForm"
+                :rules="loginRules"
+                class="form"
+                auto-complete="on"
+                label-position="left"
+                style=""
+              >
 
                 <div style="text-align: center">
                   <i><img src="http://alfabanksemarang.com/downlot.php?file=LOGO1.png" alt="" style="width: 200px;"></i>
@@ -20,15 +27,31 @@
                 </div>
                 <el-form-item prop="username">
                   <label class="inputkeren">
-                    <input type="text" placeholder=" " ref="username" v-model="loginForm.username" name="username"
-                      tabindex="1" auto-complete="on">
+                    <input
+                      ref="username"
+                      v-model="loginForm.username"
+                      type="text"
+                      placeholder=" "
+                      name="username"
+                      tabindex="1"
+                      auto-complete="on"
+                    >
                     <span>Username</span>
                   </label>
                 </el-form-item>
                 <el-form-item prop="password">
                   <label class="inputkeren">
-                    <input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType"
-                      placeholder=" " name="password" tabindex="2" auto-complete="on" @keyup.enter.native="handleLogin">
+                    <input
+                      :key="passwordType"
+                      ref="password"
+                      v-model="loginForm.password"
+                      :type="passwordType"
+                      placeholder=" "
+                      name="password"
+                      tabindex="2"
+                      auto-complete="on"
+                      @keyup.enter.native="handleLogin"
+                    >
                     <span>Password</span>
                     <span class="show-pwd" @click="showPwd">
                       <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -36,48 +59,56 @@
                   </label>
                 </el-form-item>
                 <br>
-                <el-row >
-                  <el-col :span="13">
-                    <el-button :loading="loading" type="primary" style="background: ;border-radius: 30px; width: 100%;margin-bottom:30px;"
-                  @click.native.prevent="handleLogin">Sign In</el-button></el-col>
-                  <el-col :span="3" style="padding-top: 10px; text-align: center; color: #666666;  " >or</el-col>
+                <el-row>
+                  <el-col :span="2">&nbsp;</el-col>
+                  <el-col :span="11">
+                    <el-button
+                      :loading="loading"
+                      type="primary"
+                      style="background: ;border-radius: 5px; width: 100%;margin-bottom:30px;"
+                      @click.native.prevent="handleLogin"
+                    >Sign In</el-button></el-col>
+                  <el-col :span="3" style="padding-top: 10px; text-align: center; color: #666666;  ">or</el-col>
                   <el-col :span="8" style="">
                     <el-container>
-                    <a href="#" ><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSvKQW20ZCh1MWqgO7jZvWCAvvVtXBqet-n6QCpm8A3ZtckpWil" alt="" style="height:40px;  float: left; " ></a>
+                      <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSvKQW20ZCh1MWqgO7jZvWCAvvVtXBqet-n6QCpm8A3ZtckpWil" alt="" style="height:40px;  float: left; "></a>
                     &nbsp; &nbsp;
-                  <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Facebook_circle_pictogram.svg/512px-Facebook_circle_pictogram.svg.png" alt=""  style="height: 42px;  float: right" ></a>
-                   </el-container>
+                      <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Facebook_circle_pictogram.svg/512px-Facebook_circle_pictogram.svg.png" alt="" style="height: 42px;  float: right"></a>
+                    </el-container>
                   </el-col>
                 </el-row>
-                <div class="tips">
-                </div>
+                <div class="tips" />
               </el-form>
             </el-tab-pane>
             <el-tab-pane>
-              <span slot="label"><i class="el-icon-out"></i> Create Account</span>
+              <span slot="label"><i class="el-icon-out" /> Create Account</span>
               <register />
             </el-tab-pane>
           </el-tabs>
 
         </div>
       </el-col>
-       <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24" offse="24" >
-        <div class="grid-content bg-purple">
+      <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24" offse="24">
+        <div class="grid-content bg-purple" style="color: white;">
           <div class="block">
             <el-carousel height="650px" width="300px">
-              <el-carousel-item v-for="item in 4" :key="item">
+              <el-carousel-item v-for="items in info" :key="items.id">
                 
-            
-                <h3 class="small" style="text-align: center; margin-bottom:30px;">{{ item }}</h3>
-                    <h3 class="small" style="text-align: center; bottom:30px;">Subject</h3>
-                
-                    <p style="text-align: left; bottom: 50px; left: 8%; position: absolute;">Lorem ipsum dolor sit amet consectetur adipisicing elit. Asperiores debitis voluptas veritatis dolorum accusamus perferendis blanditiis molestiae deleniti quos, odit alias id omnis doloremque necessitatibus nemo <a style="color: blue;" href="#">Read More</a></p>
+                <img :src="items.image" alt="Snow" style="width:100%; height: 100%;">
+                <div class="top-left">
+                <h1 >
+                  <b>{{ items.subject }}</b></h1>                
+                </div>
+                <div class="bottom-right">
+                  {{ items.bodymessage }}
+                   <a  href="#"><b><u>Read More</u></b></a>
+                </div>
               </el-carousel-item>
             </el-carousel>
           </div>
         </div>
       </el-col>
-      
+
       <el-col :xs="0" :sm="1" :md="3" :lg="3" :xl="1">
         <div class="grid-content bg-purple-light">&nbsp;</div>
       </el-col>
@@ -88,131 +119,142 @@
 </template>
 
 <script>
-  import axios from 'axios'
-  import register from "@/views/login/register"
+import axios from 'axios'
+import register from '@/views/login/register'
 
-  import {
-    validUsername
-  } from '@/utils/validate'
-  export default {
-    name: 'Login',
-    components: {
-      register
-    },
-    data() {
-      const validateUsername = (rule, value, callback) => {
+import {
+  validUsername
+} from '@/utils/validate'
+export default {
+  name: 'Login',
+  components: {
+    register
+  },
+  data() {
+    const validateUsername = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('please input username'));
-       }else if(value.length < 3) {
-             callback(new Error('The username can not be less than 3 digits'))
-        } else {
-          callback()
-        }
-         
-      };
-      const validatePassword = (rule, value, callback) => {
-           if (value === '') {
-        callback(new Error('please input password'));
-        }  else if (value.length < 6) {
-          callback(new Error('The password can not be less than 6 digits'))
-        } else {
-          callback()
-        }
+        callback(new Error('please input username'))
+      } else if (value.length < 3) {
+        callback(new Error('The username can not be less than 3 digits'))
+      } else {
+        callback()
       }
-      return {
-        msg: '',
-        loginForm: {
-          username: '',
-          password: ''
-        },
-        loginRules: {
-          username: [{
-            required: true,
-            trigger: 'blur', /* , validator: validateUsername */
-            validator: validateUsername
-          }],
-          password: [{
-            required: true,
-            trigger: 'blur',
-            validator: validatePassword
-          }]
-        },
-        loading: false,
-        passwordType: 'password',
-        redirect: undefined,
-        tabPosition: 'top'
-
+    }
+    const validatePassword = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('please input password'))
+      } else if (value.length < 6) {
+        callback(new Error('The password can not be less than 6 digits'))
+      } else {
+        callback()
       }
-    },
-    computed: {
-      status() {
-        return this.$store.getters.authStatus;
-      }
-    },
-    watch: {
-      $route: {
-        handler: function (route) {
-          this.redirect = route.query && route.query.redirect
-        },
-        immediate: true
-      }
-    },
-    methods: {
-      showPwd() {
-        if (this.passwordType === 'password') {
-          this.passwordType = ''
-        } else {
-          this.passwordType = 'password'
-        }
-        this.$nextTick(() => {
-          this.$refs.password.focus()
-        })
+    }
+    return {
+      info: [],
+      msg: '',
+      loginForm: {
+        username: '',
+        password: ''
       },
-      gagalNotif() {
-      const h = this.$createElement;
+      loginRules: {
+        username: [{
+          required: true,
+          trigger: 'blur', /* , validator: validateUsername */
+          validator: validateUsername
+        }],
+        password: [{
+          required: true,
+          trigger: 'blur',
+          validator: validatePassword
+        }]
+      },
+      loading: false,
+      passwordType: 'password',
+      redirect: undefined,
+      tabPosition: 'top'
+
+    }
+  },
+  computed: {
+    status() {
+      return this.$store.getters.authStatus
+    }
+  },
+  watch: {
+    $route: {
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
+      },
+      immediate: true
+    }
+  },
+  mounted(){
+    this.getCarousel();
+  },
+  methods: {
+    showPwd() {
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
+      } else {
+        this.passwordType = 'password'
+      }
+      this.$nextTick(() => {
+        this.$refs.password.focus()
+      })
+    },
+    gagalNotif() {
+      const h = this.$createElement
       this.$notify({
         message: h(
-          "i",
-          { style: "color: red" },
-          'Username atau password salah',  
+          'i',
+          { style: 'color: red' },
+          'Username atau password salah',
         ),
-        type: "error",
+        type: 'error',
         showClose: false,
         duration: 2000
-      });  
-      this.loading = false 
+      })
+      this.loading = false
     },
-      handleLogin() {
-        this.$refs.loginForm.validate(valid => {
-          if (valid) {
-            this.loading = true
-            this.$store.dispatch('user/login', this.loginForm)
-              .then(() => {
-                this.$router.push({path: this.redirect || '/'})
-                this.loading = false
-                })
-              .catch((err) => {
-                this.msg = err
-                this.gagalNotif()
-              })
-          } else {
-            this.msg = 'error submit!!'
-            this.gagalNotif()
-            return false
-          }
-        })
-      },
-      getOtherQuery(query) {
-        return Object.keys(query).reduce((acc, cur) => {
-          if (cur !== 'redirect') {
-            acc[cur] = query[cur]
-          }
-          return acc
-        }, {})
-      },
-      
+    handleLogin() {
+      this.$refs.loginForm.validate(valid => {
+        if (valid) {
+          this.loading = true
+          this.$store.dispatch('user/login', this.loginForm)
+            .then(() => {
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
+            })
+            .catch((err) => {
+              this.msg = err
+              this.gagalNotif()
+            })
+        } else {
+          this.msg = 'error submit!!'
+          this.gagalNotif()
+          return false
+        }
+      })
+    },
+    getOtherQuery(query) {
+      return Object.keys(query).reduce((acc, cur) => {
+        if (cur !== 'redirect') {
+          acc[cur] = query[cur]
+        }
+        return acc
+      }, {})
+    },
+    getCarousel() {
+      this.listLoading = true
+      axios.get(process.env.VUE_APP_BASE_API + '/mailbox/carousel')
+        .then(response => (this.info = response.data.data))
+      this.info = data.subject
+      this.info = data.bodymessage
+      console.log(data)
     }
+
   }
+}
 
 </script>
 
@@ -287,13 +329,13 @@
     margin: 0;
   }
 
-  .el-carousel__item:nth-child(2n) {
-    background-color: #99a9bf;
-  }
+  // .el-carousel__item:nth-child(2n) {
+  //   background-color: #99a9bf;
+  // }
 
-  .el-carousel__item:nth-child(2n+1) {
-    background-color: #d3dce6;
-  }
+  // .el-carousel__item:nth-child(2n+1) {
+  //   background-color: #d3dce6;
+  // }
 
   .el-col {
     border-radius: 4px;
@@ -308,10 +350,54 @@
     // padding: 25px;
   }
 
+
+  /* Container holding the image and the text */
+.container {
+  position: relative;
+  text-align: center;
+  // color: white;
+}
+
+/* Bottom left text */
+.bottom-left {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+
+/* Top left text */
+.top-left {
+  position: absolute;
+  top: 40%;
+   right: 16px;
+  left: 16px;
+}
+
+/* Top right text */
+.top-right {
+  position: absolute;
+  top: 35%;
+  right: 16px;
+}
+
+/* Bottom right text */
+.bottom-right {
+  position: absolute;
+  bottom: 30px;
+  left: 16px;
+  right: 16px;
+}
+
+/* Centered text */
+.centered {
+  position: absolute;
+  top: 50%;
+  // padding: 50%;
+  left: 50%;
+  // transform: translate(-50%, -50%);
+}
+
 </style>
-
-
-
 
 <style>
   input[type="password"]::-ms-reveal {

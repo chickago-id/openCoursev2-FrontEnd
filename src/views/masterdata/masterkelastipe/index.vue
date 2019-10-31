@@ -167,7 +167,7 @@ export default {
       this.dialogFormVisible = true
       this.form.id= scope.row.id;
       this.form.name= scope.row.name;
-   //   this.form.created_by=scope.row.created_by;
+      this.form.code=scope.row.code;
       this.form.updated_by = scope.row.updated_by;
     },
     deleteData(id, index){

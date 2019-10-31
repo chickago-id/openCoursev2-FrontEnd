@@ -28,7 +28,6 @@
 <!-- End of QR Code Card -->
 <br>
     <!-- Tabel List Data -->
-    <el-button @click="refreshData()" size="small">Refresh Data</el-button>
     <br>
     <br>
     <el-table
@@ -44,9 +43,14 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Kelas">
+      <el-table-column label="Kode Kelas">
         <template slot-scope="scope">
-          {{ scope.row.kelas.masterKelas.nama_kelas }}
+          {{ scope.row.jadwal.kelas.kode_kelas }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Kode Materi">
+        <template slot-scope="scope">
+          {{ scope.row.jadwal.materi.kode_materi }}
         </template>
       </el-table-column>
       <el-table-column label="Nama Peserta">
@@ -61,7 +65,7 @@
       </el-table-column>
       <el-table-column label="Tanggal">
         <template slot-scope="scope">
-          {{ scope.row.clock | formatDate3 }}
+          {{ scope.row.clock | formatDate2 }}
         </template>
       </el-table-column>
     </el-table>
@@ -76,19 +80,25 @@
         </div>
         <br>
     </el-row>
-    
   </div>
 </template>
 <script>
+import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
+  computed: {
+    ...mapGetters([
+   
+   ])
+  },
   data() {
     return {
       auth: '',
       user_id: '',
       form: {
         id_kelas: '',
+        id_jadwal: '',
         token: ''
       },
       listData: [],
@@ -118,25 +128,28 @@ export default {
     },
     getDataPresensi() {
       this.listLoading = true
-      axios.post(process.env.VUE_APP_BASE_API + '/attendance/find/peserta/', this.form, {headers: this.auth})
+      axios.get(process.env.VUE_APP_BASE_API + '/attendance/find/peserta/' + this.form.id_jadwal, {headers: this.auth})
       .then(response => {
         if(response.data.status === 'ERROR') {
           alert(response.data.message)
           this.listLoading = false
         } else {
+          console.log(response.data.data)
           this.listData = response.data.data
           this.listLoading = false
         }
+      }).catch((error) => {
+        alert(error)
       })
     },
     onSubmitClicked() {
       console.log('clicked')
-      axios.post(process.env.VUE_APP_BASE_API + '/attendance/absen', this.form, {headers: this.auth})
+      axios.post(process.env.VUE_APP_BASE_API + '/attendance/absen/', this.form, {headers: this.auth})
       .then(response => {
         if(response.data.status === 'ERROR') {
           alert(response.data.message)
         } else {
-          this.form.id_kelas = response.data.data[0]['id_kelas']
+          this.form.id_jadwal = response.data.data[0]['id_jadwal']
           this.getDataPresensi()
         }
       })

@@ -14,6 +14,10 @@
     <el-dialog align="center" title="Tambah Data" :visible.sync="dialogFormVisible">
       <el-form :model="form">
 
+        <el-form-item required label="Kode" :label-width="formLabelWidth">
+          <el-input type="text" maxlength="4" v-model="form.code" autocomplete="off" placeholder="e.g. PRVT max:4 characters"></el-input>
+        </el-form-item>
+
         <el-form-item required label="Nama Tipe Kelas" :label-width="formLabelWidth">
           <el-input type="text" v-model="form.name" autocomplete="off" placeholder="e.g. Private"></el-input>
         </el-form-item>
@@ -40,7 +44,12 @@
           {{ scope.$index+1 }}
         </template>
       </el-table-column>
-      <el-table-column label="Name">
+      <el-table-column label="Kode Tipe Kelas">
+        <template slot-scope="scope">
+          {{ scope.row.code }}
+        </template>
+      </el-table-column>
+      <el-table-column label="Nama Tipe Kelas">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
@@ -89,6 +98,7 @@ export default {
         form: {
             id: '',
             name: '',
+            code: '',
             created_by: 1,
             created_at: '',
             updated_by:1,
@@ -146,6 +156,7 @@ export default {
     clearData() {
       this.form.id= ''
       this.form.name= ''
+      this.form.code= ''
       this.form.created_by = 1
       this.form.created_at = ''
       this.form.updated_by = 1
@@ -156,7 +167,7 @@ export default {
       this.dialogFormVisible = true
       this.form.id= scope.row.id;
       this.form.name= scope.row.name;
-   //   this.form.created_by=scope.row.created_by;
+      this.form.code=scope.row.code;
       this.form.updated_by = scope.row.updated_by;
     },
     deleteData(id, index){

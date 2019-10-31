@@ -31,8 +31,8 @@
                   </el-form-item>
                   <el-form-item label="Jenis Kelamin" prop="jenis_kelamin">
                     <el-radio-group v-model="ruleForm.jenis_kelamin" style="width: 100%;">
-                      <el-radio label="Laki" />
-                      <el-radio label="cewe cakep" />
+                      <el-radio label="Laki-Laki" />
+                      <el-radio label="Perempuan" />
                     </el-radio-group>
                   </el-form-item>
                   <el-form-item label="no telp" prop="telepon">
@@ -348,7 +348,7 @@ export default {
             this.dialogruleFormVisible = false
           })
       } else {
-        alert('Yay. gagal cuk!')
+        alert('Maaf, pembaruan data gagal !')
         // this.gagalNotif();
       }
     },
@@ -359,7 +359,7 @@ export default {
         message: h(
           'i',
           { style: 'color: teal' },
-          'Berhasil Cuk!'
+          'Pembaruan data berhasil !'
         ),
         type: 'success',
         showClose: false,

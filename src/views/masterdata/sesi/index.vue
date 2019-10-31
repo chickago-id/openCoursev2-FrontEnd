@@ -46,12 +46,12 @@
       </el-table-column>
       <el-table-column label="Jam Mulai">
         <template slot-scope="scope">
-          {{ scope.row.jam_mulai }}
+          {{ scope.row.jam_mulai | formatTime}}
         </template>
       </el-table-column>
       <el-table-column label="Jam Selesai">
         <template slot-scope="scope">
-          {{ scope.row.jam_selesai }}
+          {{ scope.row.jam_selesai | formatTime}}
         </template>
       </el-table-column>
       <el-table-column label="Setting">

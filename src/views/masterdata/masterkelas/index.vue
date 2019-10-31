@@ -1,23 +1,20 @@
+<!-- Author : supi.core@gmail.com | github.com/sup1core -->
 <template>
   <div style="padding:30px;">
-    <el-alert :closable="false" title="Master Kelas" />
-
-    <br />
     <el-row type="flex" class="row-bg" justify="end">
       <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-    </el-row>
-    <br />
+    </el-row><br />
 
     <!-- Form Tambah Data -->
-    <el-dialog title="Master Kelas" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item required label="Kode Kelas" :label-width="formLabelWidth">
-          <el-input v-model="form.kode_kelas" autocomplete="off"></el-input>
-        </el-form-item>
-      </el-form>
+    <el-dialog align="center" title="Tambah/Update Master Kelas" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item required label="Nama Kelas" :label-width="formLabelWidth">
           <el-input v-model="form.nama_kelas" autocomplete="off"></el-input>
+        </el-form-item>
+      </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Kode Master Kelas" :label-width="formLabelWidth">
+          <el-input v-model="form.kode_masterkelas" autocomplete="off" maxlength="4"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -39,20 +36,23 @@
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">{{ scope.$index+1 }}</template>
       </el-table-column>
-      <el-table-column label="Kode Kelas">
-        <template slot-scope="scope">{{ scope.row.kode_kelas }}</template>
-      </el-table-column>
       <el-table-column label="Nama Kelas">
         <template slot-scope="scope">{{ scope.row.nama_kelas }}</template>
       </el-table-column>
-      <el-table-column label="Create Date">
-        <template slot-scope="scope">{{ scope.row.created_date }}</template>
+      <el-table-column label="Kode Master Kelas">
+        <template slot-scope="scope">{{ scope.row.kode_masterkelas }}</template>
+      </el-table-column>
+      <el-table-column label="Dibuat oleh">
+        <template slot-scope="scope">{{ scope.row.userDetail.nama_lengkap }}</template>
+      </el-table-column>
+      <el-table-column label="Tanggal Buat">
+        <template slot-scope="scope">{{ scope.row.created_date | formatDate}}</template>
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
           <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
           <el-button
-            @click="deleteData(scope.row.kode_kelas, scope.$index)"
+            @click="deleteData(scope.row.id, scope.$index)"
             size="mini"
             type="danger"
             icon="el-icon-delete"
@@ -79,16 +79,17 @@ export default {
       listLoading: true,
       listData: [],
       form: {
-        kode_kelas: "",
-        nama_kelas: "",
-        created_by: "",
-        created_date: "",
-        updated_by: "",
-        updated_date: ""
+        id: '',
+        nama_kelas: '',
+        kode_masterkelas: '',
+        created_by: '',
+        created_date: '',
+        updated_by: '',
+        updated_date: ''
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: "150px"
+      formLabelWidth: '150px'
     };
   },
   created() {
@@ -120,8 +121,9 @@ export default {
       });
     },
     clearData() {
-      this.form.kode_kelas = "";
+      this.form.id='';
       this.form.nama_kelas = "";
+      this.form.kode_masterkelas = "";
       this.form.created_by = 1;
       this.form.created_date = "";
       this.form.updated_by = 1;
@@ -129,54 +131,45 @@ export default {
       this.dialogFormVisible = true;
     },
     editData(scope) {
-      this.form.kode_kelas = scope.row.kode_kelas;
+      this.dialogFormVisible = true 
+      this.form.id = scope.row.id;
       this.form.nama_kelas = scope.row.nama_kelas;
+      this.form.kode_masterkelas = scope.row.kode_masterkelas;
       this.form.updated_by = 1;
-      this.dialogFormVisible = true;
+      this.form.created_by = scope.row.created_by;
     },
-    deleteData(id, index) {
-      this.$confirm(
-        "This will permanently delete the file. Continue?",
-        "Warning",
-        {
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          type: "warning"
-        }
-      )
-        .then(() => {
-          const token = "Bearer " + localStorage.getItem("token");
+    deleteData(id, index){
+      this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          const token = 'Bearer '+localStorage.getItem('token')
           const auth = {
-            Authorization: token,
-            "Content-Type": "application/json"
-          };
-          console.log(id);
-          axios
-            .delete("http://localhost:8081/masterkelas/" + id, {
-              headers: auth
-            })
-            .then(
-              res => {
-                console.log(res);
-                this.listData.splice(index, 1);
-              },
-              error => {
-                console.log(error);
-              }
-            );
+            'Authorization' : token,
+            'Content-Type' : 'application/json'
+          }
+          console.log(id)
+          axios.delete(process.env.VUE_APP_BASE_API + '/masterkelas/' + id, { headers: auth })
+          .then((res) =>{
+          console.log(res)
+          this.listData.splice(index, 1)
+          }, (error) => {
+            console.log(error)
+          }) 
           this.$message({
-            type: "success",
-            message: "Delete completed"
+            type: 'success',
+            message: 'Delete completed'
           });
-        })
-        .catch(() => {
+        }).catch(() => {
           this.$message({
-            type: "info",
-            message: "Delete canceled"
-          });
+            type: 'info',
+            message: 'Delete canceled'
+          });          
         });
-      this.getData();
+      this.getData()
     },
+    
     addData() {
       const token = "Bearer " + localStorage.getItem("token");
       const auth = {
@@ -184,12 +177,12 @@ export default {
         "Content-Type": "application/json"
       };
       console.log(token);
-      if (this.form.kode_kelas != "") {
+      if (this.form.id != "") {
         axios
           .post(
             process.env.VUE_APP_BASE_API +
               "/masterkelas/" +
-              this.form.kode_kelas,
+              this.form.id,
             this.form,
             { headers: auth }
           )

@@ -5,6 +5,7 @@ import { resetRouter } from '@/router'
 const state = {
   token: getToken() || localStorage.getItem('token'),
   name: '',
+  id_user: '',
   username: '',
   avatar: '',
   roles: []
@@ -13,6 +14,9 @@ const state = {
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
+  },
+  SET_ID_USER: (state, id_user) => {
+    state.id_user = id_user
   },
   SET_NAME: (state, name) => {
     state.name = name
@@ -118,6 +122,7 @@ const actions = {
             commit('SET_USERNAME', response.data[0].user.username)
             commit('SET_NAME', response.data[0].nama_lengkap)
             commit('SET_ROLES', roles)
+            commit('SET_ID_USER', response.data[0].id_user)
             resolve(data)
           }
         }

@@ -20,7 +20,6 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <!-- <el-input v-model="form.kode_kelas" autocomplete="off"></el-input> -->
         </el-form-item>
       </el-form>
       <el-form :model="form">
@@ -33,7 +32,6 @@
               :value="item.value"
             ></el-option>
           </el-select>
-          <!-- <el-input v-model="form.jenis_kelas" autocomplete="off"></el-input> -->
         </el-form-item>
       </el-form>
       <el-form :model="form">
@@ -85,29 +83,32 @@
       fit
       highlight-current-row
     >
-      <el-table-column align="center" label="ID" width="95">
+      <el-table-column align="center" label="ID" width="50">
         <template slot-scope="scope">{{ scope.$index+1 }}</template>
       </el-table-column>
-      <el-table-column label="Nama Kelas">
+      <el-table-column label="Kode Kelas" width="200">
         <template slot-scope="scope">{{ scope.row.kode_kelas }}</template>
       </el-table-column>
-      <el-table-column label="Jenis Kelas">
-        <template slot-scope="scope">{{ scope.row.jenis_kelas }}</template>
+      <el-table-column label="Nama Kelas" width="200">
+        <template slot-scope="scope">{{ scope.row.masterKelas.nama_kelas }}</template>
       </el-table-column>
-      <el-table-column label="Jumlah Pertemuan">
+      <el-table-column label="Jenis Kelas">
+        <template slot-scope="scope">{{ scope.row.kelasType.name }}</template>
+      </el-table-column>
+      <el-table-column label="Pertemuan">
         <template slot-scope="scope">{{ scope.row.jumlah_pertemuan }}</template>
       </el-table-column>
-      <el-table-column label="Status">
-        <template slot-scope="scope">{{ scope.row.status }}</template>
+      <el-table-column label="Status" width="100">
+        <!-- <template slot-scope="scope">{{ scope.row.status.name }}</template> -->
+        <template slot-scope="scope">
+           <el-tag> {{ scope.row.status.name }} </el-tag>
+        </template>
       </el-table-column>
       <el-table-column label="Tanggal Mulai">
-        <template slot-scope="scope">{{ scope.row.tanggal_mulai }}</template>
+        <template slot-scope="scope">{{ scope.row.tanggal_mulai | formatDate}}</template>
       </el-table-column>
       <el-table-column label="Target Peserta">
         <template slot-scope="scope">{{ scope.row.target_peserta }}</template>
-      </el-table-column>
-      <el-table-column label="Nama Pengajar">
-        <template slot-scope="scope">{{ scope.row.tanggal_mulai }}</template>
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
@@ -186,8 +187,20 @@ export default {
         duration: 2000
       });
     },
+
     getmasterKelas() {
-      axios.get("http://localhost:8081/masterkelas").then(response => {
+      axios.get(process.env.VUE_APP_BASE_API+'/masterkelas', {headers: this.auth})
+      .then((response) => {
+        response.data.data.forEach(item => {
+          this.kelasOption.push (
+            {
+              value: item.id,
+              label: item.masterKelas.code+' - '+item.masterKelas.nama_kelas
+            }
+          )
+        })
+      })
+      axios.get("http://localhost:8081/").then(response => {
         // this.namamateri = response.data.data;
         // console.log(response)
         response.data.data.forEach(masterKelas => {

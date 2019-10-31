@@ -93,15 +93,15 @@
           <div class="block">
             <el-carousel height="650px" width="300px">
               <el-carousel-item v-for="items in info" :key="items.id">
-                
+
                 <img :src="items.image" alt="Snow" style="width:100%; height: 100%;">
                 <div class="top-left">
-                <h1 >
-                  <b>{{ items.subject }}</b></h1>                
+                  <h1>
+                    <b>{{ items.subject }}</b></h1>
                 </div>
                 <div class="bottom-right">
                   {{ items.bodymessage }}
-                   <a  href="#"><b><u>Read More</u></b></a>
+                  <a href="#"><b><u>Read More</u></b></a>
                 </div>
               </el-carousel-item>
             </el-carousel>
@@ -159,7 +159,7 @@ export default {
       loginRules: {
         username: [{
           required: true,
-          trigger: 'blur', /* , validator: validateUsername */
+          trigger: 'blur',
           validator: validateUsername
         }],
         password: [{
@@ -188,8 +188,8 @@ export default {
       immediate: true
     }
   },
-  mounted(){
-    this.getCarousel();
+  mounted() {
+    this.getCarousel()
   },
   methods: {
     showPwd() {
@@ -248,9 +248,7 @@ export default {
       this.listLoading = true
       axios.get(process.env.VUE_APP_BASE_API + '/mailbox/carousel')
         .then(response => (this.info = response.data.data))
-      this.info = data.subject
-      this.info = data.bodymessage
-      console.log(data)
+      console.log(this.info)
     }
 
   }
@@ -349,7 +347,6 @@ export default {
   .asd {
     // padding: 25px;
   }
-
 
   /* Container holding the image and the text */
 .container {

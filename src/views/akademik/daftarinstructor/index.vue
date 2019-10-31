@@ -19,7 +19,7 @@
       </el-table-column>
       <el-table-column label="Nama Pengajar">
         <template slot-scope="scope">
-          {{ scope.row.name_lengkap }}
+          {{ scope.row.nama_lengkap }}
         </template>
       </el-table-column>
       <el-table-column label="Username">
@@ -39,7 +39,7 @@
       </el-table-column>
       <el-table-column label="Tanggal Lahir">
         <template slot-scope="scope">
-          {{ scope.row.user.dob }}
+          {{ scope.row.user.tanggal_lahir | formatDate}}
         </template>
       </el-table-column>
       <el-table-column label="Tanggal Join">
@@ -77,10 +77,11 @@ export default {
       listData: [],
       form: {
         id: '',
-        name_lengkap: '',
+        nama_lengkap: '',
         created_by:{
           username:''
         },
+        telepon:'',
         updated_by: 1,
         created_at: '',
         updated_at: '',

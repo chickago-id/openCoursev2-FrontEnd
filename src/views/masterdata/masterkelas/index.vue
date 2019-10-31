@@ -12,6 +12,11 @@
           <el-input v-model="form.nama_kelas" autocomplete="off"></el-input>
         </el-form-item>
       </el-form>
+      <el-form :model="form">
+        <el-form-item required label="Kode Master Kelas" :label-width="formLabelWidth">
+          <el-input v-model="form.kode_masterkelas" autocomplete="off" maxlength="4"></el-input>
+        </el-form-item>
+      </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false">Cancel</el-button>
         <el-button type="primary" @click="addData">Confirm</el-button>
@@ -34,10 +39,13 @@
       <el-table-column label="Nama Kelas">
         <template slot-scope="scope">{{ scope.row.nama_kelas }}</template>
       </el-table-column>
-      <el-table-column label="Create By">
+      <el-table-column label="Kode Master Kelas">
+        <template slot-scope="scope">{{ scope.row.kode_masterkelas }}</template>
+      </el-table-column>
+      <el-table-column label="Dibuat oleh">
         <template slot-scope="scope">{{ scope.row.userDetail.nama_lengkap }}</template>
       </el-table-column>
-      <el-table-column label="Create Date">
+      <el-table-column label="Tanggal Buat">
         <template slot-scope="scope">{{ scope.row.created_date | formatDate}}</template>
       </el-table-column>
       <el-table-column label="Action">
@@ -73,6 +81,7 @@ export default {
       form: {
         id: '',
         nama_kelas: '',
+        kode_masterkelas: '',
         created_by: '',
         created_date: '',
         updated_by: '',
@@ -114,6 +123,7 @@ export default {
     clearData() {
       this.form.id='';
       this.form.nama_kelas = "";
+      this.form.kode_masterkelas = "";
       this.form.created_by = 1;
       this.form.created_date = "";
       this.form.updated_by = 1;
@@ -124,7 +134,9 @@ export default {
       this.dialogFormVisible = true 
       this.form.id = scope.row.id;
       this.form.nama_kelas = scope.row.nama_kelas;
+      this.form.kode_masterkelas = scope.row.kode_masterkelas;
       this.form.updated_by = 1;
+      this.form.created_by = scope.row.created_by;
     },
     deleteData(id, index){
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {

@@ -379,6 +379,12 @@ export const asyncRoutes = [
             component: () => import('@/views/akademik/presensi/inputpresensi'),
             name: 'inputpresensi',
             meta: { title: 'Input Presensi', roles: ['Peserta'] }
+          },
+          {
+            path: 'lihatpresensi',
+            component: () => import('@/views/akademik/presensi/lihatpresensi'),
+            name: 'lihatpresensi',
+            meta: {title: 'Lihat Presensi', roles: ['Peserta']}
           }
         ]
       },

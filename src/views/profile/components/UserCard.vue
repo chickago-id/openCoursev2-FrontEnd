@@ -6,14 +6,28 @@
 
     <div class="user-profile">
       <div class="box-center">
-        <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
-          <div>Hello</div>
-          {{ user.role }}
+        <pan-thumb :image="image">
+
+          <div class="user-name text-center">{{ user.name }}</div>
+          <div class="user-role text-center text-muted">  {{ user.role | uppercaseFirst }}</div>
+
+          <image-cropper
+            v-show="imagecropperShow"
+            :key="imagecropperKey"
+            :width="300"
+            :height="300"
+            url="https://httpbin.org/post"
+            lang-type="en"
+            @close="close"
+            @crop-upload-success="cropSuccess"
+          />
+
         </pan-thumb>
       </div>
-      <div class="box-center">
-        <div class="user-name text-center">{{ user.name }}</div>
-        <div class="user-role text-center text-muted"> Admin {{ user.role | uppercaseFirst }}</div>
+      <div class="box-center" style="text-align: center;">
+        <el-button type="primary" icon="el-icon-upload" @click="imagecropperShow=true">
+          Change Avatar
+        </el-button>
       </div>
     </div>
 
@@ -54,9 +68,13 @@
 
 <script>
 import PanThumb from '@/components/PanThumb'
+import ImageCropper from '@/components/ImageCropper'
 
 export default {
-  components: { PanThumb },
+  components: {
+    PanThumb,
+    ImageCropper },
+
   props: {
     user: {
       type: Object,
@@ -68,6 +86,23 @@ export default {
           roles: ''
         }
       }
+    }
+  },
+  data() {
+    return {
+      imagecropperShow: false,
+      imagecropperKey: 0,
+      image: 'https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191'
+    }
+  },
+  methods: {
+    cropSuccess(resData) {
+      this.imagecropperShow = false
+      this.imagecropperKey = this.imagecropperKey + 1
+      this.image = resData.files.avatar
+    },
+    close() {
+      this.imagecropperShow = false
     }
   }
 }
@@ -111,6 +146,11 @@ export default {
    }
  }
 
+  .avatar{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+  }
  .user-bio {
    margin-top: 20px;
    color: #606266;

@@ -1,11 +1,11 @@
 <template>
   <el-card class="container" style="background: #ccc">
     <el-row>
-      <el-col :xs="0" :sm="1" :md="3" :lg="3" :xl="1">
+      <el-col :xs="0" :sm="1" :md="1" :lg="2" :xl="4">
         <div class="">&nbsp;</div>
       </el-col>
 
-      <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24">
+      <el-col :xs="24" :sm="11" :md="11" :lg="10" :xl="8">
         <div class="grid-contentbg-purple-light asd" style="background: #fff; height: 650px; padding: 60px;">
           <el-tabs :tab-position="tabPosition" style="height: 200px;">
             <el-tab-pane>
@@ -50,8 +50,12 @@
                       name="password"
                       tabindex="2"
                       auto-complete="on"
-                      @keyup.enter.native="handleLogin"
+                      autocomplete="on"
+
+                      @keyup.enter="handleLogin"
+                     
                     >
+
                     <span>Password</span>
                     <span class="show-pwd" @click="showPwd">
                       <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
@@ -60,20 +64,22 @@
                 </el-form-item>
                 <br>
                 <el-row>
-                  <el-col :span="2">&nbsp;</el-col>
-                  <el-col :span="11">
+                  <el-col :span="2" :xs="0">&nbsp;</el-col>
+                  <el-col :span="11" :xs="24">
                     <el-button
                       :loading="loading"
                       type="primary"
                       style="background: ;border-radius: 5px; width: 100%;margin-bottom:30px;"
                       @click.native.prevent="handleLogin"
                     >Sign In</el-button></el-col>
-                  <el-col :span="3" style="padding-top: 10px; text-align: center; color: #666666;  ">or</el-col>
-                  <el-col :span="8" style="">
-                    <el-container>
+                  <el-col :span="3" :xs="24" style="padding-top: 10px; text-align: center; color: #666666;  ">or</el-col>
+
+                  <el-col :span="8" :xs="24">
+                    <el-container style="text-align: center;">
                       <a href="#"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSvKQW20ZCh1MWqgO7jZvWCAvvVtXBqet-n6QCpm8A3ZtckpWil" alt="" style="height:40px;  float: left; "></a>
                     &nbsp; &nbsp;
                       <a href="#"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/Facebook_circle_pictogram.svg/512px-Facebook_circle_pictogram.svg.png" alt="" style="height: 42px;  float: right"></a>
+
                     </el-container>
                   </el-col>
                 </el-row>
@@ -88,7 +94,7 @@
 
         </div>
       </el-col>
-      <el-col :xs="24" :sm="11" :md="9" :lg="9" :xl="11" :span="24" offse="24">
+      <el-col :xs="24" :sm="11" :md="11" :lg="10" :xl="8">
         <div class="grid-content bg-purple" style="color: white;">
           <div class="block">
             <el-carousel height="650px" width="300px">
@@ -96,8 +102,8 @@
 
                 <img :src="items.image" alt="Snow" style="width:100%; height: 100%;">
                 <div class="top-left">
-                  <h1>
-                    <b>{{ items.subject }}</b></h1>
+                  <h2>
+                    <b>{{ items.subject }}</b></h2>
                 </div>
                 <div class="bottom-right">
                   {{ items.bodymessage }}
@@ -109,7 +115,7 @@
         </div>
       </el-col>
 
-      <el-col :xs="0" :sm="1" :md="3" :lg="3" :xl="1">
+      <el-col :xs="0" :sm="1" :md="1" :lg="2" :xl="4">
         <div class="grid-content bg-purple-light">&nbsp;</div>
       </el-col>
     </el-row>
@@ -122,9 +128,9 @@
 import axios from 'axios'
 import register from '@/views/login/register'
 
-import {
-  validUsername
-} from '@/utils/validate'
+import 'themify-icons-scss/scss/themify-icons.scss'
+
+// import { validUsername } from '@/utils/validate'
 export default {
   name: 'Login',
   components: {
@@ -171,8 +177,9 @@ export default {
       loading: false,
       passwordType: 'password',
       redirect: undefined,
-      tabPosition: 'top'
-
+      tabPosition: 'top',
+      otherQuery: {},
+      showDialog: false
     }
   },
   computed: {
@@ -183,7 +190,11 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        this.redirect = route.query && route.query.redirect
+        const query = route.query
+        if (query) {
+          this.redirect = query.redirect
+          // this.otherQuery = this.getOtherQuery(query)
+        }
       },
       immediate: true
     }
@@ -327,13 +338,13 @@ export default {
     margin: 0;
   }
 
-  // .el-carousel__item:nth-child(2n) {
-  //   background-color: #99a9bf;
-  // }
+  .el-carousel__item:nth-child(2n) {
+    background-color: #99a9bf;
+  }
 
-  // .el-carousel__item:nth-child(2n+1) {
-  //   background-color: #d3dce6;
-  // }
+  .el-carousel__item:nth-child(2n+1) {
+    background-color: #86afdd;
+  }
 
   .el-col {
     border-radius: 4px;

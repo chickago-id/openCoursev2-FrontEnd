@@ -5,7 +5,7 @@
       <form-wizard shape="shape" color="#20a0ff" title="asd" error-color="#ff4949" style="padding: 20px;" @on-complete="onComplete">
         <h2 slot="title">Lengkapi Data Diri</h2>
         <!-- <h3 slot="subtitle">profile user data</h3>   -->
-        <tab-content title="Personal details" icon="el-icon-user-solid" :before-change="validateFirstStep">
+        <tab-content title="Personal details" icon="ti-user" :before-change="validateFirstStep">
           <el-row style="width: 100%;  float: right;">
             <el-col :xs="0">
             &nbsp;
@@ -71,7 +71,7 @@
           </el-row>
 
         </tab-content>
-        <tab-content title="Additional Info" icon="el-icon-document-add" :before-change="validateTwoStep">
+        <tab-content title="Additional Info" icon="ti-settings" :before-change="validateTwoStep">
           <el-form ref="addForm" :model="ruleForm" :rules="rulas" labteel-width="120px" class="demo-ruleForm">
             <el-form-item label="nama orang tua" prop="nama_orangtua">
               <el-input v-model="ruleForm.nama_orangtua" />
@@ -99,7 +99,7 @@
             </el-form-item>
           </el-form>
         </tab-content>
-        <tab-content title="Last step" icon="el-icon-document-checked">
+        <tab-content title="Last step" icon="ti-check">
           <h2 style="text-align: center;">apa sudah yakin?</h2>
         </tab-content>
 
@@ -119,6 +119,8 @@ import {
   TabContent
 } from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+
+import 'themify-icons-scss/scss/themify-icons.scss'
 // Vue.use(VueFormWizard)
 export default {
   components: {
@@ -308,7 +310,7 @@ export default {
         this.ruleForm.nama_lengkap = response.data.data[0].nama_lengkap
         this.ruleForm.id = response.data.data[0].id
         this.ruleForm.id_user = response.data.data[0].id_user
-        this.ruleForm.email = response.data.data[0].email;
+        this.ruleForm.email = response.data.data[0].email
       })
     },
     addData() {
@@ -390,199 +392,5 @@ export default {
   input[type="password"]::-ms-reveal {
     display: none;
   }
-
-  .inputkeren {
-    --pure-material-safari-helper1: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
-    position: relative;
-    display: block;
-    padding-top: 6px;
-    font-family: var(--pure-material-font, "Roboto", "Segoe UI", BlinkMacSystemFont, system-ui, -apple-system);
-    font-size: 16px;
-    line-height: 1.5;
-    overflow: hidden;
-  }
-
-  /* Input, Textarea */
-  .inputkeren>input,
-  .inputkeren>textarea {
-    box-sizing: border-box;
-    margin: 0;
-    border: solid 1px #dddddd;
-    /* border-color: red; */
-    /* Safari */
-    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
-    border-top-color: transparent;
-    border-radius: 4px;
-    padding: 15px 13px 15px;
-    width: 100%;
-    height: inherit;
-    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
-    background-color: transparent;
-    box-shadow: none;
-    /* Firefox */
-    font-family: inherit;
-    font-size: inherit;
-    line-height: inherit;
-    caret-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
-    transition: border 0.2s, box-shadow 0.2s;
-  }
-
-  /* Span */
-  .inputkeren>input+span,
-  .inputkeren>textarea+span {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: flex;
-    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
-    width: 100%;
-    max-height: 100%;
-    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
-    font-size: 75%;
-    line-height: 15px;
-    cursor: text;
-    transition: color 0.2s, font-size 0.2s, line-height 0.2s;
-  }
-
-  /* Corners */
-  .inputkeren>input+span::before,
-  .inputkeren>input+span::after,
-  .inputkeren>textarea+span::before,
-  .inputkeren>textarea+span::after {
-    content: "";
-    display: block;
-    box-sizing: border-box;
-    margin-top: 6px;
-    border-top: solid 1px;
-    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
-    min-width: 10px;
-    height: 8px;
-    pointer-events: none;
-    box-shadow: inset 0 1px transparent;
-    transition: border-color 0.2s, box-shadow 0.2s;
-  }
-
-  .inputkeren>input+span::before,
-  .inputkeren>textarea+span::before {
-    margin-right: 4px;
-    border-left: solid 1px transparent;
-    border-radius: 4px 0;
-  }
-
-  .inputkeren>input+span::after,
-  .inputkeren>textarea+span::after {
-    flex-grow: 1;
-    margin-left: 4px;
-    border-right: solid 1px transparent;
-    border-radius: 0 4px;
-  }
-
-  /* Hover */
-  .inputkeren:hover>input,
-  .inputkeren:hover>textarea {
-    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
-    border-top-color: transparent;
-  }
-
-  .inputkeren:hover>input+span::before,
-  .inputkeren:hover>textarea+span::before,
-  .inputkeren:hover>input+span::after,
-  .inputkeren:hover>textarea+span::after {
-    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
-  }
-
-  .inputkeren:hover>input:not(:focus):placeholder-shown,
-  .inputkeren:hover>textarea:not(:focus):placeholder-shown {
-    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.87);
-  }
-
-  /* Placeholder-shown */
-  .inputkeren>input:not(:focus):placeholder-shown,
-  .inputkeren>textarea:not(:focus):placeholder-shown {
-    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.6);
-  }
-
-  .inputkeren>input:not(:focus):placeholder-shown+span,
-  .inputkeren>textarea:not(:focus):placeholder-shown+span {
-    font-size: inherit;
-    line-height: 68px;
-  }
-
-  .inputkeren>input:not(:focus):placeholder-shown+span::before,
-  .inputkeren>textarea:not(:focus):placeholder-shown+span::before,
-  .inputkeren>input:not(:focus):placeholder-shown+span::after,
-  .inputkeren>textarea:not(:focus):placeholder-shown+span::after {
-    border-top-color: transparent;
-  }
-
-  /* Focus */
-  .inputkeren>input:focus,
-  .inputkeren>textarea:focus {
-    border-color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
-    border-top-color: transparent;
-    box-shadow: inset 1px 0 var(--pure-material-safari-helper1), inset -1px 0 var(--pure-material-safari-helper1), inset 0 -1px var(--pure-material-safari-helper1);
-    outline: none;
-  }
-
-  .inputkeren>input:focus+span,
-  .inputkeren>textarea:focus+span {
-    color: rgb(var(--pure-material-primary-rgb, 33, 150, 243));
-  }
-
-  .inputkeren>input:focus+span::before,
-  .inputkeren>input:focus+span::after,
-  .inputkeren>textarea:focus+span::before,
-  .inputkeren>textarea:focus+span::after {
-    border-top-color: var(--pure-material-safari-helper1) !important;
-    box-shadow: inset 0 1px var(--pure-material-safari-helper1);
-  }
-
-  /* Disabled */
-  .inputkeren>input:disabled,
-  .inputkeren>input:disabled+span,
-  .inputkeren>textarea:disabled,
-  .inputkeren>textarea:disabled+span {
-    border-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38) !important;
-    border-top-color: transparent !important;
-    color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38);
-    pointer-events: none;
-  }
-  .inputkeren>input:disabled+span::before,
-  .inputkeren>input:disabled+span::after,
-  .inputkeren>textarea:disabled+span::before,
-  .inputkeren>textarea:disabled+span::after {
-    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38) !important;
-  }
-
-  .inputkeren>input:disabled:placeholder-shown,
-  .inputkeren>input:disabled:placeholder-shown+span,
-  .inputkeren>textarea:disabled:placeholder-shown,
-  .inputkeren>textarea:disabled:placeholder-shown+span {
-    border-top-color: rgba(var(--pure-material-onsurface-rgb, 0, 0, 0), 0.38) !important;
-  }
-
-  .inputkeren>input:disabled:placeholder-shown+span::before,
-  .inputkeren>input:disabled:placeholder-shown+span::after,
-  .inputkeren>textarea:disabled:placeholder-shown+span::before,
-  .inputkeren>textarea:disabled:placeholder-shown+span::after {
-    border-top-color: transparent !important;
-  }
-
-  /* Faster transition in Safari for less noticable fractional font-size issue */
-  @media not all and (min-resolution:.001dpcm) {
-    @supports (-webkit-appearance:none) {
-
-      .inputkeren>input,
-      .inputkeren>input+span,
-      .inputkeren>textarea,
-      .inputkeren>textarea+span,
-      .inputkeren>input+span::before,
-      .inputkeren>input+span::after,
-      .inputkeren>textarea+span::before,
-      .inputkeren>textarea+span::after {
-        transition-duration: 0.1s;
-      }
-    }
-  }
-
 </style>
+

@@ -13,7 +13,7 @@
               <el-tab-pane label="Activity" name="activity">
                 <activity />
               </el-tab-pane>
-              <el-tab-pane label="Timeline" name="timeline">
+              <el-tab-pane label="Identity" name="timeline">
                 <timeline />
               </el-tab-pane>
               <el-tab-pane label="Account" name="account">
@@ -34,6 +34,7 @@ import UserCard from './components/UserCard'
 import Activity from './components/Activity'
 import Timeline from './components/Timeline'
 import Account from './components/Account'
+import Axios from 'axios'
 
 export default {
   name: 'Profile',
@@ -41,28 +42,45 @@ export default {
   data() {
     return {
       user: {},
-      activeTab: 'activity'
+      activeTab: 'activity',
+      auth: {},
+      getProfil: []
     }
   },
   computed: {
     ...mapGetters([
       'name',
       'avatar',
-      'roles'
+      'roles',
+      'email'
     ])
   },
   created() {
     this.getUser()
+    this.getProfile()
   },
   methods: {
     getUser() {
       this.user = {
         name: this.name,
         role: this.roles.join(' | '),
-        email: 'admin@test.com',
+        email: this.name,
         avatar: this.avatar
       }
-    }
+    },
+    // getProfile() {
+    //   const token = 'Bearer '+localStorage.getItem('token')
+    //   const auth = {
+    //     'Authorization' : token,
+    //     'Content-Type' : 'application/json'
+    //   }
+    //   this.auth = auth
+    //   axios.get(process.env.VUE_APP_BASE_API + '/profil', {headers: this.auth})
+    //   .then((response) => {
+    //     console.log(response.data.data)
+    //     this.getProfil = response.data.data;
+    //   })
+    // }
   }
 }
 </script>

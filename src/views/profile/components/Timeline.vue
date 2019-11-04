@@ -1,43 +1,241 @@
 <template>
-  <div class="block">
-    <el-timeline>
-      <el-timeline-item v-for="(item,index) of timeline" :key="index" :timestamp="item.timestamp" placement="top">
-        <el-card>
-          <h4>{{ item.title }}</h4>
-          <p>{{ item.content }}</p>
-        </el-card>
-      </el-timeline-item>
-    </el-timeline>
+  <div class="user-activity">
+    <div class="post">
+      <div class="user">
+        <span class="username text-muted">Work Experience</span>
+        <span class="description">Null</span>
+      </div>
+      <p>
+        Keterangan work experience
+        - Posisi
+        - Perusahaan
+        - Periode- periode bulan tahun
+      </p>
+      <div class="user">
+        <span class="username text-muted">Education</span>
+        <span class="description">nulll</span>
+      </div>
+      <p>
+        Keterangan Education
+        -Instansi
+        -Jurusan
+        -periode-periode bulan tahun
+      </p>
+      <div class="user">
+        <span class="username text-muted">Current City</span>
+        <span class="description">Null</span>
+      </div>
+      <p v-for="get in getProfil" v-bind:key="get.id">
+        Keterangan Current City
+        {{ get.user.email }}
+      </p>
+      <!-- get user digunakan untuk mengambil data, belum dirapihkan -->
+      <div class="user">
+        <span class="username text-muted">Sosmed</span>
+        <span class="description">nulll</span>
+      </div>
+      <p>
+        Keterangan Sosmed
+      </p>
+      <div class="user">
+        <span class="username text-muted">Phone</span>
+        <span class="description">nulll</span>
+      </div>
+      <p>
+        Keterangan Phone Number
+      </p>
+      <div class="user">
+        <span class="username text-muted">Email</span>
+        <span class="description">nulll</span>
+      </div>
+      <p v-for="get in getProfil" v-bind:key="get.id">
+        {{ get.user.email }}
+      </p>
+      <div class="user">
+        <span class="username text-muted">Webdite</span>
+        <span class="description">nulll</span>
+      </div>
+      <p>
+        Keterangan Website
+      </p>
+      <div class="user">
+        <span class="username text-muted">Address</span>
+        <span class="description">nulll</span>
+      </div>
+      <p>
+        Keterangan Address
+      </p>
+      <div class="user">
+        <span class="username text-muted">Skill</span>
+        <span class="description">nulll</span>
+      </div>
+      <p>
+        Keterangan Skill
+      </p>
+      <ul class="list-inline">
+        <li>
+          <span class="link-black text-sm">
+            <i class="el-icon-share" />
+            Share
+          </span>
+        </li>
+        <li>
+          <span class="link-black text-sm">
+            <svg-icon icon-class="like" />
+            Like
+          </span>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
+import axios from "axios";
+
+const avatarPrefix = '?imageView2/1/w/80/h/80'
+const carouselPrefix = '?imageView2/2/h/440'
+
 export default {
+  name: 'activity',
   data() {
     return {
-      timeline: [
-        {
-          timestamp: '2019/4/20',
-          title: 'Lore Ipsum Dolor',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        },
-        {
-          timestamp: '2019/4/21',
-          title: 'Lore Ipsum Dolor',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        },
-        {
-          timestamp: '2019/4/22',
-          title: 'Lore Ipsum Dolor',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        },
-        {
-          timestamp: '2019/4/23',
-          title: 'Lore Ipsum Dolor',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.'
-        }
-      ]
+      carouselImages: [
+        'https://wpimg.wallstcn.com/9679ffb0-9e0b-4451-9916-e21992218054.jpg',
+        'https://wpimg.wallstcn.com/bcce3734-0837-4b9f-9261-351ef384f75a.jpg',
+        'https://wpimg.wallstcn.com/d1d7b033-d75e-4cd6-ae39-fcd5f1c0a7c5.jpg',
+        'https://wpimg.wallstcn.com/50530061-851b-4ca5-9dc5-2fead928a939.jpg'
+      ],
+      avatarPrefix,
+      carouselPrefix,
+      auth: {},
+      getProfil: [],
+      user: {
+        id: ""
+      }
+    }
+  },
+  // created(){
+  //   this.getProfile()
+  // },
+  mounted(){
+    this.getProfile()
+  },
+  methods: {
+    getProfile() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
+      this.auth = auth
+      axios.get(process.env.VUE_APP_BASE_API + '/profil',  {headers: this.auth})
+      .then((response) => {
+        console.log(response.data.data)
+        this.getProfil = response.data.data;
+      })
+      .catch(error => console.log(error)
+      )
     }
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.user-activity {
+  .user{
+    .description {
+      display: block;
+      padding: 2px 0;
+    }
+    .username{
+      font-size: 16px;
+      color: #000;
+    }
+
+    span {
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+  .user-block {
+
+    .username,
+    .description {
+      display: block;
+      margin-left: 50px;
+      padding: 2px 0;
+    }
+
+    .username{
+      font-size: 16px;
+      color: #000;
+    }
+
+    :after {
+      clear: both;
+    }
+
+    .img-circle {
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      float: left;
+    }
+
+    span {
+      font-weight: 500;
+      font-size: 12px;
+    }
+  }
+
+  .post {
+    font-size: 14px;
+    border-bottom: 1px solid #d2d6de;
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    color: #666;
+
+    .image {
+      width: 100%;
+      height: 100%;
+
+    }
+
+    .user-images {
+      padding-top: 20px;
+    }
+  }
+
+  .list-inline {
+    padding-left: 0;
+    margin-left: -5px;
+    list-style: none;
+
+    li {
+      display: inline-block;
+      padding-right: 5px;
+      padding-left: 5px;
+      font-size: 13px;
+    }
+
+    .link-black {
+
+      &:hover,
+      &:focus {
+        color: #999;
+      }
+    }
+  }
+
+}
+
+.box-center {
+  margin: 0 auto;
+  display: table;
+}
+
+.text-muted {
+  color: #777;
+}
+</style>

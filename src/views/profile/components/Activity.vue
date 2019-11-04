@@ -19,9 +19,11 @@
         <span class="username text-muted">Jadwal Kelas Hari ini</span>
         <span class="description">Jadwal Kelas Hari ini</span>
       </div>
-      <p>
+      <p v-for="get in getProfil" v-bind:key="get.id">
         Keterangan Jadwal hari ini jika tidak ada kelas maka kosong
+        {{ get.user.email }}
       </p>
+      <!-- get user digunakan untuk mengambil data -->
       <ul class="list-inline">
         <li>
           <span class="link-black text-sm">
@@ -41,10 +43,13 @@
 </template>
 
 <script>
+import axios from "axios";
+
 const avatarPrefix = '?imageView2/1/w/80/h/80'
 const carouselPrefix = '?imageView2/2/h/440'
 
 export default {
+  name: 'activity',
   data() {
     return {
       carouselImages: [
@@ -54,7 +59,35 @@ export default {
         'https://wpimg.wallstcn.com/50530061-851b-4ca5-9dc5-2fead928a939.jpg'
       ],
       avatarPrefix,
-      carouselPrefix
+      carouselPrefix,
+      auth: {},
+      getProfil: [],
+      user: {
+        id: ""
+      }
+    }
+  },
+  // created(){
+  //   this.getProfile()
+  // },
+  mounted(){
+    this.getProfile()
+  },
+  methods: {
+    getProfile() {
+      const token = 'Bearer '+localStorage.getItem('token')
+      const auth = {
+        'Authorization' : token,
+        'Content-Type' : 'application/json'
+      }
+      this.auth = auth
+      axios.get(process.env.VUE_APP_BASE_API + '/profil',  {headers: this.auth})
+      .then((response) => {
+        console.log(response.data.data)
+        this.getProfil = response.data.data;
+      })
+      .catch(error => console.log(error)
+      )
     }
   }
 }

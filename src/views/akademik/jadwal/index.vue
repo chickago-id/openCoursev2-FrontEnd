@@ -18,31 +18,59 @@
     <el-dialog align="center" title="Tambah Jadwal" :visible.sync="dialogFormVisible">
       <el-form :model="form">
 
-        <el-form-item :label-width="formLabelWidth" label="Kelas">
-          <el-input type="text" placeholder="Kelas" v-model="form.jam_mulai" autocomplete="off"></el-input>
+        <el-form-item required label="Kelas" :label-width="formLabelWidth">
+          <el-select v-model="id_kelas" placeholder="Select" style="display: inline">
+            <el-option
+              v-for="item in kelasOption"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>   
         </el-form-item>
         
         <el-form-item required label="Nama Materi" :label-width="formLabelWidth">
-          <el-select v-model="form.id_materi" filterable placeholder="Pilih Materi" style="display: inline">
+          <el-select v-model="form.id_materi" filterable placeholder="Select" style="display: inline">
             <el-option
               v-for="item in materiOption"
-              :key="item.id"
+              :key="item.key"
               :label="item.label"
               :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
 
-        <el-form-item :label-width="formLabelWidth" label="Pengajar">
-          <el-input type="text" placeholder="Pengajar" v-model="form.id_materi" autocomplete="off"></el-input>
+          <el-form-item required label="Pilih Instruktur" :label-width="formLabelWidth">
+          <el-select v-model="form.id_pengajar" placeholder="Select" style="display: inline">
+            <el-option
+              v-for="item in instructorOption"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>   
         </el-form-item>
-
-        <el-form-item :label-width="formLabelWidth" label="Ruang">
-          <el-input type="text" placeholder="Ruang" v-model="form.id_materi" autocomplete="off"></el-input>
+        
+        <el-form-item required label="Pilih Ruang" :label-width="formLabelWidth">
+          <el-select v-model="form.id_ruang" placeholder="Select" style="display: inline">
+            <el-option
+              v-for="item in ruangOption"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>   
         </el-form-item>
-
-        <el-form-item :label-width="formLabelWidth" label="Sesi">
-          <el-input type="text" placeholder="Sesi" v-model="form.id_materi" autocomplete="off"></el-input>
+       
+        <el-form-item required label="Pilih Sesi" :label-width="formLabelWidth">
+          <el-select v-model="form.id_sesi" placeholder="Select" style="display: inline">
+            <el-option
+              v-for="item in sesiOption"
+              :key="item.key"
+              :label="item.label"
+              :value="item.value">
+            </el-option>
+          </el-select>   
         </el-form-item>
 
       </el-form>
@@ -52,6 +80,17 @@
       </span>
     </el-dialog>
     <!-- End of Form Tambah Data -->
+
+    <el-dialog align="center" title="Info Detail Jadwal" :visible.sync="dialogFormVisible2">
+      <el-form :model="form">
+        <el-form-item required label="Pengajar" :label-width="formLabelWidth">
+          <!-- <template slot-scope="scope">
+                {{ scope.row.userDetail.nama_lengkap }}
+              </template> -->
+        </el-form-item>
+        
+      </el-form>
+    </el-dialog>
 
     <el-table
       ref="multipleTable"
@@ -71,7 +110,7 @@
 
       <el-table-column label="Kode Kelas" width="110" align="center">
         <template slot-scope="scope">
-          <el-tag>{{ scope.row.kelas.masterKelas.kode_kelas }}</el-tag>
+         {{ scope.row.kelas.kode_kelas }}
         </template>
       </el-table-column>
 
@@ -89,7 +128,7 @@
 
       <el-table-column label="Pengajar" width="125" align="center">
         <template slot-scope="scope">
-          {{ scope.row.user.username }}
+          {{ scope.row.userDetail.nama_lengkap }}
         </template>
       </el-table-column>
 
@@ -99,22 +138,28 @@
         </template>
       </el-table-column>
       
-      <el-table-column align="center" label="Hari" width="100">
+      <el-table-column align="center" label="Pertemuan" width="100">
         <template slot-scope="scope">
-          {{scope.row.day.name}}
+            {{scope.row.pertemuan}}
         </template>
       </el-table-column>
+      
+      <!-- <el-table-column align="center" label="Hari" width="100">
+        <template slot-scope="scope">
+           <el-tag> {{scope.row.day.name}}  </el-tag>
+        </template>
+      </el-table-column> -->
 
-      <el-table-column align="center" label="Jam" width="220">
+      <el-table-column align="center" label="Jam" width="180">
         <template slot-scope="scope">
           <i class="el-icon-time" />
-          <span>{{ scope.row.sesi.jam_mulai}} - {{ scope.row.sesi.jam_selesai | formatTime}}</span>
+          <span>{{ scope.row.sesi.jam_mulai | formatTime}} - {{ scope.row.sesi.jam_selesai | formatTime}}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="Action" width="180">
         <template slot-scope="scope">
-          <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-view" circle></el-button>
+          <el-button @click="infoData(scope)" size="mini" type="warning" icon="el-icon-view" circle></el-button>
           <el-button @click="editData(scope)" size="mini" type="primary" icon="el-icon-edit" circle></el-button>
           <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
         </template>
@@ -125,7 +170,6 @@
 </template>
 
 <script>
-//import { fetchList } from '@/api/article'
 import { mapGetters } from 'vuex'
 import axios from 'axios'
 
@@ -142,59 +186,47 @@ export default {
   name: 'SelectExcel',
   data() {
     return {
-      list: null,
+      kelasOption: [{'key': '', 'value': '', 'label': ''}],
+      materiOption: [{'key': '','value': '', 'label': ''}],
+      instructorOption: [{'key': '','value': '', 'label': ''}],
+      ruangOption: [{'key': '','value': '', 'label': ''}],
+      sesiOption: [{'key': '','value': '', 'label': ''}],
+ 
       listLoading: true,
       multipleSelection: [],
       listData: [],
       downloadLoading: false,
       filename: '',
-      materiOption: [{'value': '', 'label': ''}],
-      materiSelect: '',
       form: {
         id: '',
-        id_ruang:{
-          name:''
-        },
-        id_kelas:{
-          kode_kelas:{
-            kode_kelas:{
-              nama_kelas:'',
-              kode_kelas:''
-            },
-            jenis_kelas:''
-          },
-        },
-        id_pengajar:{
-          username:''
-        },
-        id_sesi:{
-          jam_mulai:'',
-          jam_selesai:''
-        },
-        id_materi:{
-          nama_materi:''
-        },
-        id_hari:{
-          name:'',
-        },
+        id_ruang:'',
+        id_kelas:'',
+        id_pengajar:'',
+        id_sesi:'',
+        id_materi:'',
         created_by: 1,
         updated_by: 1,
         created_at: '',
         updated_at: '',
       },
+      
       successAlertVisible: false,
       dialogFormVisible: false,
+      dialogFormVisible2: false,
       formLabelWidth: '120px'
     }
   },
   
   created() {
     this.getUserInfo()
+    this.getKelas()
+    this.getRuang()
+    this.getInstructor()
+    this.getSesi()
     this.getData()
   },
   
   mounted() {
-    this.getData(),
     this.getMateri()
   },
 
@@ -227,6 +259,7 @@ export default {
     clearData() {
       this.form.id = '',
       this.form.id_ruang='',
+      this.form.id_='',
       this.form.created_by = 1,
       this.form.updated_by = 1,
       this.form.created_at = '',
@@ -238,6 +271,11 @@ export default {
       this.dialogFormVisible = true 
       this.form.id = scope.row.id;
       this.form.updated_by = 1;//scope.row.updated_by;
+    },
+
+    infoData(scope){
+      this.dialogFormVisible2 = true 
+      this.form1.id = scope.row.id;
     },
 
     deleteData(id, index){
@@ -316,6 +354,31 @@ export default {
           this.roles = ''
         }
     },
+    getKelas() {
+      axios.get(process.env.VUE_APP_BASE_API+'/kelas', {headers: this.auth})
+      .then((response) => {
+        response.data.data.forEach(item => {
+          this.kelasOption.push (
+            {
+              value: item.id,
+              label: item.masterKelas.kode_kelas+' - '+item.masterKelas.nama_kelas
+            }
+          )
+        })
+      })
+    },
+    getInstructor() {
+      axios.get(process.env.VUE_APP_BASE_API+'/list/instructor', {headers: this.auth})
+      .then((response) => {
+        response.data.data.forEach(item => {
+          this.instructorOption.push ( {
+              value: item.id,
+              label: item.user.username
+            }
+          )
+        })
+      })
+    },
 
     getMateri() {
       axios.get(process.env.VUE_APP_BASE_API+'/materi', {headers: this.auth})
@@ -330,19 +393,36 @@ export default {
       })
     },
 
-
-    // fetchData() {
-    //   this.listLoading = true
-    //   fetchList(this.listQuery).then(response => {
-    //     this.list = response.data.items
-    //     this.listLoading = false
-    //   })
-    // },
+    getRuang() {
+      axios.get(process.env.VUE_APP_BASE_API+'/ruang', {headers: this.auth})
+      .then((response) => {
+        response.data.data.forEach(item => {
+          this.ruangOption.push ( {
+              value: item.id,
+              label: item.name
+            }
+          )
+        })
+      })
+    },
+    
+    getSesi() {
+      axios.get(process.env.VUE_APP_BASE_API+'/sesi', {headers: this.auth})
+      .then((response) => {
+        response.data.data.forEach(item => {
+          this.sesiOption.push ( {
+              value: item.id,
+              label: item.jam_mulai+' - '+item.jam_selesai
+            }
+          )
+        })
+      })
+    },
 
     handleSelectionChange(val) {
       this.multipleSelection = val
     },
-
+    
     handleDownload() {
       if (this.multipleSelection.length) {
         this.downloadLoading = true

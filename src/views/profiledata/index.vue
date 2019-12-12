@@ -19,8 +19,8 @@
             <el-col :xs="24">
               <div style="padding: 30px;">
                 <el-form ref="ruleForm" :model="ruleForm" :rules="rules" labteel-width="120px" class="demo-ruleForm">
-                  <el-form-item label="Nama Lengkap" prop="nama_lengkap">
-                    <el-input v-model="ruleForm.nama_lengkap" placeholder="e.g. : Alfa romeo" />
+                  <el-form-item label="Nama Lengkap (Tanpa Gelar)" prop="nama_lengkap">
+                    <el-input v-model="ruleForm.nama_lengkap" placeholder="e.g. : Alfa Romeo" />
                   </el-form-item>
                   <el-form-item label="Jenis Kelamin" prop="jenis_kelamin">
                     <el-radio-group v-model="ruleForm.jenis_kelamin" style="width: 100%;">
@@ -44,15 +44,15 @@
 
                   <el-form-item label="Agama" prop="agama">
                     <el-select v-model="ruleForm.agama" placeholder="pilih agama" style="width: 100%;">
-                      <el-option label="Islam" value="islam" />
+                      <el-option label="Islam" value="Islam" />
                       <el-option label="Kristen" value="Kristen" />
                       <el-option label="Protestan" value="Protestan" />
                       <el-option label="Budha" value="Budha" />
-                      <el-option label="Hindu" value="hindu" />
+                      <el-option label="Hindu" value="Hindu" />
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="Nama Orang Tua (Ibu)" prop="nama_orangtua">
-                    <el-input v-model="ruleForm.nama_orangtua" placeholder="e.g : Alfa remeo" />
+                  <el-form-item label="Nama Orang Tua (Ibu) Tanpa Gelar" prop="nama_orangtua">
+                    <el-input v-model="ruleForm.nama_orangtua" placeholder="e.g : Alfa Remeo" />
                   </el-form-item>
 
                 </el-form>
@@ -110,7 +110,7 @@
               <el-input v-model="ruleForm.telepon_orangtua" type="number" placeholder="e.g : 081299988777" />
             </el-form-item>
 
-            <el-form-item label="Akun instagram" prop="akun_ig">
+            <el-form-item label="Akun Instagram" prop="akun_ig">
               <el-input v-model="ruleForm.akun_ig" placeholder="e.g : alfabank_jogja" />
             </el-form-item>
 
@@ -124,15 +124,15 @@
             </el-form-item>
 
             <el-form-item label="Asal Sekolah / Kampus" prop="asal_sekolah_kampus">
-              <el-input v-model="ruleForm.asal_sekolah_kampus" placeholder="e.g : STMIK AKAKOM Yogyakarta " />
+              <el-input v-model="ruleForm.asal_sekolah_kampus" placeholder="e.g : Universitas Gajah Mada " />
             </el-form-item>
 
             <el-form-item label="Pekerjaan" prop="pekerjaan">
-              <el-input v-model="ruleForm.pekerjaan" placeholder="e.g. : wiraswasta" />
+              <el-input v-model="ruleForm.pekerjaan" placeholder="e.g. : Wiraswasta" />
             </el-form-item>
 
             <el-form-item label="Informasi Dari?" prop="informasi_dari">
-              <el-select v-model="ruleForm.informasi_dari" placeholder="pilih informasi " style="width: 100%;">
+              <el-select v-model="ruleForm.informasi_dari" placeholder="Pilih informasi " style="width: 100%;">
                 <el-option label="Website" value="Website" />
                 <el-option label="Facebook" value="Kristen" />
                 <el-option label="Google" value="Google" />
@@ -152,12 +152,12 @@
           </el-form>
         </tab-content>
         <tab-content title="Last step" icon="ti-check">
-          <h2 style="text-align: center;">apa sudah yakin?</h2>
+          <h2 style="text-align: center;">Apa Sudah Yakin ?</h2>
         </tab-content>
 
         <el-button slot="prev" type="primary">Back</el-button>
         <el-button slot="next" type="primary">Next</el-button>
-        <el-button slot="finish" type="primary">Finish</el-button>
+        <el-button slot="finish" type="primary">Submit</el-button>
       </form-wizard>
 
     </el-card>
@@ -166,6 +166,10 @@
 
 <script>
 import axios from 'axios'
+import { getProvinsi } from '@/api/provinsi'
+import { getKota } from '@/api/kota'
+import { getKecamatan } from '@/api/kecamatan'
+
 import {
   FormWizard,
   TabContent
@@ -183,21 +187,21 @@ export default {
   data() {
     var validateProv = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please select provinsi'))
+        callback(new Error('Pilih Provinsi'))
       } else {
         callback()
       }
     }
     var validateKota = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please select kota / kabupaten'))
+        callback(new Error('Pilih Kota / Kabupaten'))
       } else {
         callback()
       }
     }
     var validateKecamatan = (rule, value, callback) => {
       if (value === '') {
-        callback(new Error('Please select daerah asal'))
+        callback(new Error('Pilih Kecamtan'))
       } else {
         callback()
       }
@@ -274,7 +278,7 @@ export default {
         // ],
         nama_lengkap: [{
           required: true,
-          message: 'Please input nama lengkap',
+          message: 'Masukan Nama Lengkap Tanpa Gelar',
           trigger: 'change'
         },
         {
@@ -285,59 +289,59 @@ export default {
         {
           required: true,
           pattern: /^[a-zA-Z ]+$/,
-          message: 'Just alphabet',
+          message: 'Just Alphabet',
           trigger: 'blur'
         }
         ],
         tempat_lahir: [{
           required: true,
-          message: 'Please input tempat lahir',
+          message: 'Masukan Tempat Lahir',
           trigger: 'blur'
         },
         {
-          max: 15,
-          message: 'max 15 characters',
+          max: 25,
+          message: 'max 55 characters',
           trigger: 'blur'
         },
         {
           required: true,
           pattern: /^[a-zA-Z ]+$/,
-          message: 'Just alphabet',
+          message: 'Just Alphabet',
           trigger: 'blur'
         }
         ],
         agama: [{
           required: true,
-          message: 'Please select agama',
+          message: 'Silahkan Masukan Agama',
           trigger: 'change'
         }],
 
         tanggal_lahir: [{
           type: 'date',
           required: true,
-          message: 'Please pick a date birth',
+          message: 'Silahkan pick a date birth',
           trigger: 'change'
         }],
         date2: [{
           type: 'date',
           required: true,
-          message: 'Please pick a time',
+          message: 'Silahkan pick a time',
           trigger: 'change'
         }],
 
         jenis_kelamin: [{
           required: true,
-          message: 'Please select gender',
+          message: 'Pilih Jenis Kelamin',
           trigger: 'change'
         }],
         nama_orangtua: [{
           required: true,
-          message: 'Please input nama orang tua',
+          message: 'Silahkan input nama orang tua',
           trigger: 'blur'
         },
         {
-          max: 10,
-          message: 'max 10 characters',
+          max: 35,
+          message: 'max 35 characters',
           trigger: 'blur'
         }
         ]
@@ -345,7 +349,7 @@ export default {
       rulas: {
         alamat: [{
           required: true,
-          message: 'Please input alamat',
+          message: 'Silahkan input alamat',
           trigger: 'blur'
         },
         {
@@ -378,7 +382,7 @@ export default {
 
         telepon_orangtua: [{
           required: true,
-          message: 'Please input telepon orang tua',
+          message: 'Silahkan input telepon orang tua',
           trigger: 'blur'
         },
         {
@@ -390,13 +394,13 @@ export default {
         {
           required: true,
           pattern: /^^(^\+62\s?|^0)(\d{3,4}?){2}\d{2,4}/,
-          message: 'Please input correct phone number',
+          message: 'Silahkan input correct phone number',
           trigger: 'blur'
         }
         ],
         asal_sekolah_kampus: [{
           required: true,
-          message: 'Please input asal sekolah atau kampus',
+          message: 'Silahkan input asal sekolah atau kampus',
           trigger: 'blur'
         },
         {
@@ -407,36 +411,36 @@ export default {
         ],
         telepon: [{
           required: true,
-          message: 'Please input telepon',
+          message: 'Silahkan input telepon',
           trigger: 'blur'
         },
         {
           min: 10,
           max: 13,
-          message: 'Length should be 10 to 13',
+          message: 'Nomer telpon minimal 10 & maksimal 13 nomer',
           trigger: 'blur'
         },
         {
           required: true,
           pattern: /^^(^\+62\s?|^0)(\d{3,4}?){2}\d{2,4}/,
-          message: 'Please input correct phone number',
+          message: 'Silahkan masukan nomer dengan benar',
           trigger: 'blur'
         }
         ],
         status_saat_ini: [{
           required: true,
-          message: 'Please select Status',
+          message: 'Silahkan pilih Status',
           trigger: 'change'
         }],
 
         informasi_dari: [{
           required: true,
-          message: 'Please input akun instagram',
+          message: 'Silahkan input akun instagram',
           trigger: 'blur'
         }],
         akun_ig: [{
           required: true,
-          message: 'Please input akun instagram',
+          message: 'Silahkan input akun instagram',
           trigger: 'blur'
         },
         {
@@ -447,13 +451,13 @@ export default {
         {
           required: true,
           pattern: /^[-.a-zA-Z ]+$/,
-          message: 'Just alphabet',
+          message: 'Hanya Alphabet',
           trigger: 'blur'
         }
         ],
         pekerjaan: [{
           required: true,
-          message: 'Please input pekerjaan',
+          message: 'Silahkan Masukan Pekerjaan',
           trigger: 'blur'
         },
         {
@@ -470,7 +474,7 @@ export default {
         ],
         kode_pos: [{
           required: true,
-          message: 'Please input kodepos  ',
+          message: 'Silahkan Masukan Kodepos  ',
           trigger: 'blur'
         },
         {
@@ -489,8 +493,20 @@ export default {
   created() {
     this.getData()
 
-    this.getProvinsi()
+    this.fetchProvinsi()
   },
+  computed: {
+    provinsi(){
+      return getProvinsi()
+    },
+    kota() {
+      return getKota()
+    },
+    kecamatan() {
+      return getKecamatan()
+    }
+  },
+
   methods: {
     onComplete: function() {
       // alert('Yay. Done!')
@@ -519,7 +535,7 @@ export default {
         'Content-Type': 'application/json'
       }
       // this.listLoading = true;
-      axios.get('http://localhost:8081/profil', {
+      axios.get('http://167.71.203.32:2020/profil', {
         headers: auth
       }).then(response => {
         // this.listData = response.data.data
@@ -587,19 +603,27 @@ export default {
         duration: 5000
       })
     },
-    getProvinsi() {
-      axios.get('http://localhost:9528/provinsi.json')
-        .then((response) => {
-          response.data.forEach(provinsi => {
-            // let text = prov.name
-            // let value = prov.id
-            this.provinsiOption.push({
-              key: provinsi.id,
-              label: provinsi.name,
-              value: provinsi
-            })
-          })
-        })
+    fetchProvinsi() {
+      // axios.get('http://localhost:9528/provinsi.json')
+      //   .then((response) => {
+      //     response.data.forEach(provinsi => {
+      //       // let text = prov.name
+      //       // let value = prov.id
+      //       this.provinsiOption.push({
+      //         key: provinsi.id,
+      //         label: provinsi.name,
+      //         value: provinsi
+      //       })
+      //     })
+      //   })
+      this.provinsi.forEach(item =>{
+        console.log(item)
+        this.provinsiOption.push({
+                key: item.id,
+                label: item.name,
+                value: item
+              })
+      })
     },
 
     showKota() {
@@ -608,9 +632,7 @@ export default {
       this.kota_kabupatenId = this.ruleForm.provinsiSelect.id
       this.ruleForm.provinsi = this.ruleForm.provinsiSelect.name
       this.ruleForm.provinsiSelect = this.ruleForm.provinsiSelect.name
-      axios.get('http://localhost:9528/kota.json').then((response) => {
-        // console.log(this.ruleForm.provinsiSelect, response)
-        this.kota_kabupatenOption.push({
+      this.kota_kabupatenOption.push({
           key: '',
           label: 'Silakan Pilih',
           value: ''
@@ -620,19 +642,41 @@ export default {
           label: 'Silakan Pilih',
           value: ''
         })
-        this.ruleForm.kota_kabupatenSelect = ''
-        this.ruleForm.kecamatanSelect = ''
-        response.data.forEach(kota_kabupaten => {
-          if (kota_kabupaten.province_id === this.kota_kabupatenId) {
+      this.kota.forEach(el => {
+        if (el.province_id === this.kota_kabupatenId) {
             this.kota_kabupatenOption.push({
-              key: kota_kabupaten.id,
-              label: kota_kabupaten.name,
-              value: kota_kabupaten
+              key: el.id,
+              label: el.name,
+              value: el
 
             })
           }
-        })
       })
+      // axios.get('http://localhost:9528/kota.json').then((response) => {
+      //   // console.log(this.ruleForm.provinsiSelect, response)
+      //   this.kota_kabupatenOption.push({
+      //     key: '',
+      //     label: 'Silakan Pilih',
+      //     value: ''
+      //   })
+      //   this.kecamatanOption.push({
+      //     key: '',
+      //     label: 'Silakan Pilih',
+      //     value: ''
+      //   })
+      //   this.ruleForm.kota_kabupatenSelect = ''
+      //   this.ruleForm.kecamatanSelect = ''
+      //   response.data.forEach(kota_kabupaten => {
+      //     if (kota_kabupaten.province_id === this.kota_kabupatenId) {
+      //       this.kota_kabupatenOption.push({
+      //         key: kota_kabupaten.id,
+      //         label: kota_kabupaten.name,
+      //         value: kota_kabupaten
+
+      //       })
+      //     }
+      //   })
+      // })
       // console.log(this.ruleForm.provinsi)
     },
     showKecamatan() {
@@ -640,18 +684,27 @@ export default {
       this.kecamatanId = this.ruleForm.kota_kabupatenSelect.id
       this.ruleForm.kota_kabupaten = this.ruleForm.kota_kabupatenSelect.name
       this.ruleForm.kota_kabupatenSelect = this.ruleForm.kota_kabupatenSelect.name
-      axios.get('http://localhost:9528/kecamatan.json').then((response) => {
-          // console.log(this.ruleForm.kota_kabupatenSelect, response)
-        response.data.forEach(kecamatan => {
-          if (kecamatan.regency_id === this.kecamatanId) {
+      this,kecamatan.forEach(el => {
+        if (el.regency_id === this.kecamatanId) {
             this.kecamatanOption.push({
-              key: kecamatan.id,
-              label: kecamatan.name,
-              value: kecamatan
+              key: el.id,
+              label: el.name,
+              value: el
             })
           }
-        })
       })
+      // axios.get('http://localhost:9528/kecamatan.json').then((response) => {
+      //     // console.log(this.ruleForm.kota_kabupatenSelect, response)
+      //   response.data.forEach(kecamatan => {
+      //     if (kecamatan.regency_id === this.kecamatanId) {
+      //       this.kecamatanOption.push({
+      //         key: kecamatan.id,
+      //         label: kecamatan.name,
+      //         value: kecamatan
+      //       })
+      //     }
+      //   })
+      // })
     },
     setKecamatan() {
       this.kecamatanId = this.ruleForm.kecamatanSelect.id

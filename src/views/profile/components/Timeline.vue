@@ -6,21 +6,14 @@
         <span class="description">Null</span>
       </div>
       <p>
-        Keterangan work experience
-        - Posisi
-        - Perusahaan
-        - Periode- periode bulan tahun
+        Keterangan work experience - Posisi - Perusahaan - Periode- periode
+        bulan tahun
       </p>
       <div class="user">
         <span class="username text-muted">Education</span>
         <span class="description">nulll</span>
       </div>
-      <p>
-        Keterangan Education
-        -Instansi
-        -Jurusan
-        -periode-periode bulan tahun
-      </p>
+      <p>Keterangan Education -Instansi -Jurusan -periode-periode bulan tahun</p>
       <div class="user">
         <span class="username text-muted">Current City</span>
         <span class="description">Null</span>
@@ -34,44 +27,32 @@
         <span class="username text-muted">Sosmed</span>
         <span class="description">nulll</span>
       </div>
-      <p>
-        Keterangan Sosmed
-      </p>
+      <p>Keterangan Sosmed</p>
       <div class="user">
         <span class="username text-muted">Phone</span>
         <span class="description">nulll</span>
       </div>
-      <p>
-        Keterangan Phone Number
-      </p>
+      <p>Keterangan Phone Number</p>
       <div class="user">
         <span class="username text-muted">Email</span>
         <span class="description">nulll</span>
       </div>
-      <p v-for="get in getProfil" v-bind:key="get.id">
-        {{ get.user.email }}
-      </p>
+      <p v-for="get in getProfil" v-bind:key="get.id">{{ get.user.email }}</p>
       <div class="user">
         <span class="username text-muted">Webdite</span>
         <span class="description">nulll</span>
       </div>
-      <p>
-        Keterangan Website
-      </p>
+      <p>Keterangan Website</p>
       <div class="user">
         <span class="username text-muted">Address</span>
         <span class="description">nulll</span>
       </div>
-      <p>
-        Keterangan Address
-      </p>
+      <p>Keterangan Address</p>
       <div class="user">
         <span class="username text-muted">Skill</span>
         <span class="description">nulll</span>
       </div>
-      <p>
-        Keterangan Skill
-      </p>
+      <p>Keterangan Skill</p>
       <ul class="list-inline">
         <li>
           <span class="link-black text-sm">
@@ -81,8 +62,7 @@
         </li>
         <li>
           <span class="link-black text-sm">
-            <svg-icon icon-class="like" />
-            Like
+            <svg-icon icon-class="like" />Like
           </span>
         </li>
       </ul>
@@ -93,18 +73,18 @@
 <script>
 import axios from "axios";
 
-const avatarPrefix = '?imageView2/1/w/80/h/80'
-const carouselPrefix = '?imageView2/2/h/440'
+const avatarPrefix = "?imageView2/1/w/80/h/80";
+const carouselPrefix = "?imageView2/2/h/440";
 
 export default {
-  name: 'activity',
+  name: "activity",
   data() {
     return {
       carouselImages: [
-        'https://wpimg.wallstcn.com/9679ffb0-9e0b-4451-9916-e21992218054.jpg',
-        'https://wpimg.wallstcn.com/bcce3734-0837-4b9f-9261-351ef384f75a.jpg',
-        'https://wpimg.wallstcn.com/d1d7b033-d75e-4cd6-ae39-fcd5f1c0a7c5.jpg',
-        'https://wpimg.wallstcn.com/50530061-851b-4ca5-9dc5-2fead928a939.jpg'
+        "https://wpimg.wallstcn.com/9679ffb0-9e0b-4451-9916-e21992218054.jpg",
+        "https://wpimg.wallstcn.com/bcce3734-0837-4b9f-9261-351ef384f75a.jpg",
+        "https://wpimg.wallstcn.com/d1d7b033-d75e-4cd6-ae39-fcd5f1c0a7c5.jpg",
+        "https://wpimg.wallstcn.com/50530061-851b-4ca5-9dc5-2fead928a939.jpg"
       ],
       avatarPrefix,
       carouselPrefix,
@@ -113,42 +93,42 @@ export default {
       user: {
         id: ""
       }
-    }
+    };
   },
   // created(){
   //   this.getProfile()
   // },
-  mounted(){
-    this.getProfile()
+  mounted() {
+    this.getProfile();
   },
   methods: {
     getProfile() {
-      const token = 'Bearer '+localStorage.getItem('token')
+      const token = "Bearer " + localStorage.getItem("token");
       const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
-      }
-      this.auth = auth
-      axios.get(process.env.VUE_APP_BASE_API + '/profil',  {headers: this.auth})
-      .then((response) => {
-        console.log(response.data.data)
-        this.getProfil = response.data.data;
-      })
-      .catch(error => console.log(error)
-      )
+        Authorization: token,
+        "Content-Type": "application/json"
+      };
+      this.auth = auth;
+      axios
+        .get(process.env.VUE_APP_BASE_API + "/profil", { headers: this.auth })
+        .then(response => {
+          console.log(response.data.data);
+          this.getProfil = response.data.data;
+        })
+        .catch(error => console.log(error));
     }
   }
-}
+};
 </script>
 
 <style lang="scss" scoped>
 .user-activity {
-  .user{
+  .user {
     .description {
       display: block;
       padding: 2px 0;
     }
-    .username{
+    .username {
       font-size: 16px;
       color: #000;
     }
@@ -159,7 +139,6 @@ export default {
     }
   }
   .user-block {
-
     .username,
     .description {
       display: block;
@@ -167,7 +146,7 @@ export default {
       padding: 2px 0;
     }
 
-    .username{
+    .username {
       font-size: 16px;
       color: #000;
     }
@@ -199,7 +178,6 @@ export default {
     .image {
       width: 100%;
       height: 100%;
-
     }
 
     .user-images {
@@ -220,14 +198,12 @@ export default {
     }
 
     .link-black {
-
       &:hover,
       &:focus {
         color: #999;
       }
     }
   }
-
 }
 
 .box-center {

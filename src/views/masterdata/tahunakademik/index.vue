@@ -108,7 +108,7 @@ export default {
     },
     getData() {
       this.listLoading = true;
-      axios.get("http://localhost:8081/tahunakademik").then(response => {
+      axios.get(process.env.VUE_APP_BASE_API+'/tahunakademik').then(response => {
         this.listData = response.data.data;
         this.listLoading = false;
       });
@@ -143,7 +143,7 @@ export default {
           };
           console.log(id);
           axios
-            .delete("http://localhost:8081/tahunakademik/" + id, {
+            .delete(process.env.VUE_APP_BASE_API+'/tahunakademik/' + id, {
               headers: auth
             })
             .then(

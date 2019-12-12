@@ -1,3 +1,4 @@
+const prov =
 [
     {
       "id": "11",
@@ -238,3 +239,9 @@
       "longitude": 138.34853
     }
   ]
+
+  const getProvinsi = () => {
+    return prov
+  }
+
+  export {getProvinsi}

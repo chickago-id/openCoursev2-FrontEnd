@@ -132,7 +132,7 @@ export default {
           };
           console.log(id);
           axios
-            .delete("http://localhost:8081/batch/" + id, {
+            .delete(process.env.VUE_APP_BASE_API+'/batch/' + id, {
               headers: auth
             })
             .then(

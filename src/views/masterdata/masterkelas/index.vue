@@ -3,18 +3,18 @@
   <div style="padding:30px;">
     <el-row type="flex" class="row-bg" justify="end">
       <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-    </el-row><br />
+    </el-row><br>
 
     <!-- Form Tambah Data -->
     <el-dialog align="center" title="Tambah/Update Master Kelas" :visible.sync="dialogFormVisible">
       <el-form :model="form">
         <el-form-item required label="Nama Kelas" :label-width="formLabelWidth">
-          <el-input v-model="form.nama_kelas" autocomplete="off"></el-input>
+          <el-input v-model="form.nama_kelas" autocomplete="off" />
         </el-form-item>
       </el-form>
       <el-form :model="form">
         <el-form-item required label="Kode Master Kelas" :label-width="formLabelWidth">
-          <el-input v-model="form.kode_masterkelas" autocomplete="off" maxlength="4"></el-input>
+          <el-input v-model="form.kode_masterkelas" autocomplete="off" maxlength="4" />
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -43,21 +43,22 @@
         <template slot-scope="scope">{{ scope.row.kode_masterkelas }}</template>
       </el-table-column>
       <el-table-column label="Dibuat oleh">
-        <template slot-scope="scope">{{ scope.row.userDetail.nama_lengkap }}</template>
+        <template v-if="scope.row.userDetail" slot-scope="scope">{{ scope.row.userDetail.nama_lengkap }}</template>
+        <template v-else>Data not available</template>
       </el-table-column>
       <el-table-column label="Tanggal Buat">
-        <template slot-scope="scope">{{ scope.row.created_date | formatDate}}</template>
+        <template slot-scope="scope">{{ scope.row.created_date | formatDate }}</template>
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
-          <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
+          <el-button size="mini" type="warning" icon="el-icon-edit" circle @click="editData(scope)" />
           <el-button
-            @click="deleteData(scope.row.id, scope.$index)"
             size="mini"
             type="danger"
             icon="el-icon-delete"
             circle
-          ></el-button>
+            @click="deleteData(scope.row.id, scope.$index)"
+          />
         </template>
       </el-table-column>
     </el-table>
@@ -66,13 +67,10 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import axios from "axios";
+import { mapGetters } from 'vuex'
+import axios from 'axios'
 
 export default {
-  computed: {
-    ...mapGetters(["token", "username", "roles"])
-  },
   data() {
     return {
       list: null,
@@ -82,127 +80,153 @@ export default {
         id: '',
         nama_kelas: '',
         kode_masterkelas: '',
-        created_by: '',
-        created_date: '',
+        created_by: this.userId,
+        created_date: this.userId,
         updated_by: '',
         updated_date: ''
       },
       successAlertVisible: false,
       dialogFormVisible: false,
-      formLabelWidth: '150px'
-    };
+      formLabelWidth: '150px',
+      userId: ''
+    }
+  },
+
+  computed: {
+    ...mapGetters(['token', 'username', 'roles'])
   },
   created() {
-    this.getData();
+    this.getData()
   },
   mounted() {
-    this.getData();
+    this.getData()
+    this.getProfile()
   },
   methods: {
+    getProfile() {
+      if (localStorage.getItem('token') != null) {
+        const token = 'Bearer ' + localStorage.getItem('token')
+        const auth = {
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+        this.auth = auth
+        axios.get(process.env.VUE_APP_BASE_API + '/profil', { headers: auth })
+          .then(response => {
+            // const userData = response.data.data
+            this.userId = response.data.data[0].id_user
+          })
+      } else {
+        this.roles = ''
+      }
+    },
     addNotif() {
-      const h = this.$createElement;
+      const h = this.$createElement
       this.$notify({
-        title: "Success",
+        title: 'Success',
         message: h(
-          "i",
-          { style: "color: teal" },
-          "Data berhasil ditambah/diperbaharui"
+          'i',
+          { style: 'color: teal' },
+          'Data berhasil ditambah/diperbaharui'
         ),
-        type: "success",
+        type: 'success',
         showClose: false,
         duration: 2000
-      });
+      })
     },
     getData() {
-      this.listLoading = true;
-      axios.get("http://localhost:8081/masterkelas").then(response => {
-        this.listData = response.data.data;
-        this.listLoading = false;
-      });
+      this.listLoading = true
+      axios.get('http://167.71.203.32:2020/masterkelas').then(response => {
+        this.listData = response.data.data
+        this.listLoading = false
+        // console.log(this.listData)
+      })
     },
     clearData() {
-      this.form.id='';
-      this.form.nama_kelas = "";
-      this.form.kode_masterkelas = "";
-      this.form.created_by = 1;
-      this.form.created_date = "";
-      this.form.updated_by = 1;
-      this.form.updated_date = "";
-      this.dialogFormVisible = true;
+      this.form.id = ''
+      this.form.nama_kelas = ''
+      this.form.kode_masterkelas = ''
+      this.form.created_by = ''
+      this.form.created_date = ''
+      this.form.updated_by = ''
+      this.form.updated_date = ''
+      this.dialogFormVisible = true
     },
     editData(scope) {
-      this.dialogFormVisible = true 
-      this.form.id = scope.row.id;
-      this.form.nama_kelas = scope.row.nama_kelas;
-      this.form.kode_masterkelas = scope.row.kode_masterkelas;
-      this.form.updated_by = 1;
-      this.form.created_by = scope.row.created_by;
+      this.dialogFormVisible = true
+      this.form.id = scope.row.id
+      this.form.nama_kelas = scope.row.nama_kelas
+      this.form.kode_masterkelas = scope.row.kode_masterkelas
+      this.form.updated_by = ''
+      this.form.created_by = scope.row.created_by
     },
-    deleteData(id, index){
+    deleteData(id, index) {
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/masterkelas/' + id, { headers: auth })
-          .then((res) =>{
-          console.log(res)
-          this.listData.splice(index, 1)
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        const token = 'Bearer ' + localStorage.getItem('token')
+        const auth = {
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+        console.log(id)
+        axios.delete(process.env.VUE_APP_BASE_API + '/masterkelas/' + id, { headers: auth })
+          .then((res) => {
+            console.log(res)
+            this.listData.splice(index, 1)
           }, (error) => {
             console.log(error)
-          }) 
-          this.$message({
-            type: 'success',
-            message: 'Delete completed'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: 'Delete canceled'
-          });          
-        });
+          })
+        this.$message({
+          type: 'success',
+          message: 'Delete completed'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        })
+      })
       this.getData()
     },
-    
+
     addData() {
-      const token = "Bearer " + localStorage.getItem("token");
+      const token = 'Bearer ' + localStorage.getItem('token')
       const auth = {
         Authorization: token,
-        "Content-Type": "application/json"
-      };
-      console.log(token);
-      if (this.form.id != "") {
+        'Content-Type': 'application/json'
+      }
+      this.form.created_by = this.userId
+      this.form.updated_by = this.userId
+      console.log(token)
+      if (this.form.id !== '') {
         axios
           .post(
             process.env.VUE_APP_BASE_API +
-              "/masterkelas/" +
+              '/masterkelas/' +
               this.form.id,
             this.form,
             { headers: auth }
           )
           .then(data => {
-            this.getData();
-            this.addNotif();
-            this.dialogFormVisible = false;
-          });
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          })
       } else {
         axios
-          .post(process.env.VUE_APP_BASE_API + "/masterkelas", this.form, {
+          .post(process.env.VUE_APP_BASE_API + '/masterkelas', this.form, {
             headers: auth
           })
           .then(data => {
-            this.getData();
-            this.addNotif();
-            this.dialogFormVisible = false;
-          });
+            this.getData()
+            this.addNotif()
+            this.dialogFormVisible = false
+          })
       }
     }
   }
-};
+}
 </script>

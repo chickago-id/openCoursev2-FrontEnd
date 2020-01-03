@@ -143,7 +143,7 @@ export default {
     },
     getData() {
       this.listLoading = true
-      axios.get('http://localhost:8081/materi')
+      axios.get(process.env.VUE_APP_ROOT_API + '/materi')
       .then((response) => {
         this.listData = response.data.data;
         this.listLoading = false
@@ -179,7 +179,7 @@ export default {
             'Content-Type' : 'application/json'
           }
           console.log(id)
-          axios.delete('http://localhost:8081/materi/'+id, { headers: auth })
+          axios.delete(process.env.VUE_APP_ROOT_API + '/materi/'+id, { headers: auth })
           .then((res) =>{
           console.log(res)
           this.listData.splice(index, 1)

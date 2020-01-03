@@ -4,22 +4,22 @@
   <div style="padding:30px;">
     <el-alert :closable="false" title="Tipe Kelas" />
 
-<br>    
-<el-row type="flex" class="row-bg" justify="end">
-          <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
-</el-row>
-<br>    
-    
+    <br>
+    <el-row type="flex" class="row-bg" justify="end">
+      <el-button size="mini" type="primary" @click="clearData">Tambah</el-button>
+    </el-row>
+    <br>
+
     <!-- Form Tambah Data -->
     <el-dialog align="center" title="Tambah Data" :visible.sync="dialogFormVisible">
       <el-form :model="form">
 
         <el-form-item required label="Kode" :label-width="formLabelWidth">
-          <el-input type="text" maxlength="4" v-model="form.code" autocomplete="off" placeholder="e.g. PRVT max:4 characters"></el-input>
+          <el-input v-model="form.code" type="text" maxlength="4" autocomplete="off" placeholder="e.g. PRVT max:4 characters" />
         </el-form-item>
 
         <el-form-item required label="Nama Tipe Kelas" :label-width="formLabelWidth">
-          <el-input type="text" v-model="form.name" autocomplete="off" placeholder="e.g. Private"></el-input>
+          <el-input v-model="form.name" type="text" autocomplete="off" placeholder="e.g. Private" />
         </el-form-item>
 
       </el-form>
@@ -61,13 +61,13 @@
       </el-table-column>
       <el-table-column label="Tanggal Buat">
         <template slot-scope="scope">
-          {{ scope.row.created_at | formatDate}}
+          {{ scope.row.created_at | formatDate }}
         </template>
       </el-table-column>
       <el-table-column label="Action">
         <template slot-scope="scope">
-          <el-button @click="editData(scope)" size="mini" type="warning" icon="el-icon-edit" circle></el-button>
-          <el-button @click="deleteData(scope.row.id, scope.$index)" size="mini" type="danger" icon="el-icon-delete" circle></el-button>
+          <el-button size="mini" type="warning" icon="el-icon-edit" circle @click="editData(scope)" />
+          <el-button size="mini" type="danger" icon="el-icon-delete" circle @click="deleteData(scope.row.id, scope.$index)" />
         </template>
       </el-table-column>
     </el-table>
@@ -81,34 +81,35 @@ import { mapGetters } from 'vuex'
 import axios from 'axios'
 
 export default {
-  computed: {
-    ...mapGetters([
-      'token',
-      'username',
-      'roles'
-    ]),
-
-  },
   data() {
     return {
-        user_id: '',
-        list: null,
-        listLoading: true,
-        listData: [],
-        form: {
-            id: '',
-            name: '',
-            code: '',
-            created_by: 1,
-            created_at: '',
-            updated_by:1,
-            updated_at:''
-        },
+      user_id: '',
+      list: null,
+      listLoading: true,
+      listData: [],
+      form: {
+        id: '',
+        name: '',
+        code: '',
+        created_by: 1,
+        created_at: '',
+        updated_by: 1,
+        updated_at: ''
+      },
       successAlertVisible: false,
       dialogFormVisible: false,
       formLabelWidth: '150px'
     }
   },
+
+  computed: {
+    ...mapGetters([
+      'token',
+      'username',
+      'roles'
+    ])
+  },
+
   created() {
     this.getUserInfo()
     this.getData()
@@ -118,114 +119,114 @@ export default {
   },
   methods: {
     addNotif() {
-      const h = this.$createElement;
+      const h = this.$createElement
       this.$notify({
         title: 'Success',
         message: h('i', { style: 'color: teal' }, 'Data berhasil ditambah/diperbaharui'),
         type: 'success',
         showClose: false,
         duration: 2000
-      });
+      })
     },
     getUserInfo() {
-      if(localStorage.getItem('token') != null) {
-        const token = 'Bearer '+localStorage.getItem('token')
+      if (localStorage.getItem('token') != null) {
+        const token = 'Bearer ' + localStorage.getItem('token')
         const auth = {
-          'Authorization' : token,
-          'Content-Type' : 'application/json'
+          'Authorization': token,
+          'Content-Type': 'application/json'
         }
         this.auth = auth
         axios.get(process.env.VUE_APP_ROOT_API + '/profil', { headers: auth })
-        .then(response =>{
-          let userData = JSON.parse(response.data.data)
-          this.user_id = userData.user.id
-        })
+          .then(response => {
+            const userData = JSON.parse(response.data.data)
+            this.user_id = userData.user.id
+          })
       } else {
         this.roles = ''
       }
     },
     getData() {
       this.listLoading = true
-      axios.get(process.env.VUE_APP_BASE_API + '/class-type', {headers: this.auth})
-      .then((response) => {
-    //    console.log(response.data.data.created_by);
-        this.listData = response.data.data;
-        this.listLoading = false
-      })
+      axios.get(process.env.VUE_APP_BASE_API + '/class-type', { headers: this.auth })
+        .then((response) => {
+          //    console.log(response.data.data.created_by);
+          this.listData = response.data.data
+          this.listLoading = false
+        })
     },
     clearData() {
-      this.form.id= ''
-      this.form.name= ''
-      this.form.code= ''
+      this.form.id = ''
+      this.form.name = ''
+      this.form.code = ''
       this.form.created_by = 1
       this.form.created_at = ''
       this.form.updated_by = 1
-      this.form.updated_at =''
+      this.form.updated_at = ''
       this.dialogFormVisible = true
     },
-    editData(scope){
+    editData(scope) {
       this.dialogFormVisible = true
-      this.form.id= scope.row.id;
-      this.form.name= scope.row.name;
-      this.form.code=scope.row.code;
-      this.form.updated_by = scope.row.updated_by;
+      this.form.id = scope.row.id
+      this.form.name = scope.row.name
+      this.form.code = scope.row.code
+      this.form.updated_by = scope.row.updated_by
     },
-    deleteData(id, index){
+    deleteData(id, index) {
       this.$confirm('This will permanently delete the file. Continue?', 'Warning', {
-          confirmButtonText: 'OK',
-          cancelButtonText: 'Cancel',
-          type: 'warning'
-        }).then(() => {
-          const token = 'Bearer '+localStorage.getItem('token')
-          const auth = {
-            'Authorization' : token,
-            'Content-Type' : 'application/json'
-          }
-          console.log(id)
-          axios.delete(process.env.VUE_APP_BASE_API + '/class-type/' + id, { headers: auth })
-          .then((res) =>{
-          console.log(res)
-          this.listData.splice(index, 1)
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel',
+        type: 'warning'
+      }).then(() => {
+        const token = 'Bearer ' + localStorage.getItem('token')
+        const auth = {
+          'Authorization': token,
+          'Content-Type': 'application/json'
+        }
+        console.log(id)
+        axios.delete(process.env.VUE_APP_BASE_API + '/class-type/' + id, { headers: auth })
+          .then((res) => {
+            console.log(res)
+            this.listData.splice(index, 1)
           }, (error) => {
             console.log(error)
-          }) 
-          this.$message({
-            type: 'success',
-            message: 'Delete completed'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: 'Delete canceled'
-          });          
-        });
+          })
+        this.$message({
+          type: 'success',
+          message: 'Delete completed'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: 'Delete canceled'
+        })
+      })
       this.getData()
-    }, 
-    addData(){
-      const token = 'Bearer '+localStorage.getItem('token')
+    },
+    addData() {
+      const token = 'Bearer ' + localStorage.getItem('token')
       const auth = {
-        'Authorization' : token,
-        'Content-Type' : 'application/json'
+        'Authorization': token,
+        'Content-Type': 'application/json'
       }
-      console.log(token)      
-      if(this.form.id != '') {
-        axios.put(process.env.VUE_APP_BASE_API+'/class-type/'+this.form.id,
+      console.log(token)
+      if (this.form.id !== '') {
+        axios.put(process.env.VUE_APP_BASE_API + '/class-type/' + this.form.id,
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
           })
-      } else { 
-        axios.post(process.env.VUE_APP_BASE_API+'/class-type', 
+      } else {
+        axios.post(process.env.VUE_APP_BASE_API + '/class-type',
           this.form, { headers: auth })
           .then((data) => {
             this.getData()
             this.addNotif()
             this.dialogFormVisible = false
-          });
+          })
       }
-    },
+    }
   }
 }
 </script>

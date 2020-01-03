@@ -99,7 +99,7 @@ export default {
     },
     getData() {
       this.listLoading = true;
-      axios.get("http://localhost:8081/batch").then(response => {
+      axios.get("http://167.71.203.32:2020/batch").then(response => {
         this.listData = response.data.data;
         this.listLoading = false;
       });
